@@ -1,0 +1,85 @@
+// UHF Solutions Digital Card - Prisma Schema
+// Supports PostgreSQL in production and clean relational modeling
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id           String         @id @default(cuid())
+  employeeId   String         @unique // Unique Employee ID (e.g., UHF-001, ADMIN-001)
+  email        String         @unique // Work or account login email
+  passwordHash String // Bcrypt hashed password
+  role         Role           @default(EMPLOYEE)
+  status       AccountStatus  @default(ACTIVE)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  profile      EmployeeProfile?
+
+  @@index([employeeId])
+  @@index([email])
+  @@index([role, status])
+}
+
+model EmployeeProfile {
+  id            String        @id @default(cuid())
+  userId        String        @unique
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeId    String        @unique // Mirror for fast indexed public URL lookup
+  fullName      String
+  designation   String
+  department    String
+  phone         String?
+  whatsapp      String?
+  officePhone   String?
+  companyEmail  String?
+  linkedin      String?
+  website       String?
+  officeAddress String?
+  bio           String?
+  profilePhoto  String?       // URL or Base64 data string
+  
+  // Custom display preferences
+  showPhone     Boolean       @default(true)
+  showWhatsapp  Boolean       @default(true)
+  showEmail     Boolean       @default(true)
+  showLinkedin  Boolean       @default(true)
+  showAddress   Boolean       @default(true)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([employeeId])
+  @@index([department])
+}
+
+model CompanySettings {
+  id            String        @id @default("default-uhf-company")
+  companyName   String        @default("UHF Solutions")
+  logoUrl       String?
+  website       String        @default("https://uhfsolutions.com")
+  email         String        @default("contact@uhfsolutions.com")
+  phone         String        @default("+1 (800) 555-0199")
+  officeAddress String        @default("Suite 400, Technology Park, Silicon Boulevard, CA 94025")
+  linkedin      String?       @default("https://linkedin.com/company/uhf-solutions")
+  twitter       String?       @default("https://twitter.com/uhfsolutions")
+  primaryColor  String        @default("#0f172a")
+  accentColor   String        @default("#2563eb")
+  updatedAt     DateTime      @updatedAt
+}

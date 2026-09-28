@@ -1,0 +1,7 @@
+{
+  "name": "UHF Solutions Digital Card",
+  "description": "Enterprise Digital Business Card & QR Management System for UHF Solutions employees.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

@@ -1,0 +1,575 @@
+import React, { useState, useEffect } from 'react';
+import { api } from '../../lib/api.ts';
+import { FullEmployee, AccountStatus, Role } from '../../types/index.ts';
+import { Input } from '../../components/common/Input.tsx';
+import { Button } from '../../components/common/Button.tsx';
+import { useToast } from '../../context/ToastContext.tsx';
+import { uploadProfilePhoto } from '../../lib/storage.ts';
+import {
+  User,
+  Mail,
+  Briefcase,
+  Phone,
+  MessageSquare,
+  Globe,
+  Linkedin,
+  MapPin,
+  Camera,
+  ArrowLeft,
+  CheckCircle2,
+  ExternalLink,
+  Shield,
+  Eye,
+  Loader2,
+} from 'lucide-react';
+
+interface AdminEditEmployeeProps {
+  employeeIdOrDbId: string;
+  onNavigate: (path: string) => void;
+}
+
+export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
+  employeeIdOrDbId,
+  onNavigate,
+}) => {
+  const { showToast } = useToast();
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [employee, setEmployee] = useState<FullEmployee | null>(null);
+
+  // Form fields
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [department, setDepartment] = useState('');
+  const [phone, setPhone] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [officePhone, setOfficePhone] = useState('');
+  const [companyEmail, setCompanyEmail] = useState('');
+  const [linkedin, setLinkedin] = useState('');
+  const [website, setWebsite] = useState('');
+  const [officeAddress, setOfficeAddress] = useState('');
+  const [bio, setBio] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState('');
+  const [photoUrlInput, setPhotoUrlInput] = useState('');
+  const [status, setStatus] = useState<AccountStatus>('ACTIVE');
+  const [role, setRole] = useState<Role>('EMPLOYEE');
+
+  // Privacy toggles
+  const [showPhone, setShowPhone] = useState(true);
+  const [showWhatsapp, setShowWhatsapp] = useState(true);
+  const [showEmail, setShowEmail] = useState(true);
+  const [showLinkedin, setShowLinkedin] = useState(true);
+  const [showAddress, setShowAddress] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+
+    api.admin
+      .getEmployee(employeeIdOrDbId)
+      .then((data) => {
+        if (isMounted) {
+          setEmployee(data);
+          setFullName(data.profile.fullName);
+          setEmail(data.email);
+          setDesignation(data.profile.designation);
+          setDepartment(data.profile.department);
+          setPhone(data.profile.phone || '');
+          setWhatsapp(data.profile.whatsapp || '');
+          setOfficePhone(data.profile.officePhone || '');
+          setCompanyEmail(data.profile.companyEmail || '');
+          setLinkedin(data.profile.linkedin || '');
+          setWebsite(data.profile.website || '');
+          setOfficeAddress(data.profile.officeAddress || '');
+          setBio(data.profile.bio || '');
+          setProfilePhoto(data.profile.profilePhoto || '');
+          setStatus(data.status);
+          setRole(data.role);
+
+          setShowPhone(data.profile.showPhone ?? true);
+          setShowWhatsapp(data.profile.showWhatsapp ?? true);
+          setShowEmail(data.profile.showEmail ?? true);
+          setShowLinkedin(data.profile.showLinkedin ?? true);
+          setShowAddress(data.profile.showAddress ?? true);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching employee for editing:', err);
+        showToast('Failed to load employee record', 'error');
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [employeeIdOrDbId, showToast]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingPhoto(true);
+    try {
+      const currentEmpId = employee?.employeeId || 'employee';
+      const { url } = await uploadProfilePhoto(file, currentEmpId);
+      setProfilePhoto(url);
+      setPhotoUrlInput('');
+      showToast('Photo uploaded to Firebase Storage', 'success');
+    } catch (storageErr: any) {
+      console.warn('Firebase Storage upload error, falling back to local preview:', storageErr);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          setProfilePhoto(reader.result);
+          setPhotoUrlInput('');
+          showToast('Photo loaded locally', 'info');
+        }
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setIsUploadingPhoto(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleApplyUrl = () => {
+    if (!photoUrlInput.trim()) return;
+    setProfilePhoto(photoUrlInput.trim());
+    showToast('Photo URL set', 'info');
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!employee) return;
+
+    setIsSaving(true);
+    try {
+      await api.admin.updateEmployee(employee.id, {
+        fullName: fullName.trim(),
+        email: email.trim().toLowerCase(),
+        designation: designation.trim(),
+        department: department.trim(),
+        phone: phone.trim() || undefined,
+        whatsapp: whatsapp.trim() || undefined,
+        officePhone: officePhone.trim() || undefined,
+        companyEmail: companyEmail.trim() || undefined,
+        linkedin: linkedin.trim() || undefined,
+        website: website.trim() || undefined,
+        officeAddress: officeAddress.trim() || undefined,
+        bio: bio.trim() || undefined,
+        profilePhoto: profilePhoto || undefined,
+        status,
+        role,
+        showPhone,
+        showWhatsapp,
+        showEmail,
+        showLinkedin,
+        showAddress,
+      });
+
+      showToast('Employee details updated successfully!', 'success');
+      onNavigate('/admin/employees');
+    } catch (err: any) {
+      console.error('Failed to update employee:', err);
+      showToast(err.message || 'Failed to update employee.', 'error');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-12 text-center text-slate-400">
+        Loading employee details...
+      </div>
+    );
+  }
+
+  if (!employee) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-12 text-center">
+        <p className="text-rose-500 mb-4">Employee record could not be found.</p>
+        <Button variant="outline" onClick={() => onNavigate('/admin/employees')}>
+          Back to Directory
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header */}
+      <div className="mb-6 flex items-center justify-between">
+        <button
+          onClick={() => onNavigate('/admin/employees')}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Employee List</span>
+        </button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onNavigate(`/card/${employee.employeeId}`)}
+          leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
+        >
+          View Live Card
+        </Button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-black text-slate-900 dark:text-white">
+                  Edit Employee: {employee.profile.fullName}
+                </h1>
+                <span className="font-mono text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-bold">
+                  {employee.employeeId}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                Full administrator override for profile, permissions, status, and contact visibility.
+              </p>
+            </div>
+          </div>
+
+          {/* Photo */}
+          <div className="mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+              Profile Portrait Photo
+            </label>
+            <div className="flex items-center gap-5">
+              <div className="w-20 h-20 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center shrink-0">
+                {profilePhoto ? (
+                  <img
+                    src={profilePhoto}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User className="w-8 h-8 text-slate-400" />
+                )}
+              </div>
+
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center gap-3">
+                  <label className={`cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
+                    {isUploadingPhoto ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
+                    ) : (
+                      <Camera className="w-3.5 h-3.5 text-blue-600" />
+                    )}
+                    <span>{isUploadingPhoto ? 'Uploading to Firebase...' : 'Upload Image'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      disabled={isUploadingPhoto}
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+
+                  {profilePhoto && (
+                    <button
+                      type="button"
+                      disabled={isUploadingPhoto}
+                      onClick={() => setProfilePhoto('')}
+                      className="text-xs text-rose-500 hover:underline"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2 max-w-md">
+                  <input
+                    type="url"
+                    placeholder="Or enter image URL"
+                    value={photoUrlInput}
+                    onChange={(e) => setPhotoUrlInput(e.target.value)}
+                    className="text-xs px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white flex-1 outline-none"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleApplyUrl}
+                  >
+                    Set
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Core Fields */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <Input
+              label="Full Name"
+              id="edit-fullname"
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+
+            <Input
+              label="Login Email"
+              id="edit-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <Input
+              label="Designation"
+              id="edit-designation"
+              type="text"
+              value={designation}
+              onChange={(e) => setDesignation(e.target.value)}
+              required
+            />
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                Department
+              </label>
+              <input
+                type="text"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs px-3.5 py-2.5 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Contact Details */}
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mt-6 mb-3">
+            Contact Numbers & Addresses
+          </h3>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Direct Mobile Phone"
+              id="edit-phone"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              leftIcon={<Phone className="w-4 h-4" />}
+            />
+
+            <Input
+              label="WhatsApp Number"
+              id="edit-whatsapp"
+              type="tel"
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(e.target.value)}
+              leftIcon={<MessageSquare className="w-4 h-4" />}
+            />
+
+            <Input
+              label="Company Email"
+              id="edit-company-email"
+              type="email"
+              value={companyEmail}
+              onChange={(e) => setCompanyEmail(e.target.value)}
+              leftIcon={<Mail className="w-4 h-4" />}
+            />
+
+            <Input
+              label="Office Direct Phone"
+              id="edit-officephone"
+              type="tel"
+              value={officePhone}
+              onChange={(e) => setOfficePhone(e.target.value)}
+              leftIcon={<Briefcase className="w-4 h-4" />}
+            />
+
+            <Input
+              label="LinkedIn URL"
+              id="edit-linkedin"
+              type="url"
+              value={linkedin}
+              onChange={(e) => setLinkedin(e.target.value)}
+              leftIcon={<Linkedin className="w-4 h-4" />}
+            />
+
+            <Input
+              label="Website URL"
+              id="edit-website"
+              type="url"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              leftIcon={<Globe className="w-4 h-4" />}
+            />
+          </div>
+
+          <div className="mt-4 space-y-4">
+            <Input
+              label="Office Location Address"
+              id="edit-address"
+              type="text"
+              value={officeAddress}
+              onChange={(e) => setOfficeAddress(e.target.value)}
+              leftIcon={<MapPin className="w-4 h-4" />}
+            />
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                Bio / Description
+              </label>
+              <textarea
+                rows={2}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs p-3 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+          </div>
+
+          {/* Privacy Visibility Controls */}
+          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2 mb-3">
+              <Eye className="w-4 h-4 text-blue-600" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">
+                Public Card Privacy Controls (Field Visibility)
+              </h3>
+            </div>
+            <p className="text-xs text-slate-400 mb-3">
+              Choose which contact fields appear on the public digital business card.
+            </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showPhone}
+                  onChange={(e) => setShowPhone(e.target.checked)}
+                  className="rounded text-blue-600"
+                />
+                <span>Show Mobile Phone</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showWhatsapp}
+                  onChange={(e) => setShowWhatsapp(e.target.checked)}
+                  className="rounded text-blue-600"
+                />
+                <span>Show WhatsApp</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showEmail}
+                  onChange={(e) => setShowEmail(e.target.checked)}
+                  className="rounded text-blue-600"
+                />
+                <span>Show Email</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showLinkedin}
+                  onChange={(e) => setShowLinkedin(e.target.checked)}
+                  className="rounded text-blue-600"
+                />
+                <span>Show LinkedIn</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showAddress}
+                  onChange={(e) => setShowAddress(e.target.checked)}
+                  className="rounded text-blue-600"
+                />
+                <span>Show Address</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Account Status & Role */}
+          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+                Account Status
+              </label>
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="radio"
+                    name="edit-status"
+                    value="ACTIVE"
+                    checked={status === 'ACTIVE'}
+                    onChange={() => setStatus('ACTIVE')}
+                    className="text-blue-600"
+                  />
+                  <span className="font-semibold text-emerald-600">Active</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="radio"
+                    name="edit-status"
+                    value="INACTIVE"
+                    checked={status === 'INACTIVE'}
+                    onChange={() => setStatus('INACTIVE')}
+                    className="text-blue-600"
+                  />
+                  <span className="font-semibold text-rose-500">Inactive (Disabled)</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+                Account Role
+              </label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value as Role)}
+                className="text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-600"
+              >
+                <option value="EMPLOYEE">Employee (Standard Access)</option>
+                <option value="ADMIN">Administrator (Full Access)</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onNavigate('/admin/employees')}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              type="submit"
+              variant="primary"
+              isLoading={isSaving}
+              leftIcon={<CheckCircle2 className="w-4 h-4" />}
+            >
+              Save Employee Changes
+            </Button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UHF Solutions Digital Card</title>
+    <meta name="description" content="Enterprise Digital Business Card & QR Management System for UHF Solutions employees." />
+    <meta property="og:title" content="UHF Solutions Digital Card" />
+    <meta property="og:description" content="Enterprise Digital Business Card & QR Management System for UHF Solutions employees." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Gracefully handle dev WebSocket / HMR disconnects in preview environments
+      window.addEventListener('unhandledrejection', function (event) {
+        var reason = event.reason;
+        var msg = (reason && (reason.message || reason)) ? String(reason.message || reason) : '';
+        if (msg.indexOf('WebSocket') !== -1 || msg.indexOf('websocket') !== -1) {
+          event.preventDefault();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
