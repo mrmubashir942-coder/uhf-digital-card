@@ -14,10 +14,26 @@ function getFirestoreDb() {
   if (firestoreInstance) return firestoreInstance;
 
   try {
-    if (fs.existsSync(CONFIG_PATH)) {
-      const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
-      const app = getApps().length > 0 ? getApp() : initializeApp(config);
-      firestoreInstance = getFirestore(app, config.firestoreDatabaseId);
+    const candidatePaths = [
+      CONFIG_PATH,
+      path.resolve(process.cwd(), 'firebase-applet-config.json'),
+      path.resolve(__dirname, '../firebase-applet-config.json'),
+      path.resolve(__dirname, '../../firebase-applet-config.json'),
+    ];
+
+    let foundConfig: any = null;
+    for (const p of candidatePaths) {
+      if (fs.existsSync(p)) {
+        try {
+          foundConfig = JSON.parse(fs.readFileSync(p, 'utf-8'));
+          break;
+        } catch {}
+      }
+    }
+
+    if (foundConfig) {
+      const app = getApps().length > 0 ? getApp() : initializeApp(foundConfig);
+      firestoreInstance = getFirestore(app, foundConfig.firestoreDatabaseId);
     }
   } catch (err) {
     console.warn('Failed to initialize server-side Firestore client:', err);

@@ -52,8 +52,12 @@ class Database {
   }
 
   private ensureDataDir() {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+    try {
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
+    } catch {
+      // In serverless environments, root filesystem may be read-only
     }
   }
 
@@ -61,14 +65,25 @@ class Database {
     if (this.isLoaded) return;
     this.ensureDataDir();
 
-    if (fs.existsSync(DB_PATH)) {
-      try {
-        const raw = fs.readFileSync(DB_PATH, 'utf-8');
-        this.data = JSON.parse(raw);
-        this.isLoaded = true;
-        return;
-      } catch (err) {
-        console.error('Failed reading existing db.json, reseeding database:', err);
+    // Check candidate paths where data/db.json might be located (bundled or standalone)
+    const candidatePaths = [
+      DB_PATH,
+      path.resolve(process.cwd(), 'data/db.json'),
+      path.resolve(__dirname, '../data/db.json'),
+      path.resolve(__dirname, '../../data/db.json'),
+      path.resolve(__dirname, 'data/db.json'),
+    ];
+
+    for (const cand of candidatePaths) {
+      if (fs.existsSync(cand)) {
+        try {
+          const raw = fs.readFileSync(cand, 'utf-8');
+          this.data = JSON.parse(raw);
+          this.isLoaded = true;
+          return;
+        } catch (err) {
+          console.error(`Failed reading ${cand}:`, err);
+        }
       }
     }
 
@@ -145,11 +160,16 @@ class Database {
   }
 
   private async save(): Promise<void> {
-    this.ensureDataDir();
-    const tempPath = `${DB_PATH}.tmp.${Date.now()}`;
-    const json = JSON.stringify(this.data, null, 2);
-    await fs.promises.writeFile(tempPath, json, 'utf-8');
-    await fs.promises.rename(tempPath, DB_PATH);
+    try {
+      this.ensureDataDir();
+      const tempPath = `${DB_PATH}.tmp.${Date.now()}`;
+      const json = JSON.stringify(this.data, null, 2);
+      await fs.promises.writeFile(tempPath, json, 'utf-8');
+      await fs.promises.rename(tempPath, DB_PATH);
+    } catch (err) {
+      // In serverless environments where filesystem is read-only, in-memory updates still persist during the lambda container's warm lifecycle
+      console.warn('Could not persist to local db file (read-only filesystem in serverless):', err);
+    }
   }
 
   public async getNextEmployeeId(): Promise<string> {

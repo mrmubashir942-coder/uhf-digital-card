@@ -11,6 +11,9 @@ function getAppBaseUrl(req: any): string {
   if (process.env.APP_URL && process.env.APP_URL !== 'MY_APP_URL') {
     return process.env.APP_URL.replace(/\/$/, '');
   }
+  if (process.env.URL) {
+    return process.env.URL.replace(/\/$/, '');
+  }
   const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'http';
   const host = req.headers['x-forwarded-host'] || req.get('host') || 'localhost:3000';
   return `${protocol}://${host}`;
