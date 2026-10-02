@@ -42,17 +42,17 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Share Digital Business Card" maxWidth="sm">
       <div className="space-y-4 pt-1">
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-[#64748B]">
           Share this verified UHF Solutions digital card with clients, prospects, and colleagues.
         </p>
 
         {/* Copy Link Field */}
-        <div className="flex items-center gap-1.5 p-1.5 pl-3 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div className="flex items-center gap-1.5 p-1.5 pl-3 bg-[#F8FAFC] rounded-xl border border-[#E5E7EB]">
           <input
             type="text"
             readOnly
             value={url}
-            className="text-xs text-slate-700 dark:text-slate-200 bg-transparent outline-none flex-1 truncate font-mono"
+            className="text-xs text-[#111827] bg-transparent outline-none flex-1 truncate font-mono"
           />
           <Button
             size="sm"
@@ -70,17 +70,17 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center p-3 rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:scale-102 transition-transform"
+            className="flex flex-col items-center justify-center p-3 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100/70 transition-colors"
           >
-            <MessageSquare className="w-5 h-5 mb-1 text-emerald-600" />
+            <MessageSquare className="w-5 h-5 mb-1 text-[#059669]" />
             <span className="text-xs font-semibold">WhatsApp</span>
           </a>
 
           <a
             href={mailtoUrl}
-            className="flex flex-col items-center justify-center p-3 rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 hover:scale-102 transition-transform"
+            className="flex flex-col items-center justify-center p-3 rounded-xl border border-blue-200 bg-blue-50 text-blue-800 hover:bg-blue-100/70 transition-colors"
           >
-            <Mail className="w-5 h-5 mb-1 text-blue-600" />
+            <Mail className="w-5 h-5 mb-1 text-[#2563EB]" />
             <span className="text-xs font-semibold">Email</span>
           </a>
 
@@ -88,7 +88,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             href={linkedinUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center p-3 rounded-xl border border-sky-200 dark:border-sky-900 bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 hover:scale-102 transition-transform"
+            className="flex flex-col items-center justify-center p-3 rounded-xl border border-sky-200 bg-sky-50 text-sky-800 hover:bg-sky-100/70 transition-colors"
           >
             <Linkedin className="w-5 h-5 mb-1 text-sky-600" />
             <span className="text-xs font-semibold">LinkedIn</span>

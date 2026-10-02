@@ -4,27 +4,27 @@
       "id": "usr_admin_001",
       "employeeId": "ADMIN-001",
       "email": "admin@uhfsolutions.com",
-      "passwordHash": "$2b$10$FdCCpJbSas1OL4eVPBMAlu.75iq5odN4XCqr0H8m/7wS4Qq49tm9S",
+      "passwordHash": "$2b$10$4ljmG.bg86monkpR2o9PlOcaWND1gply1pwFXWmMeroO/417armkO",
       "role": "ADMIN",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-09-28T05:03:38.324Z"
+      "updatedAt": "2026-10-02T05:24:01.627Z"
     },
     {
       "id": "usr_emp_1",
       "employeeId": "UHF-001",
       "email": "ahmed@uhfsolutions.com",
-      "passwordHash": "$2b$10$Zp9cGbRk6ZRx/S7.Zspkce2H0tc.8XRZZZaIn3VQmYsgC.kU1LNFa",
+      "passwordHash": "$2b$10$5jBMIn6muw/CS28mb8GH6Ovep9bqrdJe54URXFCzlI3Y0nATzKM8q",
       "role": "EMPLOYEE",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-10-02T05:15:02.509Z"
+      "updatedAt": "2026-10-02T05:23:37.499Z"
     },
     {
       "id": "usr_emp_2",
       "employeeId": "UHF-002",
       "email": "ali@uhfsolutions.com",
-      "passwordHash": "$2b$10$Zp9cGbRk6ZRx/S7.Zspkce2H0tc.8XRZZZaIn3VQmYsgC.kU1LNFa",
+      "passwordHash": "$2b$10$5jBMIn6muw/CS28mb8GH6Ovep9bqrdJe54URXFCzlI3Y0nATzKM8q",
       "role": "EMPLOYEE",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
@@ -34,11 +34,21 @@
       "id": "usr_emp_3",
       "employeeId": "UHF-003",
       "email": "usman@uhfsolutions.com",
-      "passwordHash": "$2b$10$Zp9cGbRk6ZRx/S7.Zspkce2H0tc.8XRZZZaIn3VQmYsgC.kU1LNFa",
+      "passwordHash": "$2b$10$5jBMIn6muw/CS28mb8GH6Ovep9bqrdJe54URXFCzlI3Y0nATzKM8q",
       "role": "EMPLOYEE",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
       "updatedAt": "2026-09-28T05:03:38.324Z"
+    },
+    {
+      "id": "usr_1790919248777_yuebq",
+      "employeeId": "UHF-ALI",
+      "email": "ali122@gmail.com",
+      "passwordHash": "$2b$10$5jBMIn6muw/CS28mb8GH6Ovep9bqrdJe54URXFCzlI3Y0nATzKM8q",
+      "role": "EMPLOYEE",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T05:34:08.778Z",
+      "updatedAt": "2026-10-02T05:34:08.778Z"
     }
   ],
   "profiles": [
@@ -137,6 +147,26 @@
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
       "updatedAt": "2026-09-28T05:03:38.324Z"
+    },
+    {
+      "id": "prof_1790919248778_plnep",
+      "userId": "usr_1790919248777_yuebq",
+      "employeeId": "UHF-ALI",
+      "fullName": "Muhammad Ali",
+      "designation": "softwear devloper",
+      "department": "IT & Engineering",
+      "phone": "+1 555 777 5663",
+      "officePhone": "+1 (800) 555-0199",
+      "companyEmail": "ali122@gmail.com",
+      "website": "https://uhfsolutions.com",
+      "officeAddress": "Suite 400, Technology Park, Silicon Boulevard, CA 94025",
+      "showPhone": true,
+      "showWhatsapp": true,
+      "showEmail": true,
+      "showLinkedin": true,
+      "showAddress": true,
+      "createdAt": "2026-10-02T05:34:08.778Z",
+      "updatedAt": "2026-10-02T05:34:08.778Z"
     }
   ],
   "companySettings": {

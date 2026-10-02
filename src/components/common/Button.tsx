@@ -31,17 +31,17 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-sm shadow-blue-500/20 active:bg-blue-800',
+      'bg-[#2563EB] text-white hover:bg-[#1D4ED8] focus:ring-[#2563EB] shadow-xs active:bg-blue-800',
     secondary:
-      'bg-slate-800 text-white hover:bg-slate-700 focus:ring-slate-500 shadow-sm',
+      'bg-slate-100 text-[#111827] hover:bg-slate-200 border border-[#E5E7EB] focus:ring-slate-400',
     outline:
-      'border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/80 focus:ring-blue-500',
+      'border border-[#E5E7EB] text-[#111827] bg-white hover:bg-slate-50 hover:border-slate-300 focus:ring-[#2563EB] shadow-xs',
     danger:
-      'bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 shadow-sm shadow-rose-500/20 active:bg-rose-800',
+      'bg-[#DC2626] text-white hover:bg-red-700 focus:ring-red-500 shadow-xs active:bg-red-800',
     ghost:
-      'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:ring-slate-400',
+      'text-[#64748B] hover:text-[#111827] hover:bg-slate-100 focus:ring-slate-300',
     success:
-      'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500 shadow-sm shadow-emerald-500/20 active:bg-emerald-800',
+      'bg-[#059669] text-white hover:bg-emerald-700 focus:ring-emerald-500 shadow-xs active:bg-emerald-800',
   };
 
   return (

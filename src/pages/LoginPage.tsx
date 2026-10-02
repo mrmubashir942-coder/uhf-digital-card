@@ -61,25 +61,25 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F7F9FC] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         {/* UHF Solutions Logo */}
-        <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-blue-500/25 mb-4">
+        <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#2563EB] via-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-2xl shadow-sm shadow-blue-500/20 mb-4">
           U
         </div>
 
-        <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+        <h2 className="text-2xl font-black text-[#111827] tracking-tight">
           UHF Solutions Digital Card
         </h2>
-        <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+        <p className="mt-1.5 text-xs text-[#64748B]">
           Sign in to manage your digital business card, QR code & profile
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-slate-900 py-8 px-6 sm:px-10 shadow-xl rounded-3xl border border-slate-200 dark:border-slate-800">
+        <div className="bg-white py-8 px-6 sm:px-10 shadow-sm rounded-3xl border border-[#E5E7EB]">
           {error && (
-            <div className="mb-5 p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-medium leading-relaxed">
+            <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-[#DC2626] text-xs font-medium leading-relaxed">
               {error}
             </div>
           )}
@@ -121,9 +121,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </form>
 
           {/* Quick Demo Logins for Testing */}
-          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <div className="mt-8 pt-6 border-t border-[#E5E7EB]">
+            <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-[#D97706]" />
               <span>Demo Accounts (Click to Fill)</span>
             </div>
 
@@ -131,16 +131,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleQuickFill('ADMIN-001', 'AdminPassword123!')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-left transition-colors group"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/60 hover:border-blue-300 text-left transition-colors group cursor-pointer"
               >
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                  <div className="text-xs font-bold text-[#111827] flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#2563EB]" />
                     <span>Administrator (Full Access)</span>
                   </div>
-                  <div className="text-[11px] text-slate-500 font-mono">ADMIN-001 / AdminPassword123!</div>
+                  <div className="text-[11px] text-[#64748B] font-mono">ADMIN-001 / AdminPassword123!</div>
                 </div>
-                <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">
+                <span className="text-[10px] font-semibold text-[#2563EB] group-hover:underline">
                   Fill
                 </span>
               </button>
@@ -148,15 +148,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleQuickFill('UHF-001', 'Password123!')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-left transition-colors group"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/60 hover:border-blue-300 text-left transition-colors group cursor-pointer"
               >
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">
+                  <div className="text-xs font-bold text-[#111827]">
                     Muhammad Ahmed (Developer)
                   </div>
-                  <div className="text-[11px] text-slate-500 font-mono">UHF-001 / Password123!</div>
+                  <div className="text-[11px] text-[#64748B] font-mono">UHF-001 / Password123!</div>
                 </div>
-                <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">
+                <span className="text-[10px] font-semibold text-[#2563EB] group-hover:underline">
                   Fill
                 </span>
               </button>
@@ -164,15 +164,15 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               <button
                 type="button"
                 onClick={() => handleQuickFill('UHF-002', 'Password123!')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-left transition-colors group"
+                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/60 hover:border-blue-300 text-left transition-colors group cursor-pointer"
               >
                 <div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">
+                  <div className="text-xs font-bold text-[#111827]">
                     Ali Khan (UI/UX Designer)
                   </div>
-                  <div className="text-[11px] text-slate-500 font-mono">UHF-002 / Password123!</div>
+                  <div className="text-[11px] text-[#64748B] font-mono">UHF-002 / Password123!</div>
                 </div>
-                <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 group-hover:underline">
+                <span className="text-[10px] font-semibold text-[#2563EB] group-hover:underline">
                   Fill
                 </span>
               </button>
@@ -183,7 +183,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
                 <button
                   type="button"
                   onClick={onViewSampleCard}
-                  className="text-xs text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 underline font-medium"
+                  className="text-xs text-[#64748B] hover:text-[#2563EB] underline font-medium cursor-pointer"
                 >
                   View Sample Public Employee Card (UHF-001) →
                 </button>
@@ -192,7 +192,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           </div>
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-6">
+        <p className="text-center text-xs text-[#64748B] mt-6">
           © {new Date().getFullYear()} UHF Solutions. All rights reserved.
         </p>
       </div>

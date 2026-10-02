@@ -140,7 +140,7 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={() => onNavigate('/admin/employees')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#111827] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Employee List</span>
@@ -149,42 +149,42 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
 
       {createdEmployee ? (
         /* Post-Creation Success Card */
-        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl text-center">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-3xl p-8 border border-[#E5E7EB] shadow-sm text-center">
+          <div className="w-16 h-16 rounded-full bg-emerald-50 text-[#059669] border border-emerald-100 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8" />
           </div>
 
-          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-1">
+          <h2 className="text-2xl font-black text-[#111827] mb-1">
             Employee Created Successfully!
           </h2>
-          <p className="text-xs text-slate-500 mb-6">
+          <p className="text-xs text-[#64748B] mb-6">
             Account, credentials, public digital card, and QR code are now live.
           </p>
 
-          <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 max-w-md mx-auto text-left space-y-2 mb-6 text-xs">
-            <div className="flex justify-between py-1 border-b border-slate-200/50 dark:border-slate-700/50">
-              <span className="text-slate-400">Employee ID:</span>
-              <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+          <div className="bg-[#F8FAFC] p-6 rounded-2xl border border-[#E5E7EB] max-w-md mx-auto text-left space-y-2 mb-6 text-xs">
+            <div className="flex justify-between py-1 border-b border-[#E5E7EB]">
+              <span className="text-[#64748B]">Employee ID:</span>
+              <span className="font-mono font-bold text-[#2563EB]">
                 {createdEmployee.employeeId}
               </span>
             </div>
-            <div className="flex justify-between py-1 border-b border-slate-200/50 dark:border-slate-700/50">
-              <span className="text-slate-400">Full Name:</span>
-              <span className="font-bold text-slate-900 dark:text-white">
+            <div className="flex justify-between py-1 border-b border-[#E5E7EB]">
+              <span className="text-[#64748B]">Full Name:</span>
+              <span className="font-bold text-[#111827]">
                 {createdEmployee.profile.fullName}
               </span>
             </div>
-            <div className="flex justify-between py-1 border-b border-slate-200/50 dark:border-slate-700/50">
-              <span className="text-slate-400">Designation:</span>
-              <span>{createdEmployee.profile.designation}</span>
+            <div className="flex justify-between py-1 border-b border-[#E5E7EB]">
+              <span className="text-[#64748B]">Designation:</span>
+              <span className="font-medium text-[#111827]">{createdEmployee.profile.designation}</span>
             </div>
-            <div className="flex justify-between py-1 border-b border-slate-200/50 dark:border-slate-700/50">
-              <span className="text-slate-400">Login Email:</span>
-              <span>{createdEmployee.email}</span>
+            <div className="flex justify-between py-1 border-b border-[#E5E7EB]">
+              <span className="text-[#64748B]">Login Email:</span>
+              <span className="font-medium text-[#111827]">{createdEmployee.email}</span>
             </div>
             <div className="flex justify-between py-1">
-              <span className="text-slate-400">Temporary Password:</span>
-              <span className="font-mono font-semibold text-amber-600 dark:text-amber-400">
+              <span className="text-[#64748B]">Temporary Password:</span>
+              <span className="font-mono font-semibold text-[#D97706]">
                 {temporaryPassword}
               </span>
             </div>
@@ -202,7 +202,7 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
             <Button
               variant="secondary"
               onClick={() => setShowQrModal(true)}
-              leftIcon={<QrCode className="w-4 h-4 text-blue-400" />}
+              leftIcon={<QrCode className="w-4 h-4 text-[#2563EB]" />}
             >
               View & Download QR Code
             </Button>
@@ -229,21 +229,21 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
       ) : (
         /* Add Employee Form */
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E5E7EB] shadow-xs">
+            <h2 className="text-lg font-bold text-[#111827] mb-1">
               New Employee Registration
             </h2>
-            <p className="text-xs text-slate-500 mb-6">
+            <p className="text-xs text-[#64748B] mb-6">
               Create an employee account, provision corporate contact data, and generate digital card.
             </p>
 
             {/* Profile Photo */}
-            <div className="mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+            <div className="mb-6 pb-6 border-b border-[#E5E7EB]">
+              <label className="text-xs font-semibold text-[#111827] block mb-2">
                 Employee Portrait Photo
               </label>
               <div className="flex items-center gap-5">
-                <div className="w-20 h-20 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center shrink-0">
+                <div className="w-20 h-20 rounded-full border-2 border-[#E5E7EB] bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
                   {profilePhoto ? (
                     <img
                       src={profilePhoto}
@@ -251,19 +251,19 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <User className="w-8 h-8 text-slate-400" />
+                    <User className="w-8 h-8 text-[#64748B]" />
                   )}
                 </div>
 
                 <div className="space-y-2 flex-1">
                   <div className="flex items-center gap-3">
-                    <label className={`cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
+                    <label className={`cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-[#111827] hover:bg-slate-200 transition-colors ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
                       {isUploadingPhoto ? (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#2563EB]" />
                       ) : (
-                        <Camera className="w-3.5 h-3.5 text-blue-600" />
+                        <Camera className="w-3.5 h-3.5 text-[#2563EB]" />
                       )}
-                      <span>{isUploadingPhoto ? 'Uploading to Firebase...' : 'Upload File'}</span>
+                      <span>{isUploadingPhoto ? 'Uploading...' : 'Upload File'}</span>
                       <input
                         type="file"
                         accept="image/*"
@@ -278,7 +278,7 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
                         type="button"
                         disabled={isUploadingPhoto}
                         onClick={() => setProfilePhoto('')}
-                        className="text-xs text-rose-500 hover:underline"
+                        className="text-xs text-[#DC2626] hover:underline cursor-pointer"
                       >
                         Remove
                       </button>
@@ -288,10 +288,10 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
                   <div className="flex items-center gap-2 max-w-md">
                     <input
                       type="url"
-                      placeholder="Or paste image URL (Unsplash, etc.)"
+                      placeholder="Or paste image URL"
                       value={photoUrlInput}
                       onChange={(e) => setPhotoUrlInput(e.target.value)}
-                      className="text-xs px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white flex-1 outline-none"
+                      className="text-xs px-3 py-1.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] placeholder-[#94A3B8] flex-1 outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
                     />
                     <Button
                       type="button"
@@ -366,13 +366,13 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
               />
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                <label className="text-xs font-semibold text-[#111827]">
                   Department *
                 </label>
                 <select
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
-                  className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs px-3.5 py-2.5 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+                  className="rounded-xl border border-[#E5E7EB] bg-white text-xs px-3.5 py-2.5 text-[#111827] outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
                 >
                   <option value="IT & Engineering">IT & Engineering</option>
                   <option value="Creative & Design">Creative & Design</option>
@@ -385,7 +385,7 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
             </div>
 
             {/* Contact Details */}
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mt-6 mb-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] mt-6 mb-3">
               Contact & Social Channels
             </h3>
 
@@ -461,7 +461,7 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
               />
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                <label className="text-xs font-semibold text-[#111827]">
                   Bio / Introduction
                 </label>
                 <textarea
@@ -469,13 +469,13 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   placeholder="Professional background summary..."
-                  className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs p-3 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+                  className="rounded-xl border border-[#E5E7EB] bg-white text-xs p-3 text-[#111827] placeholder-[#94A3B8] outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
                 />
               </div>
 
               {/* Status Radio */}
               <div className="pt-2">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+                <label className="text-xs font-semibold text-[#111827] block mb-2">
                   Account Status
                 </label>
                 <div className="flex items-center gap-4">
@@ -486,9 +486,9 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
                       value="ACTIVE"
                       checked={status === 'ACTIVE'}
                       onChange={() => setStatus('ACTIVE')}
-                      className="text-blue-600"
+                      className="text-[#2563EB]"
                     />
-                    <span className="font-semibold text-emerald-600">Active (Live Card & Login)</span>
+                    <span className="font-semibold text-[#059669]">Active (Live Card & Login)</span>
                   </label>
 
                   <label className="flex items-center gap-2 cursor-pointer text-xs">
@@ -498,15 +498,15 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
                       value="INACTIVE"
                       checked={status === 'INACTIVE'}
                       onChange={() => setStatus('INACTIVE')}
-                      className="text-blue-600"
+                      className="text-[#2563EB]"
                     />
-                    <span className="font-semibold text-slate-500">Inactive (Disabled)</span>
+                    <span className="font-semibold text-[#64748B]">Inactive (Disabled)</span>
                   </label>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-3">
+            <div className="mt-8 pt-4 border-t border-[#E5E7EB] flex items-center justify-end gap-3">
               <Button
                 type="button"
                 variant="outline"

@@ -136,10 +136,10 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#111827] tracking-tight">
             Employee Directory & Digital Cards
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#64748B] mt-1">
             Manage company personnel, issue digital business cards, configure permissions, and export QR codes.
           </p>
         </div>
@@ -154,16 +154,16 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm mb-6 flex flex-col md:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-[#E5E7EB] shadow-xs mb-6 flex flex-col md:flex-row gap-3">
         <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-2">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by name, ID (UHF-001), email, or title..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full pl-10 pr-4 py-2 text-xs rounded-xl border border-[#E5E7EB] bg-white text-[#111827] placeholder-[#94A3B8] outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
             />
           </div>
           <Button type="submit" variant="secondary" size="sm">
@@ -176,7 +176,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 py-2 px-3 outline-none focus:ring-2 focus:ring-blue-600"
+            className="text-xs rounded-xl border border-[#E5E7EB] bg-white text-[#111827] py-2 px-3 outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
           >
             <option value="ALL">All Statuses</option>
             <option value="ACTIVE">Active Only</option>
@@ -187,7 +187,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
           <select
             value={departmentFilter}
             onChange={(e) => setDepartmentFilter(e.target.value)}
-            className="text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 py-2 px-3 outline-none focus:ring-2 focus:ring-blue-600 max-w-[160px]"
+            className="text-xs rounded-xl border border-[#E5E7EB] bg-white text-[#111827] py-2 px-3 outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB] max-w-[160px]"
           >
             <option value="ALL">All Departments</option>
             {departments.map((dept) => (
@@ -199,7 +199,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
 
           <button
             onClick={fetchEmployees}
-            className="p-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
+            className="p-2 rounded-xl border border-[#E5E7EB] hover:bg-slate-50 text-[#64748B] transition-colors cursor-pointer"
             title="Refresh List"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -208,22 +208,22 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
       </div>
 
       {/* Employees Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xs overflow-hidden">
         {loading ? (
-          <div className="p-16 text-center text-slate-400 text-sm">
-            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-blue-600" />
+          <div className="p-16 text-center text-[#64748B] text-sm">
+            <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-[#2563EB]" />
             <span>Loading employee directory...</span>
           </div>
         ) : employees.length === 0 ? (
-          <div className="p-16 text-center text-slate-400 text-sm">
+          <div className="p-16 text-center text-[#64748B] text-sm">
             <Users className="w-10 h-10 mx-auto mb-2 text-slate-300" />
-            <p className="font-semibold text-slate-600 dark:text-slate-300">No employees found</p>
-            <p className="text-xs text-slate-400 mt-1">Try changing your search or filters.</p>
+            <p className="font-semibold text-[#111827]">No employees found</p>
+            <p className="text-xs text-[#64748B] mt-1">Try changing your search or filters.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800">
+              <thead className="bg-[#F8FAFC] text-[11px] font-bold uppercase tracking-wider text-[#64748B] border-b border-[#E5E7EB]">
                 <tr>
                   <th className="py-3.5 px-6">Employee</th>
                   <th className="py-3.5 px-6">Employee ID</th>
@@ -233,16 +233,16 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                   <th className="py-3.5 px-6 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-[#E5E7EB]">
                 {employees.map((emp) => (
                   <tr
                     key={emp.id}
-                    className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors"
+                    className="hover:bg-slate-50 transition-colors"
                   >
                     {/* Employee Name & Photo */}
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-slate-100 border border-[#E5E7EB] overflow-hidden flex items-center justify-center shrink-0">
                           {emp.profile.profilePhoto ? (
                             <img
                               src={emp.profile.profilePhoto}
@@ -250,34 +250,34 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="font-bold text-xs text-slate-600 dark:text-slate-300">
+                            <span className="font-bold text-xs text-[#111827]">
                               {emp.profile.fullName.charAt(0)}
                             </span>
                           )}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-900 dark:text-white leading-tight">
+                          <p className="font-bold text-[#111827] leading-tight">
                             {emp.profile.fullName}
                           </p>
-                          <p className="text-xs text-slate-500">{emp.profile.designation}</p>
+                          <p className="text-xs text-[#64748B]">{emp.profile.designation}</p>
                         </div>
                       </div>
                     </td>
 
                     {/* Employee ID */}
-                    <td className="py-4 px-6 font-mono font-bold text-xs text-blue-600 dark:text-blue-400">
+                    <td className="py-4 px-6 font-mono font-bold text-xs text-[#2563EB]">
                       {emp.employeeId}
                     </td>
 
                     {/* Department */}
-                    <td className="py-4 px-6 text-xs text-slate-600 dark:text-slate-300">
+                    <td className="py-4 px-6 text-xs text-[#64748B]">
                       {emp.profile.department}
                     </td>
 
                     {/* Contact */}
                     <td className="py-4 px-6 text-xs">
-                      <p className="text-slate-900 dark:text-white font-medium">{emp.email}</p>
-                      <p className="text-slate-400">{emp.profile.phone || 'No phone'}</p>
+                      <p className="text-[#111827] font-medium">{emp.email}</p>
+                      <p className="text-[#64748B]">{emp.profile.phone || 'No phone'}</p>
                     </td>
 
                     {/* Status Badge */}
@@ -286,14 +286,14 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                         onClick={() => handleToggleStatus(emp)}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all hover:scale-105 cursor-pointer ${
                           emp.status === 'ACTIVE'
-                            ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
+                            ? 'bg-emerald-50 text-[#059669] border border-emerald-200'
+                            : 'bg-slate-100 text-[#64748B] border border-[#E5E7EB]'
                         }`}
                         title="Click to toggle Active/Inactive"
                       >
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
-                            emp.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-slate-400'
+                            emp.status === 'ACTIVE' ? 'bg-[#059669]' : 'bg-slate-400'
                           }`}
                         />
                         <span>{emp.status}</span>
@@ -306,7 +306,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                         {/* View Digital Card */}
                         <button
                           onClick={() => onNavigate(`/card/${emp.employeeId}`)}
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#2563EB] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="View Digital Business Card"
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -321,7 +321,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                               designation: emp.profile.designation,
                             })
                           }
-                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#2563EB] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="View QR Code"
                         >
                           <QrCode className="w-4 h-4" />
@@ -330,7 +330,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                         {/* Edit Employee */}
                         <button
                           onClick={() => onNavigate(`/admin/employees/${emp.id}/edit`)}
-                          className="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#111827] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="Edit Employee Information"
                         >
                           <Edit className="w-4 h-4" />
@@ -342,7 +342,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                             setResetTarget(emp);
                             setNewTempPassword('Password123!');
                           }}
-                          className="p-1.5 text-slate-500 hover:text-amber-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#D97706] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="Reset Password"
                         >
                           <KeyRound className="w-4 h-4" />
@@ -351,7 +351,7 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
                         {/* Delete Employee */}
                         <button
                           onClick={() => setDeleteTarget(emp)}
-                          className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#DC2626] hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                           title="Delete Employee"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -385,8 +385,8 @@ export const AdminEmployeesPage: React.FC<AdminEmployeesProps> = ({ onNavigate }
         maxWidth="sm"
       >
         <form onSubmit={handleResetPassword} className="space-y-4 pt-2">
-          <p className="text-xs text-slate-500">
-            Set a new temporary password for <span className="font-bold text-slate-800 dark:text-slate-200">{resetTarget?.employeeId}</span>. The employee will use this password on next login.
+          <p className="text-xs text-[#64748B]">
+            Set a new temporary password for <span className="font-bold text-[#111827]">{resetTarget?.employeeId}</span>. The employee will use this password on next login.
           </p>
 
           <Input

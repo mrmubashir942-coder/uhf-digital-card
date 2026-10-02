@@ -60,30 +60,30 @@ export const EmployeeSettingsPage: React.FC<EmployeeSettingsProps> = ({ onNaviga
       <div className="mb-6">
         <button
           onClick={() => onNavigate('/employee/dashboard')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#111827] transition-colors mb-4 cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
         </button>
 
-        <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+        <h1 className="text-2xl font-black text-[#111827] tracking-tight">
           Account Security & Password
         </h1>
-        <p className="text-xs text-slate-500 mt-1">
+        <p className="text-xs text-[#64748B] mt-1">
           Manage your login credentials and security settings for employee ID {user?.employeeId}.
         </p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
-          <Shield className="w-5 h-5 text-blue-600" />
-          <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E5E7EB] shadow-xs">
+        <div className="flex items-center gap-2 mb-6 pb-4 border-b border-[#E5E7EB]">
+          <Shield className="w-5 h-5 text-[#2563EB]" />
+          <h2 className="text-sm font-bold text-[#111827] uppercase tracking-wider">
             Change Account Password
           </h2>
         </div>
 
         {error && (
-          <div className="mb-5 p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs font-medium">
+          <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-[#DC2626] text-xs font-medium">
             {error}
           </div>
         )}
@@ -145,16 +145,16 @@ export const EmployeeSettingsPage: React.FC<EmployeeSettingsProps> = ({ onNaviga
       </div>
 
       {/* NFC Tap Sharing Quick Navigation */}
-      <div className="mt-6 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="mt-6 bg-white rounded-3xl p-6 sm:p-8 border border-[#E5E7EB] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center shrink-0 border border-blue-100">
             <SmartphoneNfc className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-bold text-sm text-slate-900 dark:text-white">
+            <h3 className="font-bold text-sm text-[#111827]">
               NFC 'Tap' Sharing & Card Programming
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-[#64748B] mt-0.5">
               Configure contactless sharing, toggle NFC availability, and view step-by-step programming manuals.
             </p>
           </div>
@@ -162,10 +162,10 @@ export const EmployeeSettingsPage: React.FC<EmployeeSettingsProps> = ({ onNaviga
 
         <button
           onClick={() => onNavigate('/employee/nfc')}
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-blue-950/50 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 text-xs font-bold transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-blue-50 text-[#111827] hover:text-[#2563EB] border border-[#E5E7EB] hover:border-blue-200 text-xs font-bold transition-colors shrink-0 cursor-pointer"
         >
           <span>Open NFC Guide</span>
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-4 h-4 text-[#2563EB]" />
         </button>
       </div>
     </div>

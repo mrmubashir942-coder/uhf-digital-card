@@ -40,11 +40,11 @@ function AppContent() {
   // If loading session token, show clean spinner
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white">
-        <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center font-black text-2xl mb-4 animate-bounce">
+      <div className="min-h-screen bg-[#F7F9FC] flex flex-col items-center justify-center text-[#111827]">
+        <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center font-black text-2xl text-white mb-4 shadow-md shadow-blue-500/20 animate-bounce">
           U
         </div>
-        <p className="text-sm font-semibold tracking-wide text-slate-300">
+        <p className="text-sm font-semibold tracking-wide text-[#64748B]">
           UHF Solutions Digital Card...
         </p>
       </div>
@@ -139,7 +139,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F7F9FC] text-[#111827] flex flex-col font-sans">
       <Navbar currentPath={currentPath} onNavigate={navigate} />
       <main className="flex-1">{renderAuthenticatedPage()}</main>
     </div>

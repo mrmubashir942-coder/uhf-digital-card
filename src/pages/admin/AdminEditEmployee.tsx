@@ -198,7 +198,7 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={() => onNavigate('/admin/employees')}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#111827] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Employee List</span>
@@ -215,30 +215,30 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-black text-slate-900 dark:text-white">
+                <h1 className="text-xl font-black text-[#111827]">
                   Edit Employee: {employee.profile.fullName}
                 </h1>
-                <span className="font-mono text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-bold">
+                <span className="font-mono text-xs px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] font-bold border border-blue-100">
                   {employee.employeeId}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-[#64748B] mt-1">
                 Full administrator override for profile, permissions, status, and contact visibility.
               </p>
             </div>
           </div>
 
           {/* Photo */}
-          <div className="mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
-            <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+          <div className="mb-6 pb-6 border-b border-[#E5E7EB]">
+            <label className="text-xs font-semibold text-[#111827] block mb-2">
               Profile Portrait Photo
             </label>
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center shrink-0">
+              <div className="w-20 h-20 rounded-full border-2 border-[#E5E7EB] bg-slate-100 overflow-hidden flex items-center justify-center shrink-0">
                 {profilePhoto ? (
                   <img
                     src={profilePhoto}
@@ -246,19 +246,19 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <User className="w-8 h-8 text-slate-400" />
+                  <User className="w-8 h-8 text-[#64748B]" />
                 )}
               </div>
 
               <div className="space-y-2 flex-1">
                 <div className="flex items-center gap-3">
-                  <label className={`cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 transition-colors ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
+                  <label className={`cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-[#111827] hover:bg-slate-200 transition-colors ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
                     {isUploadingPhoto ? (
-                      <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-[#2563EB]" />
                     ) : (
-                      <Camera className="w-3.5 h-3.5 text-blue-600" />
+                      <Camera className="w-3.5 h-3.5 text-[#2563EB]" />
                     )}
-                    <span>{isUploadingPhoto ? 'Uploading to Firebase...' : 'Upload Image'}</span>
+                    <span>{isUploadingPhoto ? 'Uploading...' : 'Upload Image'}</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -273,7 +273,7 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
                       type="button"
                       disabled={isUploadingPhoto}
                       onClick={() => setProfilePhoto('')}
-                      className="text-xs text-rose-500 hover:underline"
+                      className="text-xs text-[#DC2626] hover:underline cursor-pointer"
                     >
                       Remove
                     </button>
@@ -286,7 +286,7 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
                     placeholder="Or enter image URL"
                     value={photoUrlInput}
                     onChange={(e) => setPhotoUrlInput(e.target.value)}
-                    className="text-xs px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white flex-1 outline-none"
+                    className="text-xs px-3 py-1.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] placeholder-[#94A3B8] flex-1 outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
                   />
                   <Button
                     type="button"
@@ -331,21 +331,21 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
             />
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+              <label className="text-xs font-semibold text-[#111827]">
                 Department
               </label>
               <input
                 type="text"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs px-3.5 py-2.5 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+                className="rounded-xl border border-[#E5E7EB] bg-white text-xs px-3.5 py-2.5 text-[#111827] outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
                 required
               />
             </div>
           </div>
 
           {/* Contact Details */}
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mt-6 mb-3">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#64748B] mt-6 mb-3">
             Contact Numbers & Addresses
           </h3>
 
@@ -416,77 +416,77 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
             />
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+              <label className="text-xs font-semibold text-[#111827]">
                 Bio / Description
               </label>
               <textarea
                 rows={2}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs p-3 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+                className="rounded-xl border border-[#E5E7EB] bg-white text-xs p-3 text-[#111827] placeholder-[#94A3B8] outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
               />
             </div>
           </div>
 
           {/* Privacy Visibility Controls */}
-          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+          <div className="mt-6 pt-6 border-t border-[#E5E7EB]">
             <div className="flex items-center gap-2 mb-3">
-              <Eye className="w-4 h-4 text-blue-600" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">
+              <Eye className="w-4 h-4 text-[#2563EB]" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#111827]">
                 Public Card Privacy Controls (Field Visibility)
               </h3>
             </div>
-            <p className="text-xs text-slate-400 mb-3">
+            <p className="text-xs text-[#64748B] mb-3">
               Choose which contact fields appear on the public digital business card.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
                 <input
                   type="checkbox"
                   checked={showPhone}
                   onChange={(e) => setShowPhone(e.target.checked)}
-                  className="rounded text-blue-600"
+                  className="rounded text-[#2563EB]"
                 />
                 <span>Show Mobile Phone</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
                 <input
                   type="checkbox"
                   checked={showWhatsapp}
                   onChange={(e) => setShowWhatsapp(e.target.checked)}
-                  className="rounded text-blue-600"
+                  className="rounded text-[#2563EB]"
                 />
                 <span>Show WhatsApp</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
                 <input
                   type="checkbox"
                   checked={showEmail}
                   onChange={(e) => setShowEmail(e.target.checked)}
-                  className="rounded text-blue-600"
+                  className="rounded text-[#2563EB]"
                 />
                 <span>Show Email</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
                 <input
                   type="checkbox"
                   checked={showLinkedin}
                   onChange={(e) => setShowLinkedin(e.target.checked)}
-                  className="rounded text-blue-600"
+                  className="rounded text-[#2563EB]"
                 />
                 <span>Show LinkedIn</span>
               </label>
 
-              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 cursor-pointer">
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
                 <input
                   type="checkbox"
                   checked={showAddress}
                   onChange={(e) => setShowAddress(e.target.checked)}
-                  className="rounded text-blue-600"
+                  className="rounded text-[#2563EB]"
                 />
                 <span>Show Address</span>
               </label>
@@ -494,9 +494,9 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
           </div>
 
           {/* Account Status & Role */}
-          <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="mt-6 pt-6 border-t border-[#E5E7EB] grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+              <label className="text-xs font-semibold text-[#111827] block mb-2">
                 Account Status
               </label>
               <div className="flex items-center gap-4">
@@ -507,9 +507,9 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
                     value="ACTIVE"
                     checked={status === 'ACTIVE'}
                     onChange={() => setStatus('ACTIVE')}
-                    className="text-blue-600"
+                    className="text-[#2563EB]"
                   />
-                  <span className="font-semibold text-emerald-600">Active</span>
+                  <span className="font-semibold text-[#059669]">Active</span>
                 </label>
 
                 <label className="flex items-center gap-2 cursor-pointer text-xs">
@@ -519,21 +519,21 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
                     value="INACTIVE"
                     checked={status === 'INACTIVE'}
                     onChange={() => setStatus('INACTIVE')}
-                    className="text-blue-600"
+                    className="text-[#2563EB]"
                   />
-                  <span className="font-semibold text-rose-500">Inactive (Disabled)</span>
+                  <span className="font-semibold text-[#DC2626]">Inactive (Disabled)</span>
                 </label>
               </div>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-200 block mb-2">
+              <label className="text-xs font-semibold text-[#111827] block mb-2">
                 Account Role
               </label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as Role)}
-                className="text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 outline-none focus:ring-2 focus:ring-blue-600"
+                className="text-xs rounded-xl border border-[#E5E7EB] bg-white text-[#111827] px-3 py-2 outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
               >
                 <option value="EMPLOYEE">Employee (Standard Access)</option>
                 <option value="ADMIN">Administrator (Full Access)</option>
@@ -542,7 +542,7 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-3">
+          <div className="mt-8 pt-4 border-t border-[#E5E7EB] flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="outline"

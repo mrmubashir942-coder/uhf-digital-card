@@ -168,12 +168,37 @@ class Database {
 
   public async findUserByEmployeeIdOrEmail(identifier: string): Promise<StoredUser | null> {
     await this.init();
+    if (!identifier || typeof identifier !== 'string') return null;
     const clean = identifier.trim().toLowerCase();
-    const user = this.data.users.find(
+
+    // 1. Direct match on employeeId or full email
+    let user = this.data.users.find(
       (u) =>
         u.employeeId.toLowerCase() === clean ||
         u.email.toLowerCase() === clean
     );
+    if (user) return user;
+
+    // 2. Convenience match: "admin" matches ADMIN-001 or admin@uhfsolutions.com
+    if (clean === 'admin' || clean === 'administrator') {
+      const admin = this.data.users.find((u) => u.role === 'ADMIN');
+      if (admin) return admin;
+    }
+
+    // 3. Match email username prefix before '@' (e.g. "ahmed" matches "ahmed@uhfsolutions.com")
+    user = this.data.users.find(
+      (u) => u.email.toLowerCase().split('@')[0] === clean
+    );
+    if (user) return user;
+
+    // 4. Normalized employeeId match (e.g. "uhf001" matches "UHF-001")
+    const strippedClean = clean.replace(/[^a-z0-9]/g, '');
+    if (strippedClean.length >= 2) {
+      user = this.data.users.find(
+        (u) => u.employeeId.toLowerCase().replace(/[^a-z0-9]/g, '') === strippedClean
+      );
+    }
+
     return user || null;
   }
 

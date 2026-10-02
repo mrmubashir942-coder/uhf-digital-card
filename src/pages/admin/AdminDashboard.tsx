@@ -58,15 +58,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300">
+            <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] border border-blue-100">
               Admin Portal
             </span>
-            <span className="text-xs text-slate-400 font-mono">UHF Solutions Enterprise</span>
+            <span className="text-xs text-[#64748B] font-mono">UHF Solutions Enterprise</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-[#111827] tracking-tight">
             Administrator Dashboard
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#64748B] mt-1">
             Manage company employee digital business cards, unique dynamic QR codes, and corporate profiles.
           </p>
         </div>
@@ -76,7 +76,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
             variant="outline"
             size="sm"
             onClick={() => onNavigate('/admin/company-settings')}
-            leftIcon={<Building className="w-4 h-4 text-slate-500" />}
+            leftIcon={<Building className="w-4 h-4 text-[#64748B]" />}
           >
             Company Info
           </Button>
@@ -93,13 +93,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
       </div>
 
       {/* Security notice for default credentials */}
-      <div className="mb-6 p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 flex items-start gap-3">
-        <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+      <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3">
+        <ShieldAlert className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
         <div className="text-xs">
-          <p className="font-bold text-amber-900 dark:text-amber-200">
+          <p className="font-bold text-amber-900">
             Pre-Production Security Advisory
           </p>
-          <p className="text-amber-700 dark:text-amber-300 mt-0.5 leading-relaxed">
+          <p className="text-amber-800 mt-0.5 leading-relaxed">
             Ensure you change the initial default administrator password and replace sample employees with real UHF Solutions employee credentials prior to distributing dynamic QR codes to clients.
           </p>
         </div>
@@ -108,78 +108,78 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
       {/* Metric Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {/* Total Employees */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1">
               Total Employees
             </p>
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white">
+            <h3 className="text-3xl font-black text-[#111827]">
               {loading ? '-' : stats?.totalEmployees || 0}
             </h3>
-            <span className="text-[11px] text-slate-400 font-medium">Registered Accounts</span>
+            <span className="text-[11px] text-[#64748B] font-medium">Registered Accounts</span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
             <Users className="w-6 h-6" />
           </div>
         </div>
 
         {/* Active Employees */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1">
               Active Cards
             </p>
-            <h3 className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
+            <h3 className="text-3xl font-black text-[#059669]">
               {loading ? '-' : stats?.activeCount || 0}
             </h3>
-            <span className="text-[11px] text-emerald-500 font-medium">Cards live & scannable</span>
+            <span className="text-[11px] text-[#059669] font-medium">Cards live & scannable</span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#059669] flex items-center justify-center">
             <UserCheck className="w-6 h-6" />
           </div>
         </div>
 
         {/* Inactive Employees */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1">
               Deactivated
             </p>
-            <h3 className="text-3xl font-black text-slate-500 dark:text-slate-400">
+            <h3 className="text-3xl font-black text-[#64748B]">
               {loading ? '-' : stats?.inactiveCount || 0}
             </h3>
-            <span className="text-[11px] text-slate-400 font-medium">Disabled / Suspended</span>
+            <span className="text-[11px] text-[#64748B] font-medium">Disabled / Suspended</span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-slate-100 text-[#64748B] flex items-center justify-center">
             <UserX className="w-6 h-6" />
           </div>
         </div>
 
         {/* Departments */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-[#E5E7EB] shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+            <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-1">
               Departments
             </p>
-            <h3 className="text-3xl font-black text-indigo-600 dark:text-indigo-400">
+            <h3 className="text-3xl font-black text-[#2563EB]">
               {loading ? '-' : stats?.departmentsCount || 0}
             </h3>
-            <span className="text-[11px] text-slate-400 font-medium">Active corporate units</span>
+            <span className="text-[11px] text-[#64748B] font-medium">Active corporate units</span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#2563EB] flex items-center justify-center">
             <Layers className="w-6 h-6" />
           </div>
         </div>
       </div>
 
       {/* Recent Employees Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden mb-8">
-        <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-xs overflow-hidden mb-8">
+        <div className="p-6 border-b border-[#E5E7EB] flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+            <h2 className="text-lg font-bold text-[#111827]">
               Recent Employees Directory
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-[#64748B] mt-0.5">
               Latest employee accounts created in UHF Solutions
             </p>
           </div>
@@ -195,11 +195,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-slate-400 text-sm">Loading employees...</div>
+          <div className="p-12 text-center text-[#64748B] text-sm">Loading employees...</div>
         ) : stats?.recentEmployees && stats.recentEmployees.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-800">
+              <thead className="bg-[#F8FAFC] text-[11px] font-bold uppercase tracking-wider text-[#64748B] border-b border-[#E5E7EB]">
                 <tr>
                   <th className="py-3.5 px-6">Employee</th>
                   <th className="py-3.5 px-6">ID & Role</th>
@@ -208,12 +208,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
                   <th className="py-3.5 px-6 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-[#E5E7EB]">
                 {stats.recentEmployees.map((emp) => (
-                  <tr key={emp.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                  <tr key={emp.id} className="hover:bg-slate-50 transition-colors">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-slate-100 border border-[#E5E7EB] overflow-hidden flex items-center justify-center shrink-0">
                           {emp.profile.profilePhoto ? (
                             <img
                               src={emp.profile.profilePhoto}
@@ -221,28 +221,28 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <span className="font-bold text-xs text-slate-600 dark:text-slate-300">
+                            <span className="font-bold text-xs text-[#111827]">
                               {emp.profile.fullName.charAt(0)}
                             </span>
                           )}
                         </div>
                         <div>
-                          <p className="font-bold text-slate-900 dark:text-white leading-tight">
+                          <p className="font-bold text-[#111827] leading-tight">
                             {emp.profile.fullName}
                           </p>
-                          <p className="text-xs text-slate-500">{emp.profile.designation}</p>
+                          <p className="text-xs text-[#64748B]">{emp.profile.designation}</p>
                         </div>
                       </div>
                     </td>
 
                     <td className="py-4 px-6">
-                      <span className="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 block">
+                      <span className="font-mono text-xs font-bold text-[#2563EB] block">
                         {emp.employeeId}
                       </span>
-                      <span className="text-[11px] text-slate-400">{emp.role}</span>
+                      <span className="text-[11px] text-[#64748B]">{emp.role}</span>
                     </td>
 
-                    <td className="py-4 px-6 text-xs text-slate-600 dark:text-slate-300">
+                    <td className="py-4 px-6 text-xs text-[#111827]">
                       {emp.profile.department}
                     </td>
 
@@ -250,13 +250,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
                       <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
                           emp.status === 'ACTIVE'
-                            ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                            ? 'bg-emerald-50 text-[#059669] border border-emerald-200'
+                            : 'bg-slate-100 text-[#64748B] border border-slate-200'
                         }`}
                       >
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
-                            emp.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-slate-400'
+                            emp.status === 'ACTIVE' ? 'bg-[#059669]' : 'bg-slate-400'
                           }`}
                         />
                         <span>{emp.status}</span>
@@ -267,7 +267,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => onNavigate(`/card/${emp.employeeId}`)}
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                           title="View Digital Card"
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -281,7 +281,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
                               designation: emp.profile.designation,
                             })
                           }
-                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#2563EB] hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
                           title="Show QR Code"
                         >
                           <QrCode className="w-4 h-4" />
@@ -289,7 +289,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
 
                         <button
                           onClick={() => onNavigate(`/admin/employees/${emp.id}/edit`)}
-                          className="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                          className="p-1.5 text-[#64748B] hover:text-[#111827] hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                           title="Edit Employee"
                         >
                           <Edit className="w-4 h-4" />
@@ -302,7 +302,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
             </table>
           </div>
         ) : (
-          <div className="p-12 text-center text-slate-400 text-sm">No employees found.</div>
+          <div className="p-12 text-center text-[#64748B] text-sm">No employees found.</div>
         )}
       </div>
 

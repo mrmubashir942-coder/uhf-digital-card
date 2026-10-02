@@ -120,7 +120,7 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
 
   if (isLoading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-12 text-center text-slate-400">
+      <div className="max-w-4xl mx-auto px-4 py-12 text-center text-[#64748B]">
         Loading profile...
       </div>
     );
@@ -134,10 +134,10 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl font-black text-[#111827] tracking-tight">
             My Employee Profile
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[#64748B] mt-1">
             Manage your personal contact info, bio, and portrait photo visible on your digital card.
           </p>
         </div>
@@ -146,7 +146,7 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
           variant="outline"
           size="sm"
           onClick={() => onNavigate(`/card/${employeeId}`)}
-          leftIcon={<ExternalLink className="w-3.5 h-3.5" />}
+          leftIcon={<ExternalLink className="w-3.5 h-3.5 text-[#2563EB]" />}
         >
           Preview Digital Card
         </Button>
@@ -154,13 +154,13 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Section 1: Profile Photo Management */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4">
+        <div className="bg-white p-6 rounded-3xl border border-[#E5E7EB] shadow-xs">
+          <h2 className="text-sm font-bold text-[#111827] uppercase tracking-wider mb-4">
             Profile Portrait Photo
           </h2>
 
           <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="relative w-28 h-28 rounded-full border-2 border-blue-500/50 p-1 bg-slate-100 dark:bg-slate-800 overflow-hidden shadow-md shrink-0 flex items-center justify-center">
+            <div className="relative w-28 h-28 rounded-full border-2 border-[#2563EB]/40 p-1 bg-slate-50 overflow-hidden shadow-xs shrink-0 flex items-center justify-center">
               {profilePhoto ? (
                 <img
                   src={profilePhoto}
@@ -168,23 +168,23 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
                   className="w-full h-full object-cover rounded-full"
                 />
               ) : (
-                <User className="w-12 h-12 text-slate-400" />
+                <User className="w-12 h-12 text-[#64748B]" />
               )}
             </div>
 
             <div className="flex-1 w-full space-y-3">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                <label className="text-xs font-semibold text-[#111827] block mb-1">
                   Upload New Photo
                 </label>
                 <div className="flex items-center gap-3">
-                  <label className={`cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 hover:bg-blue-100 transition-colors border border-blue-200 dark:border-blue-900 ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
+                  <label className={`cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-[#2563EB] hover:bg-blue-100 transition-colors border border-blue-200 ${isUploadingPhoto ? 'opacity-70 pointer-events-none' : ''}`}>
                     {isUploadingPhoto ? (
-                      <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                      <Loader2 className="w-4 h-4 animate-spin text-[#2563EB]" />
                     ) : (
-                      <Camera className="w-4 h-4" />
+                      <Camera className="w-4 h-4 text-[#2563EB]" />
                     )}
-                    <span>{isUploadingPhoto ? 'Uploading to Firebase...' : 'Choose Image File'}</span>
+                    <span>{isUploadingPhoto ? 'Uploading photo...' : 'Choose Image File'}</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -198,18 +198,18 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
                       type="button"
                       disabled={isUploadingPhoto}
                       onClick={() => setProfilePhoto('')}
-                      className="text-xs text-rose-500 hover:underline"
+                      className="text-xs text-[#DC2626] hover:underline cursor-pointer"
                     >
                       Remove Photo
                     </button>
                   )}
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1">PNG, JPG, or WEBP up to 5MB (stored securely in Firebase Storage).</p>
+                <p className="text-[11px] text-[#64748B] mt-1">PNG, JPG, or WEBP up to 5MB (stored securely in Cloudinary).</p>
               </div>
 
               {/* Or enter Image URL */}
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                <label className="text-xs font-semibold text-[#111827] block mb-1">
                   Or Paste Image URL
                 </label>
                 <div className="flex items-center gap-2">
@@ -218,7 +218,7 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
                     placeholder="https://example.com/avatar.jpg"
                     value={photoUrlInput}
                     onChange={(e) => setPhotoUrlInput(e.target.value)}
-                    className="flex-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs px-3 py-2 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600"
+                    className="flex-1 rounded-xl border border-[#E5E7EB] bg-white text-xs px-3 py-2 text-[#111827] outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB]"
                   />
                   <Button
                     type="button"
@@ -235,68 +235,68 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
         </div>
 
         {/* Section 2: Administrative / Read-Only Fields */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white p-6 rounded-3xl border border-[#E5E7EB] shadow-xs">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+            <h2 className="text-sm font-bold text-[#111827] uppercase tracking-wider">
               Corporate Administrative Data
             </h2>
-            <span className="flex items-center gap-1 text-[11px] text-slate-400">
+            <span className="flex items-center gap-1 text-[11px] text-[#64748B]">
               <Lock className="w-3 h-3" />
               <span>Admin Controlled</span>
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
-              <label className="text-[11px] text-slate-400 font-semibold block mb-0.5">
+            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB]">
+              <label className="text-[11px] text-[#64748B] font-semibold block mb-0.5">
                 Full Name
               </label>
-              <span className="text-sm font-bold text-slate-900 dark:text-white">
+              <span className="text-sm font-bold text-[#111827]">
                 {fullName}
               </span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
-              <label className="text-[11px] text-slate-400 font-semibold block mb-0.5">
+            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB]">
+              <label className="text-[11px] text-[#64748B] font-semibold block mb-0.5">
                 Employee ID
               </label>
-              <span className="text-sm font-mono font-bold text-blue-600 dark:text-blue-400">
+              <span className="text-sm font-mono font-bold text-[#2563EB]">
                 {employeeId}
               </span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
-              <label className="text-[11px] text-slate-400 font-semibold block mb-0.5">
+            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB]">
+              <label className="text-[11px] text-[#64748B] font-semibold block mb-0.5">
                 Official Designation
               </label>
-              <span className="text-sm font-semibold text-slate-900 dark:text-white">
+              <span className="text-sm font-semibold text-[#111827]">
                 {profile?.designation}
               </span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
-              <label className="text-[11px] text-slate-400 font-semibold block mb-0.5">
+            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB]">
+              <label className="text-[11px] text-[#64748B] font-semibold block mb-0.5">
                 Assigned Department
               </label>
-              <span className="text-sm font-semibold text-slate-900 dark:text-white">
+              <span className="text-sm font-semibold text-[#111827]">
                 {profile?.department}
               </span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
-              <label className="text-[11px] text-slate-400 font-semibold block mb-0.5">
+            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB]">
+              <label className="text-[11px] text-[#64748B] font-semibold block mb-0.5">
                 Corporate Email
               </label>
-              <span className="text-sm font-semibold text-slate-900 dark:text-white">
+              <span className="text-sm font-semibold text-[#111827]">
                 {profile?.companyEmail || user?.email}
               </span>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
-              <label className="text-[11px] text-slate-400 font-semibold block mb-0.5">
+            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB]">
+              <label className="text-[11px] text-[#64748B] font-semibold block mb-0.5">
                 Office Direct Phone
               </label>
-              <span className="text-sm font-semibold text-slate-900 dark:text-white">
+              <span className="text-sm font-semibold text-[#111827]">
                 {profile?.officePhone || 'Headquarters'}
               </span>
             </div>
@@ -304,8 +304,8 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
         </div>
 
         {/* Section 3: Permitted Employee Editable Fields */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
-          <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+        <div className="bg-white p-6 rounded-3xl border border-[#E5E7EB] shadow-xs space-y-4">
+          <h2 className="text-sm font-bold text-[#111827] uppercase tracking-wider">
             Editable Contact & Social Information
           </h2>
 
@@ -354,7 +354,7 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
           </div>
 
           <div className="flex flex-col gap-1.5 pt-2">
-            <label htmlFor="emp-bio" className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+            <label htmlFor="emp-bio" className="text-xs font-semibold text-[#111827]">
               Professional Biography / Elevator Pitch
             </label>
             <textarea
@@ -363,9 +363,9 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Brief professional intro displayed on your digital card..."
-              className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-sm p-3.5 outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all"
+              className="w-full rounded-xl border border-[#E5E7EB] bg-white text-[#111827] text-sm p-3.5 outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#2563EB] transition-all"
             />
-            <p className="text-[11px] text-slate-400">Recommended 2-3 sentences.</p>
+            <p className="text-[11px] text-[#64748B]">Recommended 2-3 sentences.</p>
           </div>
         </div>
 

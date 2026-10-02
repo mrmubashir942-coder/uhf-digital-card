@@ -84,24 +84,24 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose} maxWidth="sm">
       <div className="flex flex-col items-center text-center">
         {/* UHF Solutions Branded Card Top */}
-        <div className="w-full bg-slate-900 text-white p-4 rounded-xl mb-4 border border-slate-800 flex items-center justify-between">
+        <div className="w-full bg-[#F8FAFC] p-4 rounded-2xl mb-4 border border-[#E5E7EB] flex items-center justify-between">
           <div className="text-left">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-blue-400">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-[#2563EB]">
               UHF Solutions
             </span>
-            <h4 className="text-sm font-bold text-white truncate max-w-[200px]">{fullName}</h4>
-            <p className="text-[11px] text-slate-400 truncate max-w-[200px]">{designation || 'Staff'}</p>
+            <h4 className="text-sm font-bold text-[#111827] truncate max-w-[200px]">{fullName}</h4>
+            <p className="text-[11px] text-[#64748B] truncate max-w-[200px]">{designation || 'Staff'}</p>
           </div>
-          <span className="font-mono text-xs font-bold px-2 py-1 bg-slate-800 rounded border border-slate-700 text-blue-300">
+          <span className="font-mono text-xs font-bold px-2 py-1 bg-white rounded-lg border border-[#E5E7EB] text-[#2563EB]">
             {employeeId}
           </span>
         </div>
 
         {/* QR Code Container */}
-        <div className="p-3 bg-white rounded-2xl shadow-inner border border-slate-200 mb-4 w-64 h-64 flex items-center justify-center">
+        <div className="p-3 bg-white rounded-2xl shadow-xs border border-[#E5E7EB] mb-4 w-64 h-64 flex items-center justify-center">
           {loading ? (
-            <div className="flex flex-col items-center gap-2 text-slate-400">
-              <QrCode className="w-8 h-8 animate-pulse text-blue-500" />
+            <div className="flex flex-col items-center gap-2 text-[#64748B]">
+              <QrCode className="w-8 h-8 animate-pulse text-[#2563EB]" />
               <span className="text-xs">Generating high-res QR...</span>
             </div>
           ) : qrData ? (
@@ -111,26 +111,26 @@ export const QRCodeModal: React.FC<QRCodeModalProps> = ({
               className="w-full h-full object-contain rounded-lg"
             />
           ) : (
-            <span className="text-xs text-rose-500">Failed to load QR</span>
+            <span className="text-xs text-[#DC2626]">Failed to load QR</span>
           )}
         </div>
 
-        <p className="text-xs text-slate-500 mb-4 px-2">
+        <p className="text-xs text-[#64748B] mb-4 px-2">
           Point any smartphone camera to view this verified employee card. High-resolution vector ready for printing on business badges.
         </p>
 
         {/* Target URL Preview & Copy */}
         {qrData && (
-          <div className="w-full flex items-center gap-1.5 p-1.5 pl-3 bg-slate-100 dark:bg-slate-800 rounded-xl mb-4 border border-slate-200 dark:border-slate-700">
-            <span className="text-xs text-slate-600 dark:text-slate-300 truncate font-mono flex-1 text-left">
+          <div className="w-full flex items-center gap-1.5 p-1.5 pl-3 bg-[#F8FAFC] rounded-xl mb-4 border border-[#E5E7EB]">
+            <span className="text-xs text-[#64748B] truncate font-mono flex-1 text-left">
               {qrData.cardUrl}
             </span>
             <button
               onClick={handleCopy}
-              className="p-1.5 text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 rounded-lg hover:bg-white dark:hover:bg-slate-700 transition-colors"
+              className="p-1.5 text-[#64748B] hover:text-[#2563EB] rounded-lg hover:bg-white transition-colors cursor-pointer"
               title="Copy URL"
             >
-              {copied ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+              {copied ? <Check className="w-4 h-4 text-[#059669]" /> : <Copy className="w-4 h-4" />}
             </button>
           </div>
         )}
