@@ -19,11 +19,9 @@ Employees receive their own personalized digital contact card (`/card/[employeeI
 * **Dynamic QR Code System**:
   * Encodes the permanent URL (`/card/[employeeId]`), not static text. When an employee changes phone or designation, printed badges stay valid!
   * Instant generation and download as high-res PNG and vector SVG for print badges.
-* **Firebase Backend & Cloud Integration**:
-  * Provisioned Cloud Firestore database (`firebase-applet-config.json`).
-  * `firestore.rules` deployed enforcing strict owner, public-card, and admin-only rules.
-  * `storage.rules` configured for secure employee avatar and asset uploads.
-  * Firebase SDK configured in `src/lib/firebase.ts`.
+* **Cloud / Persistence:**
+  * Netlify Blobs provides persistent application data and image storage on the free Netlify plan.
+  * The primary application database is the `uhf-solutions-data` Netlify Blobs store.
 * **Privacy & Access Control**:
   * Admin-configurable visibility toggles for phone, WhatsApp, email, LinkedIn, and office address.
   * Passwords hashed using `bcrypt` (10 rounds).
@@ -49,13 +47,12 @@ The system automatically initializes and seeds the database on first run:
 
 ## 3. Technology Stack
 
-* **Frontend**: React 19, TypeScript, Tailwind CSS, Lucide Icons, Motion
+* **Frontend**: React 19, TypeScript, Tailwind CSS, Lucide Icons
 * **Backend**: Express 4, Node.js (v22+), JWT Authentication, Bcrypt password hashing
-* **Firebase Services**:
-  * Cloud Firestore
-  * Firebase Authentication
-  * Firebase Storage rules (`storage.rules`)
-  * Firestore Security rules (`firestore.rules`)
+* **Deployment persistence**:
+  * Netlify Functions
+  * Netlify Blobs (persistent JSON database + image assets)
+  * JWT + bcrypt authentication
 * **QR Generation**: `qrcode` library with High error correction, PNG data URL, and SVG vector strings.
 * **VCard Engine**: RFC 2426 vCard 3.0 specification generator with CRLF formatting and field escaping.
 
@@ -70,15 +67,7 @@ Create a `.env` file based on `.env.example`:
 APP_URL=http://localhost:3000
 
 # JWT signing secret for sessions
-JWT_SECRET=uhf_solutions_jwt_secret_key_prod_minimum_32_characters_long
-
-# Firebase Client Configuration
-VITE_FIREBASE_API_KEY="AIzaSy..."
-VITE_FIREBASE_AUTH_DOMAIN="gen-lang-client-0238637067.firebaseapp.com"
-VITE_FIREBASE_PROJECT_ID="gen-lang-client-0238637067"
-VITE_FIREBASE_STORAGE_BUCKET="gen-lang-client-0238637067.firebasestorage.app"
-VITE_FIREBASE_MESSAGING_SENDER_ID="621756043106"
-VITE_FIREBASE_APP_ID="1:621756043106:web:1e9646c8738b54e4f0a63b"
+JWT_SECRET=replace_with_a_random_32_plus_character_secret_or_leave_unset_on_netlify
 
 # Port & Runtime
 PORT=3000
@@ -120,3 +109,19 @@ Clicking **Save Contact to Phone** creates an RFC 2426 vCard 3.0 file with corre
 - **Admin**: Has access to `/admin/dashboard`, `/admin/employees`, `/admin/employees/new`, `/admin/employees/:id/edit`, and `/admin/company-settings`.
 - **Employee**: Has access to `/employee/dashboard`, `/employee/profile`, `/employee/card`, `/employee/qr`, and `/employee/settings`.
 - **Public**: Has direct access to `/card/:employeeId`. When an account is marked inactive, the public card immediately reflects a polite "Card Temporarily Unavailable" notice.
+
+
+## 7. Netlify deployment
+
+This project is designed to run without a payment card on Netlify's Free plan. Netlify Functions provide the API and Netlify Blobs provide persistent data and image storage.
+
+The application can generate and persist its JWT secret automatically in a private Netlify Blobs store. You may still set `JWT_SECRET` manually (32+ characters) if you prefer to control it.
+
+After deployment, test:
+
+- `/api/health`
+- `/login`
+- Admin demo login: `ADMIN-001` / `AdminPassword123!`
+- `/card/UHF-001`
+
+Do not distribute the demo credentials publicly. Change or delete the seeded demo accounts before real production use.

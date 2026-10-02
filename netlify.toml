@@ -2,12 +2,16 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "22.16.0"
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  included_files = ["data/**", "firebase-applet-config.json"]
+  external_node_modules = ["express"]
+  included_files = ["data/**"]
 
-# Forward all /api requests to Netlify serverless function running Express
+# Keep API requests on the Netlify Function. API rule must come before SPA fallback.
 [[redirects]]
   from = "/api"
   to = "/.netlify/functions/api"
@@ -20,14 +24,21 @@
   status = 200
   force = true
 
-# React / Vite Single Page Application fallback
+# React / Vite SPA fallback.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
 [[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
