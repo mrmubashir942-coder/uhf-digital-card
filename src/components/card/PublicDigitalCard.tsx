@@ -40,6 +40,7 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
   const [isQrOpen, setIsQrOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isSavingContact, setIsSavingContact] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -79,8 +80,16 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
 
   const handleSaveContact = () => {
     if (!cardData) return;
-    downloadVCard(cardData);
-    showToast('VCard file downloading to your contacts...', 'success');
+    setIsSavingContact(true);
+    try {
+      downloadVCard(cardData);
+      showToast('Contact (.vcf) downloaded! Open the file to add to your phone contacts.', 'success');
+    } catch (err) {
+      console.error('Failed to download VCF:', err);
+      showToast('Failed to download contact file. Please try again.', 'error');
+    } finally {
+      setTimeout(() => setIsSavingContact(false), 1200);
+    }
   };
 
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -207,6 +216,14 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
         )}
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={handleSaveContact}
+            disabled={isSavingContact}
+            className="p-2 rounded-xl bg-blue-600/90 hover:bg-blue-600 text-white border border-blue-500/50 transition-colors shadow-sm disabled:opacity-70"
+            title="Save Contact (.vcf)"
+          >
+            <Download className="w-4 h-4" />
+          </button>
           <button
             onClick={() => setIsQrOpen(true)}
             className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors shadow-sm"
@@ -400,17 +417,27 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
             )}
           </div>
 
-          {/* HIGHLY VISIBLE "SAVE CONTACT" PRIMARY BUTTON */}
+          {/* HIGHLY VISIBLE "SAVE TO CONTACTS" PRIMARY BUTTON */}
           <div className="mt-5">
             <button
               onClick={handleSaveContact}
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2.5 active:scale-[0.98] transition-all"
+              disabled={isSavingContact}
+              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2.5 active:scale-[0.98] transition-all disabled:opacity-80 cursor-pointer"
             >
-              <UserCheck className="w-5 h-5" />
-              <span>Save Contact to Phone</span>
+              {isSavingContact ? (
+                <>
+                  <Download className="w-5 h-5 animate-bounce" />
+                  <span>Preparing Contact Card...</span>
+                </>
+              ) : (
+                <>
+                  <UserCheck className="w-5 h-5" />
+                  <span>Save to Contacts (.vcf)</span>
+                </>
+              )}
             </button>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-medium">
-              Downloads verified .vcf contact directly to iPhone / Android
+              Downloads verified .vcf contact directly to iPhone & Android address book
             </p>
           </div>
 
@@ -512,22 +539,31 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
             )}
           </div>
 
-          {/* Card Footer Actions (Share & QR) */}
-          <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
+          {/* Card Footer Actions (QR, Save .VCF, Share) */}
+          <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 grid grid-cols-3 gap-2">
             <button
               onClick={() => setIsQrOpen(true)}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
+              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
             >
               <QrCode className="w-4 h-4 text-blue-600" />
-              <span>Show QR Code</span>
+              <span>QR Code</span>
+            </button>
+
+            <button
+              onClick={handleSaveContact}
+              disabled={isSavingContact}
+              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/40 text-blue-750 dark:text-blue-300 font-semibold text-xs hover:bg-blue-100/60 dark:hover:bg-blue-900/60 transition-colors cursor-pointer"
+            >
+              <Download className="w-4 h-4 text-blue-600" />
+              <span>Save .VCF</span>
             </button>
 
             <button
               onClick={handleShare}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
+              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-xs hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
             >
               <Share2 className="w-4 h-4 text-blue-600" />
-              <span>Share Card</span>
+              <span>Share</span>
             </button>
           </div>
         </div>

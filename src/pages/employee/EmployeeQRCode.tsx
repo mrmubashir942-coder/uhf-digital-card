@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext.tsx';
 import { api } from '../../lib/api.ts';
 import { Button } from '../../components/common/Button.tsx';
 import { useToast } from '../../context/ToastContext.tsx';
-import { Download, Copy, Check, QrCode, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Download, Copy, Check, QrCode, ExternalLink, ArrowLeft, SmartphoneNfc } from 'lucide-react';
 
 interface EmployeeQRCodeProps {
   onNavigate: (path: string) => void;
@@ -177,6 +177,22 @@ export const EmployeeQRCodePage: React.FC<EmployeeQRCodeProps> = ({ onNavigate }
           <p>
             This QR code points directly to your permanent digital card URL (<code className="font-mono text-blue-600">/card/{employeeId}</code>). If you change your phone number, designation, or address, this QR code will continue to work without reprinting!
           </p>
+
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/40 rounded-xl border border-blue-200 dark:border-blue-900 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <SmartphoneNfc className="w-5 h-5 text-blue-600 shrink-0" />
+              <div>
+                <p className="font-bold text-slate-900 dark:text-slate-100 text-xs">Want 1-Tap NFC Sharing?</p>
+                <p className="text-[11px] text-slate-500">Program physical cards with your digital card.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => onNavigate('/employee/nfc')}
+              className="px-2.5 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition-colors shrink-0"
+            >
+              NFC Setup →
+            </button>
+          </div>
         </div>
       </div>
     </div>

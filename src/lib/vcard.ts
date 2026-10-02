@@ -68,6 +68,11 @@ export function buildVCardString(cardData: PublicCardData): string {
     lines.push(`NOTE:${escapeVCard(cardData.bio.trim())}`);
   }
 
+  // Profile photo URL (Cloudinary or web URL)
+  if (cardData.profilePhoto) {
+    lines.push(`PHOTO;VALUE=URI:${cardData.profilePhoto.trim()}`);
+  }
+
   lines.push(`UID:urn:uuid:${cardData.employeeId}-uhfsolutions`);
   lines.push(`REV:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`);
   lines.push('END:VCARD');

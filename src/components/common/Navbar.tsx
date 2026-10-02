@@ -13,6 +13,7 @@ import {
   ExternalLink,
   PlusCircle,
   LayoutDashboard,
+  SmartphoneNfc,
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -160,6 +161,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
               >
                 <QrCode className="w-4 h-4" />
                 <span>My QR Code</span>
+              </button>
+
+              <button
+                onClick={() => handleNav('/employee/nfc')}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  currentPath === '/employee/nfc'
+                    ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                <SmartphoneNfc className="w-4 h-4 text-blue-500" />
+                <span>NFC Sharing</span>
               </button>
             </>
           )}
@@ -309,6 +322,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
               >
                 <QrCode className="w-4 h-4 text-blue-600" />
                 <span>My QR Code</span>
+              </button>
+              <button
+                onClick={() => handleNav('/employee/nfc')}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <SmartphoneNfc className="w-4 h-4 text-blue-600" />
+                <span>NFC Tap Sharing</span>
               </button>
             </>
           )}

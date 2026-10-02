@@ -12,6 +12,7 @@ import { AdminCompanySettingsPage } from './pages/admin/AdminCompanySettings.tsx
 import { EmployeeDashboard } from './pages/employee/EmployeeDashboard.tsx';
 import { EmployeeProfilePage } from './pages/employee/EmployeeProfile.tsx';
 import { EmployeeQRCodePage } from './pages/employee/EmployeeQRCode.tsx';
+import { EmployeeNFCPage } from './pages/employee/EmployeeNFC.tsx';
 import { EmployeeSettingsPage } from './pages/employee/EmployeeSettings.tsx';
 import { tokenStorage } from './lib/api.ts';
 
@@ -123,6 +124,9 @@ function AppContent() {
       }
       if (currentPath === '/employee/qr') {
         return <EmployeeQRCodePage onNavigate={navigate} />;
+      }
+      if (currentPath === '/employee/nfc') {
+        return <EmployeeNFCPage onNavigate={navigate} />;
       }
       if (currentPath === '/employee/settings') {
         return <EmployeeSettingsPage onNavigate={navigate} />;

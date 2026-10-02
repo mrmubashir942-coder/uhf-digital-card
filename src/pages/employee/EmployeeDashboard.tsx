@@ -20,6 +20,7 @@ import {
   Mail,
   CheckCircle2,
   Sparkles,
+  SmartphoneNfc,
 } from 'lucide-react';
 import { Button } from '../../components/common/Button.tsx';
 
@@ -190,7 +191,7 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
         <span>Quick Management</span>
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         {/* Card 1: My Digital Card */}
         <div
           onClick={() => onNavigate(`/card/${employeeId}`)}
@@ -229,7 +230,26 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
           </span>
         </div>
 
-        {/* Card 3: Edit Profile */}
+        {/* Card 3: NFC Tap Sharing */}
+        <div
+          onClick={() => onNavigate('/employee/nfc')}
+          className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-all group"
+        >
+          <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <SmartphoneNfc className="w-5 h-5" />
+          </div>
+          <h3 className="font-bold text-sm text-slate-900 dark:text-white mb-1">
+            NFC 'Tap' Sharing
+          </h3>
+          <p className="text-xs text-slate-500 mb-3">
+            Program physical NFC cards and smart badges with your URL.
+          </p>
+          <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 flex items-center gap-1">
+            NFC Setup & Guide →
+          </span>
+        </div>
+
+        {/* Card 4: Edit Profile */}
         <div
           onClick={() => onNavigate('/employee/profile')}
           className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-all group"

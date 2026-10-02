@@ -390,6 +390,7 @@ class Database {
       showEmail?: boolean;
       showLinkedin?: boolean;
       showAddress?: boolean;
+      nfcEnabled?: boolean;
     }
   ): Promise<FullEmployee> {
     await this.init();
@@ -439,6 +440,7 @@ class Database {
     if (payload.showEmail !== undefined) profile.showEmail = payload.showEmail;
     if (payload.showLinkedin !== undefined) profile.showLinkedin = payload.showLinkedin;
     if (payload.showAddress !== undefined) profile.showAddress = payload.showAddress;
+    if (payload.nfcEnabled !== undefined) profile.nfcEnabled = payload.nfcEnabled;
 
     profile.updatedAt = now;
 
@@ -462,6 +464,7 @@ class Database {
       website?: string;
       bio?: string;
       profilePhoto?: string;
+      nfcEnabled?: boolean;
     }
   ): Promise<EmployeeProfile> {
     await this.init();
@@ -477,6 +480,7 @@ class Database {
     if (allowed.website !== undefined) profile.website = allowed.website.trim();
     if (allowed.bio !== undefined) profile.bio = allowed.bio.trim();
     if (allowed.profilePhoto !== undefined) profile.profilePhoto = allowed.profilePhoto;
+    if (allowed.nfcEnabled !== undefined) profile.nfcEnabled = allowed.nfcEnabled;
     profile.updatedAt = new Date().toISOString();
 
     this.data.profiles[profileIndex] = profile;

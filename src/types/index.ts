@@ -29,6 +29,7 @@ export interface EmployeeProfile {
   officeAddress?: string;
   bio?: string;
   profilePhoto?: string;
+  nfcEnabled?: boolean;
   showPhone: boolean;
   showWhatsapp: boolean;
   showEmail: boolean;

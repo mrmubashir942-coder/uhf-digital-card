@@ -4,7 +4,7 @@ import { api } from '../../lib/api.ts';
 import { Input } from '../../components/common/Input.tsx';
 import { Button } from '../../components/common/Button.tsx';
 import { useToast } from '../../context/ToastContext.tsx';
-import { Lock, Shield, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Lock, Shield, CheckCircle, ArrowLeft, SmartphoneNfc, ChevronRight } from 'lucide-react';
 
 interface EmployeeSettingsProps {
   onNavigate: (path: string) => void;
@@ -142,6 +142,31 @@ export const EmployeeSettingsPage: React.FC<EmployeeSettingsProps> = ({ onNaviga
             </Button>
           </div>
         </form>
+      </div>
+
+      {/* NFC Tap Sharing Quick Navigation */}
+      <div className="mt-6 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+            <SmartphoneNfc className="w-6 h-6" />
+          </div>
+          <div>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white">
+              NFC 'Tap' Sharing & Card Programming
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Configure contactless sharing, toggle NFC availability, and view step-by-step programming manuals.
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => onNavigate('/employee/nfc')}
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-50 dark:bg-slate-800 dark:hover:bg-blue-950/50 text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 text-xs font-bold transition-colors shrink-0"
+        >
+          <span>Open NFC Guide</span>
+          <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
