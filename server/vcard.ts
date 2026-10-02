@@ -82,6 +82,11 @@ export function generateVCard(
     lines.push(`NOTE:${escapeVCard(profile.bio)}`);
   }
 
+  // Profile Photo
+  if (profile.profilePhoto) {
+    lines.push(`PHOTO;VALUE=URI:${profile.profilePhoto}`);
+  }
+
   // UID
   lines.push(`UID:urn:uuid:${profile.employeeId}-uhfsolutions`);
 

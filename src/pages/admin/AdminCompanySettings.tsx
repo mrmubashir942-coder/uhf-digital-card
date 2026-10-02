@@ -80,21 +80,12 @@ export const AdminCompanySettingsPage: React.FC<AdminCompanySettingsProps> = ({ 
 
     setIsUploadingLogo(true);
     try {
-      // Direct upload to Firebase Storage
       const { url } = await uploadCompanyLogo(file);
       setLogoUrl(url);
-      showToast('Logo uploaded to Firebase Storage! Click Save Changes to apply.', 'success');
-    } catch (storageErr: any) {
-      console.warn('Firebase Storage upload error, checking fallback:', storageErr);
-      // If Storage bucket is not yet enabled in Firebase Console, fallback to Data URL
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setLogoUrl(reader.result);
-          showToast('Logo loaded locally. Click Save Changes to apply.', 'info');
-        }
-      };
-      reader.readAsDataURL(file);
+      showToast('Logo uploaded to Cloudinary! Click Save Changes to apply.', 'success');
+    } catch (uploadErr: any) {
+      console.error('Cloudinary upload error for company logo:', uploadErr);
+      showToast(uploadErr.message || 'Failed to upload company logo.', 'error');
     } finally {
       setIsUploadingLogo(false);
       e.target.value = '';

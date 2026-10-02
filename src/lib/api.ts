@@ -229,4 +229,26 @@ export const api = {
       });
     },
   },
+
+  upload: {
+    companyLogo: async (
+      dataUri: string,
+      fileName?: string
+    ): Promise<{ message: string; url: string; publicId: string; company: CompanySettings }> => {
+      return request('/api/upload/company-logo', {
+        method: 'POST',
+        body: JSON.stringify({ image: dataUri, fileName }),
+      });
+    },
+    employeePhoto: async (
+      dataUri: string,
+      employeeId?: string,
+      fileName?: string
+    ): Promise<{ message: string; url: string; publicId: string; employeeId: string }> => {
+      return request('/api/upload/employee-photo', {
+        method: 'POST',
+        body: JSON.stringify({ image: dataUri, employeeId, fileName }),
+      });
+    },
+  },
 };

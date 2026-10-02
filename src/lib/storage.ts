@@ -1,20 +1,31 @@
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { storage } from './firebase.ts';
+import { api } from './api.ts';
 
-const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/gif'];
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/svg+xml',
+];
 const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
 export interface UploadResult {
   url: string;
-  storagePath: string;
+  storagePath?: string;
+  publicId?: string;
 }
 
 /**
- * Validates image type and size.
+ * Validates image type and size according to corporate policies.
+ * Supported formats: JPEG, PNG, WebP, GIF, SVG (up to 5MB).
  */
 export function validateImageFile(file: File): void {
+  if (!file) {
+    throw new Error('Please select an image file to upload.');
+  }
+
   if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-    throw new Error('Invalid file format. Please upload a JPEG, PNG, WebP, or SVG image.');
+    throw new Error('Invalid file format. Please upload a JPEG, PNG, WebP, GIF, or SVG image.');
   }
 
   if (file.size > MAX_IMAGE_SIZE_BYTES) {
@@ -23,90 +34,76 @@ export function validateImageFile(file: File): void {
 }
 
 /**
- * Uploads an employee profile photo to Firebase Storage.
- * Saves under: profile-photos/[employeeId]_[timestamp].[ext]
- * Returns public download URL.
+ * Converts a browser File object to a Base64 Data URI string.
+ */
+export function fileToDataUri(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Failed to read file as data URI.'));
+      }
+    };
+    reader.onerror = () => reject(new Error('Error reading local file.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Uploads an employee profile photo to Cloudinary via the authenticated backend.
+ * Stored under Cloudinary folder: UHF-Solutions/profile-photos/{employeeId}
+ * Returns secure HTTPS Cloudinary URL.
  */
 export async function uploadProfilePhoto(
   file: File,
-  employeeId: string
+  employeeId?: string
 ): Promise<UploadResult> {
   validateImageFile(file);
 
-  const cleanEmployeeId = (employeeId || 'employee').replace(/[^a-zA-Z0-9_-]/g, '_');
-  const extension = file.name.split('.').pop() || 'jpg';
-  const fileName = `photo_${Date.now()}.${extension}`;
-  const storagePath = `profile-photos/${cleanEmployeeId}/${fileName}`;
-
   try {
-    const storageRef = ref(storage, storagePath);
-    const metadata = {
-      contentType: file.type,
-      customMetadata: {
-        employeeId: cleanEmployeeId,
-        uploadedAt: new Date().toISOString(),
-      },
+    const dataUri = await fileToDataUri(file);
+    const result = await api.upload.employeePhoto(dataUri, employeeId, file.name);
+
+    return {
+      url: result.url,
+      storagePath: result.publicId,
+      publicId: result.publicId,
     };
-
-    const snapshot = await uploadBytes(storageRef, file, metadata);
-    const url = await getDownloadURL(snapshot.ref);
-
-    return { url, storagePath };
   } catch (err: any) {
-    console.error('Firebase Storage upload error:', err);
-    throw new Error(
-      err.message || 'Failed to upload photo to Firebase Storage. Please check storage bucket configuration.'
-    );
+    console.error('Cloudinary profile photo upload error:', err);
+    throw new Error(err.message || 'Failed to upload photo to Cloudinary.');
   }
 }
 
 /**
- * Uploads company corporate logo to Firebase Storage.
- * Saves under: company/logo_[timestamp].[ext]
+ * Uploads corporate logo to Cloudinary via the authenticated backend.
+ * Stored under Cloudinary folder: UHF-Solutions/company
+ * Returns secure HTTPS Cloudinary URL.
  */
 export async function uploadCompanyLogo(file: File): Promise<UploadResult> {
   validateImageFile(file);
 
-  const extension = file.name.split('.').pop() || 'png';
-  const fileName = `logo_${Date.now()}.${extension}`;
-  const storagePath = `company/${fileName}`;
-
   try {
-    const storageRef = ref(storage, storagePath);
-    const metadata = {
-      contentType: file.type,
-      customMetadata: {
-        category: 'company-branding',
-        uploadedAt: new Date().toISOString(),
-      },
+    const dataUri = await fileToDataUri(file);
+    const result = await api.upload.companyLogo(dataUri, file.name);
+
+    return {
+      url: result.url,
+      storagePath: result.publicId,
+      publicId: result.publicId,
     };
-
-    const snapshot = await uploadBytes(storageRef, file, metadata);
-    const url = await getDownloadURL(snapshot.ref);
-
-    return { url, storagePath };
   } catch (err: any) {
-    console.error('Firebase Storage upload error for company logo:', err);
-    throw new Error(
-      err.message || 'Failed to upload company logo to Firebase Storage.'
-    );
+    console.error('Cloudinary corporate logo upload error:', err);
+    throw new Error(err.message || 'Failed to upload company logo to Cloudinary.');
   }
 }
 
 /**
- * Safely deletes a file from Firebase Storage if it belongs to Firebase Storage.
+ * Legacy storage file deletion helper.
+ * Assets are now deleted automatically by the Cloudinary backend when replaced.
  */
-export async function deleteStorageFile(fileUrlOrPath: string): Promise<boolean> {
-  if (!fileUrlOrPath || !fileUrlOrPath.includes('firebasestorage.googleapis.com')) {
-    return false; // Not a Firebase Storage URL
-  }
-
-  try {
-    const storageRef = ref(storage, fileUrlOrPath);
-    await deleteObject(storageRef);
-    return true;
-  } catch (err) {
-    console.warn('Could not delete prior storage file:', err);
-    return false;
-  }
+export async function deleteStorageFile(_fileUrlOrPath: string): Promise<boolean> {
+  return true;
 }

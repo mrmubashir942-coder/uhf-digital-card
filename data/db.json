@@ -18,7 +18,7 @@
       "role": "EMPLOYEE",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-09-28T05:03:38.324Z"
+      "updatedAt": "2026-10-02T05:15:02.509Z"
     },
     {
       "id": "usr_emp_2",
@@ -81,14 +81,14 @@
       "website": "https://uhfsolutions.com",
       "officeAddress": "Suite 400, Technology Park, Silicon Boulevard, CA 94025",
       "bio": "Full-stack engineer passionate about cloud architecture, robust distributed backend systems, and modern web applications at UHF Solutions.",
-      "profilePhoto": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400",
+      "profilePhoto": "https://res.cloudinary.com/uhf-solutions/image/upload/v1790918102706/UHF-Solutions/profile-photos/UHF-001/photo_1790918102706.png",
       "showPhone": true,
       "showWhatsapp": true,
       "showEmail": true,
       "showLinkedin": true,
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-09-28T05:03:38.324Z"
+      "updatedAt": "2026-10-02T05:15:02.706Z"
     },
     {
       "id": "prof_emp_2",
@@ -142,7 +142,7 @@
   "companySettings": {
     "id": "default-uhf-company",
     "companyName": "UHF Solutions International",
-    "logoUrl": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=128&q=80",
+    "logoUrl": "https://res.cloudinary.com/uhf-solutions/image/upload/v1790918101779/UHF-Solutions/company/logo_1790918101779.png",
     "website": "https://uhfsolutions.com",
     "email": "contact@uhfsolutions.com",
     "phone": "+1 (800) 555-0199",
@@ -151,6 +151,6 @@
     "twitter": "https://twitter.com/uhfsolutions",
     "primaryColor": "#0f172a",
     "accentColor": "#2563eb",
-    "updatedAt": "2026-09-28T05:46:36.082Z"
+    "updatedAt": "2026-10-02T05:15:01.779Z"
   }
 }

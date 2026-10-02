@@ -7,6 +7,7 @@ import { authRouter } from './server/routes/auth.ts';
 import { publicRouter } from './server/routes/public.ts';
 import { employeeRouter } from './server/routes/employee.ts';
 import { adminRouter } from './server/routes/admin.ts';
+import { uploadRouter } from './server/routes/upload.ts';
 import { db } from './server/db.ts';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,6 +31,7 @@ async function startServer() {
   app.use('/api/public', publicRouter);
   app.use('/api/employee', employeeRouter);
   app.use('/api/admin', adminRouter);
+  app.use('/api/upload', uploadRouter);
 
   // Health check endpoint
   app.get('/api/health', (_req, res) => {

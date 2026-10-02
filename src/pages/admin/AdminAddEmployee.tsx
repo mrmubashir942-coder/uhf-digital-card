@@ -79,18 +79,10 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
       const { url } = await uploadProfilePhoto(file, currentEmpId);
       setProfilePhoto(url);
       setPhotoUrlInput('');
-      showToast('Photo uploaded to Firebase Storage', 'success');
-    } catch (storageErr: any) {
-      console.warn('Firebase Storage upload error, falling back to local preview:', storageErr);
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setProfilePhoto(reader.result);
-          setPhotoUrlInput('');
-          showToast('Photo loaded locally', 'info');
-        }
-      };
-      reader.readAsDataURL(file);
+      showToast('Photo uploaded to Cloudinary', 'success');
+    } catch (uploadErr: any) {
+      console.error('Cloudinary photo upload error:', uploadErr);
+      showToast(uploadErr.message || 'Failed to upload photo to Cloudinary.', 'error');
     } finally {
       setIsUploadingPhoto(false);
       e.target.value = '';
