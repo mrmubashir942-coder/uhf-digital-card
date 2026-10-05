@@ -85,6 +85,20 @@ publicRouter.get('/card/:employeeId', async (req, res) => {
       },
     };
 
+    // Track public card view activity
+    try {
+      await db.logActivity({
+        actorName: 'Visitor',
+        actorRole: 'PUBLIC',
+        action: 'CARD_VIEW',
+        category: 'INTERACTION',
+        targetId: employee.id,
+        targetName: `${prof.fullName} (${employee.employeeId})`,
+        details: `Digital business card accessed for ${prof.fullName} (${employee.employeeId})`,
+        userAgent: req.get('user-agent'),
+      });
+    } catch {}
+
     res.json(publicCard);
   } catch (err) {
     console.error('Error fetching public card:', err);
@@ -114,6 +128,20 @@ publicRouter.get('/vcard/:employeeId', async (req, res) => {
 
     const safeName = employee.profile.fullName.replace(/[^a-zA-Z0-9_-]/g, '_');
     const filename = `${safeName || employee.employeeId}_contact.vcf`;
+
+    // Track contact download activity
+    try {
+      await db.logActivity({
+        actorName: 'Visitor / Contact',
+        actorRole: 'PUBLIC',
+        action: 'VCARD_DOWNLOAD',
+        category: 'INTERACTION',
+        targetId: employee.id,
+        targetName: `${employee.profile.fullName} (${employee.employeeId})`,
+        details: `Downloaded .vcf contact card for ${employee.profile.fullName} (${employee.employeeId})`,
+        userAgent: req.get('user-agent'),
+      });
+    } catch {}
 
     res.setHeader('Content-Type', 'text/vcard; charset=utf-8');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
@@ -146,6 +174,19 @@ publicRouter.get('/qr/:employeeId', async (req, res) => {
 
     const baseUrl = getAppBaseUrl(req);
     const cardUrl = `${baseUrl}/card/${employee.employeeId}`;
+
+    // Track QR interaction
+    try {
+      await db.logActivity({
+        actorName: 'Visitor / Device',
+        actorRole: 'PUBLIC',
+        action: 'QR_CODE_DOWNLOAD',
+        category: 'INTERACTION',
+        targetId: employee.id,
+        targetName: `${employee.profile.fullName} (${employee.employeeId})`,
+        details: `Dynamic QR code generated/accessed for ${employee.profile.fullName} (${employee.employeeId})`,
+      });
+    } catch {}
 
     // Generate high quality QR code data URL (PNG)
     const pngDataUrl = await QRCode.toDataURL(cardUrl, {

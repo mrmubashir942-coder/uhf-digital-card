@@ -8,7 +8,7 @@
       "role": "ADMIN",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-10-02T05:24:01.627Z"
+      "updatedAt": "2026-10-05T05:41:39.665Z"
     },
     {
       "id": "usr_emp_1",
@@ -18,7 +18,7 @@
       "role": "EMPLOYEE",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-10-02T05:23:37.499Z"
+      "updatedAt": "2026-10-05T05:46:27.166Z"
     },
     {
       "id": "usr_emp_2",
@@ -44,11 +44,11 @@
       "id": "usr_1790919248777_yuebq",
       "employeeId": "UHF-ALI",
       "email": "ali122@gmail.com",
-      "passwordHash": "$2b$10$5jBMIn6muw/CS28mb8GH6Ovep9bqrdJe54URXFCzlI3Y0nATzKM8q",
+      "passwordHash": "$2b$10$wQVeK8abr5Q4839wghWvser23rYcwPNUCS7mA3bU/fblQg12RgyJu",
       "role": "EMPLOYEE",
       "status": "ACTIVE",
       "createdAt": "2026-10-02T05:34:08.778Z",
-      "updatedAt": "2026-10-02T05:34:08.778Z"
+      "updatedAt": "2026-10-05T05:00:09.095Z"
     }
   ],
   "profiles": [
@@ -56,25 +56,25 @@
       "id": "prof_admin_001",
       "userId": "usr_admin_001",
       "employeeId": "ADMIN-001",
-      "fullName": "UHF Administrator",
-      "designation": "Head of IT & Security",
-      "department": "Executive Administration",
-      "phone": "+1 (800) 555-0199",
-      "whatsapp": "+18005550199",
+      "fullName": "Usman Farooqui",
+      "designation": "Director Projects",
+      "department": "DIRECTOR OF PROJECT MANAGEMENT",
+      "phone": "+92 308 2783444",
+      "whatsapp": "+92 308 2783444",
       "officePhone": "+1 (800) 555-0199 ext 100",
-      "companyEmail": "admin@uhfsolutions.com",
+      "companyEmail": "connect@uhfsolutions.com",
       "linkedin": "https://linkedin.com/company/uhf-solutions",
       "website": "https://uhfsolutions.com",
-      "officeAddress": "Suite 400, Technology Park, Silicon Boulevard, CA 94025",
+      "officeAddress": "Bungalow No. 31/3, Jinnah Cooperative Housing, PECHS, Khalid Bin Waleed Road, Karachi, Pakistan",
       "bio": "Supervising corporate infrastructure, enterprise identity, and security operations at UHF Solutions.",
-      "profilePhoto": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
+      "profilePhoto": "file:///C:/Users/user/Pictures/Saved%20Pictures/WhatsApp%20Image%202026-09-25%20at%2012.00.57%20PM.jpeg",
       "showPhone": true,
       "showWhatsapp": true,
       "showEmail": true,
       "showLinkedin": true,
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-09-28T05:03:38.324Z"
+      "updatedAt": "2026-10-05T05:41:39.665Z"
     },
     {
       "id": "prof_emp_1",
@@ -91,14 +91,14 @@
       "website": "https://uhfsolutions.com",
       "officeAddress": "Suite 400, Technology Park, Silicon Boulevard, CA 94025",
       "bio": "Full-stack engineer passionate about cloud architecture, robust distributed backend systems, and modern web applications at UHF Solutions.",
-      "profilePhoto": "https://res.cloudinary.com/uhf-solutions/image/upload/v1790918102706/UHF-Solutions/profile-photos/UHF-001/photo_1790918102706.png",
+      "profilePhoto": "/api/assets/photo_1791179187165.png",
       "showPhone": true,
       "showWhatsapp": true,
       "showEmail": true,
       "showLinkedin": true,
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-10-02T05:15:02.706Z"
+      "updatedAt": "2026-10-05T05:46:27.166Z"
     },
     {
       "id": "prof_emp_2",
@@ -172,7 +172,7 @@
   "companySettings": {
     "id": "default-uhf-company",
     "companyName": "UHF Solutions International",
-    "logoUrl": "https://res.cloudinary.com/uhf-solutions/image/upload/v1790918101779/UHF-Solutions/company/logo_1790918101779.png",
+    "logoUrl": "/api/assets/logo_1791179151661.png",
     "website": "https://uhfsolutions.com",
     "email": "contact@uhfsolutions.com",
     "phone": "+1 (800) 555-0199",
@@ -181,6 +181,131 @@
     "twitter": "https://twitter.com/uhfsolutions",
     "primaryColor": "#0f172a",
     "accentColor": "#2563eb",
-    "updatedAt": "2026-10-02T05:15:01.779Z"
-  }
+    "updatedAt": "2026-10-05T05:45:51.662Z"
+  },
+  "activityLogs": [
+    {
+      "id": "log_1791179681318_fvxi1z",
+      "timestamp": "2026-10-05T05:54:41.318Z",
+      "actorId": "usr_admin_001",
+      "actorName": "Usman Farooqui",
+      "actorRole": "ADMIN",
+      "action": "LOGIN",
+      "category": "AUTH",
+      "targetId": "usr_admin_001",
+      "targetName": "Usman Farooqui (ADMIN-001)",
+      "details": "Administrator authenticated successfully via portal login"
+    },
+    {
+      "id": "log_1791179674278_dac52x",
+      "timestamp": "2026-10-05T05:54:34.278Z",
+      "actorId": "usr_admin_001",
+      "actorName": "Usman Farooqui",
+      "actorRole": "ADMIN",
+      "action": "LOGIN",
+      "category": "AUTH",
+      "targetId": "usr_admin_001",
+      "targetName": "Usman Farooqui (ADMIN-001)",
+      "details": "Administrator authenticated successfully via portal login"
+    },
+    {
+      "id": "log_1791179663643_5ujp8v",
+      "timestamp": "2026-10-05T05:54:23.643Z",
+      "actorName": "Visitor / Contact",
+      "actorRole": "PUBLIC",
+      "action": "VCARD_DOWNLOAD",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Downloaded .vcf contact card for Muhammad Ahmed (UHF-001)"
+    },
+    {
+      "id": "log_1791179663640_iquzho",
+      "timestamp": "2026-10-05T05:54:23.640Z",
+      "actorName": "Visitor",
+      "actorRole": "PUBLIC",
+      "action": "CARD_VIEW",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Digital business card accessed for Muhammad Ahmed (UHF-001)"
+    },
+    {
+      "id": "log_1791179663632_s3pfaj",
+      "timestamp": "2026-10-05T05:54:23.632Z",
+      "actorId": "usr_admin_001",
+      "actorName": "Usman Farooqui",
+      "actorRole": "ADMIN",
+      "action": "LOGIN",
+      "category": "AUTH",
+      "targetId": "usr_admin_001",
+      "targetName": "Usman Farooqui (ADMIN-001)",
+      "details": "Administrator authenticated successfully via portal login"
+    },
+    {
+      "id": "log_init_1",
+      "timestamp": "2026-10-05T02:54:22.742Z",
+      "actorId": "usr_admin_001",
+      "actorName": "UHF Administrator",
+      "actorRole": "ADMIN",
+      "action": "LOGIN",
+      "category": "AUTH",
+      "details": "Administrator signed in to management portal"
+    },
+    {
+      "id": "log_init_2",
+      "timestamp": "2026-10-05T03:24:22.742Z",
+      "actorId": "usr_admin_001",
+      "actorName": "UHF Administrator",
+      "actorRole": "ADMIN",
+      "action": "COMPANY_SETTINGS_UPDATE",
+      "category": "ADMIN",
+      "details": "Updated corporate office address and primary brand colors"
+    },
+    {
+      "id": "log_init_3",
+      "timestamp": "2026-10-05T04:04:22.742Z",
+      "actorId": "usr_emp_1",
+      "actorName": "Muhammad Ahmed",
+      "actorRole": "EMPLOYEE",
+      "action": "PROFILE_UPDATE",
+      "category": "PROFILE",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Updated contact phone number and LinkedIn profile URL"
+    },
+    {
+      "id": "log_init_4",
+      "timestamp": "2026-10-05T04:49:22.742Z",
+      "actorName": "Enterprise Client Visitor",
+      "actorRole": "PUBLIC",
+      "action": "CARD_VIEW",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Digital business card viewed via NFC tap simulation"
+    },
+    {
+      "id": "log_init_5",
+      "timestamp": "2026-10-05T05:24:22.742Z",
+      "actorName": "Conference Attendee",
+      "actorRole": "PUBLIC",
+      "action": "VCARD_DOWNLOAD",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Downloaded contact vCard (.vcf) file to mobile contacts"
+    },
+    {
+      "id": "log_init_6",
+      "timestamp": "2026-10-05T05:44:22.742Z",
+      "actorName": "Visitor",
+      "actorRole": "PUBLIC",
+      "action": "QR_CODE_DOWNLOAD",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_2",
+      "targetName": "Ali Khan (UHF-002)",
+      "details": "Scanned dynamic badge QR code"
+    }
+  ]
 }

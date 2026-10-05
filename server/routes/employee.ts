@@ -54,6 +54,17 @@ employeeRouter.put('/profile', async (req: AuthenticatedRequest, res) => {
       nfcEnabled,
     });
 
+    await db.logActivity({
+      actorId: user.id,
+      actorName: updatedProfile.fullName || user.employeeId,
+      actorRole: user.role,
+      action: 'PROFILE_UPDATE',
+      category: 'PROFILE',
+      targetId: user.id,
+      targetName: `${updatedProfile.fullName} (${user.employeeId})`,
+      details: 'Employee updated personal contact and business card information',
+    });
+
     res.json({
       message: 'Profile updated successfully.',
       profile: updatedProfile,
@@ -87,6 +98,16 @@ employeeRouter.post('/change-password', async (req: AuthenticatedRequest, res) =
     }
 
     await db.updatePassword(user.id, newPassword);
+
+    await db.logActivity({
+      actorId: user.id,
+      actorName: user.employeeId,
+      actorRole: user.role,
+      action: 'PASSWORD_CHANGE',
+      category: 'PROFILE',
+      targetId: user.id,
+      details: 'Employee updated account password',
+    });
 
     res.json({ message: 'Password updated successfully. Please use your new password next time.' });
   } catch (err: any) {

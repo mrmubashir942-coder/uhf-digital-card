@@ -6,6 +6,9 @@ import {
   EmployeeProfile,
   FullEmployee,
   PublicCardData,
+  ActivityLog,
+  ActivityCategory,
+  ActivityActionType,
 } from '../types/index.ts';
 
 const TOKEN_KEY = 'uhf_auth_token';
@@ -226,6 +229,25 @@ export const api = {
       return request('/api/admin/company', {
         method: 'PUT',
         body: JSON.stringify(payload),
+      });
+    },
+    getLogs: async (params?: {
+      limit?: number;
+      category?: ActivityCategory;
+      action?: ActivityActionType;
+      search?: string;
+    }): Promise<{ logs: ActivityLog[]; total: number }> => {
+      const q = new URLSearchParams();
+      if (params?.limit) q.set('limit', params.limit.toString());
+      if (params?.category) q.set('category', params.category);
+      if (params?.action) q.set('action', params.action);
+      if (params?.search) q.set('search', params.search);
+      const qs = q.toString() ? `?${q.toString()}` : '';
+      return request<{ logs: ActivityLog[]; total: number }>(`/api/admin/logs${qs}`);
+    },
+    clearLogs: async (): Promise<{ message: string }> => {
+      return request<{ message: string }>('/api/admin/logs', {
+        method: 'DELETE',
       });
     },
   },

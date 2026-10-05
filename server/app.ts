@@ -88,6 +88,20 @@ export function createExpressApp(): Express {
   app.use('/api/upload', uploadRouter);
   app.use('/upload', uploadRouter);
 
+  // Serve uploaded images from data/assets
+  const ASSETS_DIR = path.resolve(process.cwd(), 'data/assets');
+  app.use('/api/assets', express.static(ASSETS_DIR));
+  app.use('/assets', express.static(ASSETS_DIR));
+  app.get(['/api/assets/:filename', '/assets/:filename'], (req: Request, res: Response) => {
+    const filename = path.basename(req.params.filename);
+    const filePath = path.resolve(ASSETS_DIR, filename);
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).json({ error: 'Asset not found' });
+    }
+  });
+
   return app;
 }
 

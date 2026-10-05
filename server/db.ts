@@ -11,6 +11,9 @@ import {
   AccountStatus,
   Role,
   DashboardStats,
+  ActivityLog,
+  ActivityActionType,
+  ActivityCategory,
 } from '../src/types/index.ts';
 
 const getSafeDirname = (): string => {
@@ -37,12 +40,14 @@ export interface DatabaseSchema {
   users: StoredUser[];
   profiles: EmployeeProfile[];
   companySettings: CompanySettings;
+  activityLogs: ActivityLog[];
 }
 
 class Database {
   private data: DatabaseSchema = {
     users: [],
     profiles: [],
+    activityLogs: [],
     companySettings: {
       id: 'default-uhf-company',
       companyName: 'UHF Solutions',
@@ -90,6 +95,9 @@ class Database {
         try {
           const raw = fs.readFileSync(cand, 'utf-8');
           this.data = JSON.parse(raw);
+          if (!Array.isArray(this.data.activityLogs)) {
+            this.data.activityLogs = this.getInitialActivityLogs();
+          }
           this.isLoaded = true;
           return;
         } catch (err) {
@@ -165,6 +173,7 @@ class Database {
     });
 
     this.data.companySettings = seed.company;
+    this.data.activityLogs = this.getInitialActivityLogs();
     this.isLoaded = true;
     await this.save();
     console.log('Database initialized successfully with UHF Solutions default records.');
@@ -616,6 +625,171 @@ class Database {
       departments: Array.from(departmentSet),
       recentEmployees: recent.slice(0, 5),
     };
+  }
+
+  private getInitialActivityLogs(): ActivityLog[] {
+    const now = Date.now();
+    return [
+      {
+        id: `log_init_1`,
+        timestamp: new Date(now - 1000 * 60 * 180).toISOString(),
+        actorId: 'usr_admin_001',
+        actorName: 'UHF Administrator',
+        actorRole: 'ADMIN',
+        action: 'LOGIN',
+        category: 'AUTH',
+        details: 'Administrator signed in to management portal',
+      },
+      {
+        id: `log_init_2`,
+        timestamp: new Date(now - 1000 * 60 * 150).toISOString(),
+        actorId: 'usr_admin_001',
+        actorName: 'UHF Administrator',
+        actorRole: 'ADMIN',
+        action: 'COMPANY_SETTINGS_UPDATE',
+        category: 'ADMIN',
+        details: 'Updated corporate office address and primary brand colors',
+      },
+      {
+        id: `log_init_3`,
+        timestamp: new Date(now - 1000 * 60 * 110).toISOString(),
+        actorId: 'usr_emp_1',
+        actorName: 'Muhammad Ahmed',
+        actorRole: 'EMPLOYEE',
+        action: 'PROFILE_UPDATE',
+        category: 'PROFILE',
+        targetId: 'usr_emp_1',
+        targetName: 'Muhammad Ahmed (UHF-001)',
+        details: 'Updated contact phone number and LinkedIn profile URL',
+      },
+      {
+        id: `log_init_4`,
+        timestamp: new Date(now - 1000 * 60 * 65).toISOString(),
+        actorName: 'Enterprise Client Visitor',
+        actorRole: 'PUBLIC',
+        action: 'CARD_VIEW',
+        category: 'INTERACTION',
+        targetId: 'usr_emp_1',
+        targetName: 'Muhammad Ahmed (UHF-001)',
+        details: 'Digital business card viewed via NFC tap simulation',
+      },
+      {
+        id: `log_init_5`,
+        timestamp: new Date(now - 1000 * 60 * 30).toISOString(),
+        actorName: 'Conference Attendee',
+        actorRole: 'PUBLIC',
+        action: 'VCARD_DOWNLOAD',
+        category: 'INTERACTION',
+        targetId: 'usr_emp_1',
+        targetName: 'Muhammad Ahmed (UHF-001)',
+        details: 'Downloaded contact vCard (.vcf) file to mobile contacts',
+      },
+      {
+        id: `log_init_6`,
+        timestamp: new Date(now - 1000 * 60 * 10).toISOString(),
+        actorName: 'Visitor',
+        actorRole: 'PUBLIC',
+        action: 'QR_CODE_DOWNLOAD',
+        category: 'INTERACTION',
+        targetId: 'usr_emp_2',
+        targetName: 'Ali Khan (UHF-002)',
+        details: 'Scanned dynamic badge QR code',
+      },
+    ];
+  }
+
+  public async logActivity(log: {
+    actorId?: string;
+    actorName?: string;
+    actorRole?: Role | 'PUBLIC' | 'SYSTEM';
+    action: ActivityActionType;
+    category: ActivityCategory;
+    targetId?: string;
+    targetName?: string;
+    details: string;
+    ipAddress?: string;
+    userAgent?: string;
+  }): Promise<ActivityLog> {
+    await this.init();
+    if (!Array.isArray(this.data.activityLogs)) {
+      this.data.activityLogs = [];
+    }
+
+    const newLog: ActivityLog = {
+      id: `log_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+      timestamp: new Date().toISOString(),
+      actorId: log.actorId,
+      actorName: log.actorName || 'System',
+      actorRole: log.actorRole || 'SYSTEM',
+      action: log.action,
+      category: log.category,
+      targetId: log.targetId,
+      targetName: log.targetName,
+      details: log.details,
+      ipAddress: log.ipAddress,
+      userAgent: log.userAgent,
+    };
+
+    this.data.activityLogs.unshift(newLog);
+
+    // Keep the most recent 1000 activity logs
+    if (this.data.activityLogs.length > 1000) {
+      this.data.activityLogs = this.data.activityLogs.slice(0, 1000);
+    }
+
+    await this.save();
+    return newLog;
+  }
+
+  public async getActivityLogs(options?: {
+    limit?: number;
+    category?: ActivityCategory;
+    action?: ActivityActionType;
+    search?: string;
+    actorId?: string;
+  }): Promise<{ logs: ActivityLog[]; total: number }> {
+    await this.init();
+    if (!Array.isArray(this.data.activityLogs)) {
+      this.data.activityLogs = this.getInitialActivityLogs();
+    }
+
+    let logs = [...this.data.activityLogs];
+
+    if (options?.category) {
+      logs = logs.filter((l) => l.category === options.category);
+    }
+
+    if (options?.action) {
+      logs = logs.filter((l) => l.action === options.action);
+    }
+
+    if (options?.actorId) {
+      logs = logs.filter((l) => l.actorId === options.actorId);
+    }
+
+    if (options?.search) {
+      const q = options.search.toLowerCase().trim();
+      logs = logs.filter(
+        (l) =>
+          l.actorName.toLowerCase().includes(q) ||
+          l.details.toLowerCase().includes(q) ||
+          (l.targetName && l.targetName.toLowerCase().includes(q)) ||
+          l.action.toLowerCase().includes(q)
+      );
+    }
+
+    const total = logs.length;
+    const limit = options?.limit ? Math.min(options.limit, 200) : 50;
+    return {
+      logs: logs.slice(0, limit),
+      total,
+    };
+  }
+
+  public async clearActivityLogs(): Promise<void> {
+    await this.init();
+    this.data.activityLogs = [];
+    await this.save();
   }
 }
 

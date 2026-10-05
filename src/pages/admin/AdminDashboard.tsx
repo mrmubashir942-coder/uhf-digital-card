@@ -3,6 +3,7 @@ import { api } from '../../lib/api.ts';
 import { DashboardStats, FullEmployee } from '../../types/index.ts';
 import { Button } from '../../components/common/Button.tsx';
 import { QRCodeModal } from '../../components/card/QRCodeModal.tsx';
+import { ActivityLogsSection } from '../../components/admin/ActivityLogsSection.tsx';
 import { useToast } from '../../context/ToastContext.tsx';
 import {
   Users,
@@ -305,6 +306,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigate }) =>
           <div className="p-12 text-center text-[#64748B] text-sm">No employees found.</div>
         )}
       </div>
+
+      {/* Enterprise Activity Logging & Audit Trail Section */}
+      <ActivityLogsSection onNavigate={onNavigate} />
 
       {/* QR Code Modal for clicked employee */}
       {selectedQrEmployee && (

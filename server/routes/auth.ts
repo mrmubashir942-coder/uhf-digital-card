@@ -54,6 +54,17 @@ authRouter.post('/login', async (req, res) => {
 
     const { passwordHash: _, ...safeUser } = user;
 
+    await db.logActivity({
+      actorId: user.id,
+      actorName: profile?.fullName || user.employeeId,
+      actorRole: user.role,
+      action: 'LOGIN',
+      category: 'AUTH',
+      targetId: user.id,
+      targetName: `${profile?.fullName || user.employeeId} (${user.employeeId})`,
+      details: `${user.role === 'ADMIN' ? 'Administrator' : 'Employee'} authenticated successfully via portal login`,
+    });
+
     res.json({
       token,
       user: {
@@ -88,7 +99,16 @@ authRouter.get('/me', requireAuth, async (req: AuthenticatedRequest, res) => {
 });
 
 // POST /api/auth/logout
-authRouter.post('/logout', (req, res) => {
+authRouter.post('/logout', async (req, res) => {
+  try {
+    await db.logActivity({
+      actorName: 'User Session',
+      actorRole: 'SYSTEM',
+      action: 'LOGOUT',
+      category: 'AUTH',
+      details: 'User session terminated / logged out from device',
+    });
+  } catch {}
   res.clearCookie('token');
   res.json({ message: 'Successfully logged out.' });
 });

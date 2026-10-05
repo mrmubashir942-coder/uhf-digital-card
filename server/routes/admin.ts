@@ -18,6 +18,49 @@ adminRouter.get('/stats', async (_req, res) => {
   }
 });
 
+// GET /api/admin/logs
+adminRouter.get('/logs', async (req, res) => {
+  try {
+    const { limit, category, action, search, actorId } = req.query as {
+      limit?: string;
+      category?: any;
+      action?: any;
+      search?: string;
+      actorId?: string;
+    };
+
+    const parsedLimit = limit ? parseInt(limit, 10) : 50;
+    const result = await db.getActivityLogs({
+      limit: isNaN(parsedLimit) ? 50 : parsedLimit,
+      category,
+      action,
+      search,
+      actorId,
+    });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to retrieve activity audit logs.' });
+  }
+});
+
+// DELETE /api/admin/logs (Clear audit trail)
+adminRouter.delete('/logs', async (req: AuthenticatedRequest, res) => {
+  try {
+    await db.clearActivityLogs();
+    await db.logActivity({
+      actorId: req.user?.id,
+      actorName: req.user?.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'EMPLOYEE_STATUS_CHANGE',
+      category: 'ADMIN',
+      details: 'Audit trail activity log history was cleared by administrator',
+    });
+    res.json({ message: 'Activity log history cleared successfully.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to clear activity logs.' });
+  }
+});
+
 // GET /api/admin/next-id
 adminRouter.get('/next-id', async (_req, res) => {
   try {
@@ -114,6 +157,17 @@ adminRouter.post('/employees', async (req, res) => {
       status: status || 'ACTIVE',
     });
 
+    await db.logActivity({
+      actorId: (req as AuthenticatedRequest).user?.id,
+      actorName: (req as AuthenticatedRequest).user?.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'EMPLOYEE_CREATE',
+      category: 'ADMIN',
+      targetId: employee.id,
+      targetName: `${employee.profile.fullName} (${employee.employeeId})`,
+      details: `Created new employee record in department: ${employee.profile.department}`,
+    });
+
     res.status(201).json({
       message: 'Employee successfully created.',
       employee,
@@ -129,6 +183,18 @@ adminRouter.put('/employees/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const updated = await db.updateEmployee(id, req.body);
+
+    await db.logActivity({
+      actorId: (req as AuthenticatedRequest).user?.id,
+      actorName: (req as AuthenticatedRequest).user?.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'EMPLOYEE_UPDATE',
+      category: 'ADMIN',
+      targetId: updated.id,
+      targetName: `${updated.profile.fullName} (${updated.employeeId})`,
+      details: `Updated employee profile and settings for ${updated.profile.fullName}`,
+    });
+
     res.json({
       message: 'Employee updated successfully.',
       employee: updated,
@@ -145,6 +211,17 @@ adminRouter.patch('/employees/:id/status', async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     const newStatus = await db.toggleStatus(id, status);
+
+    await db.logActivity({
+      actorId: (req as AuthenticatedRequest).user?.id,
+      actorName: (req as AuthenticatedRequest).user?.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'EMPLOYEE_STATUS_CHANGE',
+      category: 'ADMIN',
+      targetId: id,
+      details: `Changed employee account status to ${newStatus}`,
+    });
+
     res.json({
       message: `Employee account status updated to ${newStatus}.`,
       status: newStatus,
@@ -166,6 +243,17 @@ adminRouter.post('/employees/:id/reset-password', async (req, res) => {
     }
 
     await db.updatePassword(id, newPassword);
+
+    await db.logActivity({
+      actorId: (req as AuthenticatedRequest).user?.id,
+      actorName: (req as AuthenticatedRequest).user?.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'PASSWORD_CHANGE',
+      category: 'ADMIN',
+      targetId: id,
+      details: `Administrator initiated password reset for employee`,
+    });
+
     res.json({ message: 'Password has been successfully reset.' });
   } catch (err: any) {
     res.status(400).json({ error: err.message || 'Failed to reset password.' });
@@ -184,6 +272,17 @@ adminRouter.delete('/employees/:id', async (req: AuthenticatedRequest, res) => {
     }
 
     await db.deleteEmployee(id);
+
+    await db.logActivity({
+      actorId: currentAdmin.id,
+      actorName: currentAdmin.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'EMPLOYEE_STATUS_CHANGE',
+      category: 'ADMIN',
+      targetId: id,
+      details: `Deleted employee record (ID: ${id})`,
+    });
+
     res.json({ message: 'Employee successfully deleted.' });
   } catch (err: any) {
     res.status(400).json({ error: err.message || 'Failed to delete employee.' });
@@ -204,6 +303,16 @@ adminRouter.get('/company', async (_req, res) => {
 adminRouter.put('/company', async (req, res) => {
   try {
     const settings = await db.updateCompanySettings(req.body);
+
+    await db.logActivity({
+      actorId: (req as AuthenticatedRequest).user?.id,
+      actorName: (req as AuthenticatedRequest).user?.employeeId || 'Administrator',
+      actorRole: 'ADMIN',
+      action: 'COMPANY_SETTINGS_UPDATE',
+      category: 'ADMIN',
+      details: `Updated corporate company settings (${settings.companyName})`,
+    });
+
     res.json({
       message: 'Company settings updated successfully.',
       company: settings,

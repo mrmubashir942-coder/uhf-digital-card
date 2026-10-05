@@ -102,6 +102,15 @@ uploadRouter.post(
         await deleteFromCloudinary(prevPublicId);
       }
 
+      await db.logActivity({
+        actorId: req.user?.id,
+        actorName: req.user?.employeeId || 'Administrator',
+        actorRole: 'ADMIN',
+        action: 'COMPANY_LOGO_UPLOAD',
+        category: 'ADMIN',
+        details: 'Uploaded and updated corporate company logo',
+      });
+
       res.json({
         message: 'Company logo uploaded and updated successfully.',
         url: uploadResult.secureUrl,
@@ -191,6 +200,17 @@ uploadRouter.post(
           await deleteFromCloudinary(prevPublicId);
         }
       }
+
+      await db.logActivity({
+        actorId: currentUser.id,
+        actorName: currentUser.employeeId,
+        actorRole: currentUser.role,
+        action: 'PHOTO_UPLOAD',
+        category: 'PROFILE',
+        targetId: targetEmployeeId,
+        targetName: employee?.profile.fullName || targetEmployeeId,
+        details: `${currentUser.role === 'ADMIN' ? 'Administrator' : 'Employee'} uploaded new profile photo for ${targetEmployeeId}`,
+      });
 
       res.json({
         message: 'Profile photo uploaded and updated successfully.',

@@ -108,3 +108,35 @@ export interface DashboardStats {
   departments: string[];
   recentEmployees: FullEmployee[];
 }
+
+export type ActivityActionType =
+  | 'LOGIN'
+  | 'LOGOUT'
+  | 'PROFILE_UPDATE'
+  | 'PASSWORD_CHANGE'
+  | 'PHOTO_UPLOAD'
+  | 'EMPLOYEE_CREATE'
+  | 'EMPLOYEE_UPDATE'
+  | 'EMPLOYEE_STATUS_CHANGE'
+  | 'COMPANY_SETTINGS_UPDATE'
+  | 'COMPANY_LOGO_UPLOAD'
+  | 'CARD_VIEW'
+  | 'VCARD_DOWNLOAD'
+  | 'QR_CODE_DOWNLOAD';
+
+export type ActivityCategory = 'AUTH' | 'PROFILE' | 'ADMIN' | 'INTERACTION';
+
+export interface ActivityLog {
+  id: string;
+  timestamp: string;
+  actorId?: string;
+  actorName: string;
+  actorRole: Role | 'PUBLIC' | 'SYSTEM';
+  action: ActivityActionType;
+  category: ActivityCategory;
+  targetId?: string;
+  targetName?: string;
+  details: string;
+  ipAddress?: string;
+  userAgent?: string;
+}
