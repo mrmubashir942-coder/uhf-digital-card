@@ -1,5 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
+import fs from 'fs';
+import path from 'path';
 import { authRouter } from './routes/auth.ts';
 import { publicRouter } from './routes/public.ts';
 import { employeeRouter } from './routes/employee.ts';
@@ -31,12 +33,41 @@ export function createExpressApp(): Express {
   });
 
   // Health check endpoint (available at both /api/health and /health)
-  const healthHandler = (_req: Request, res: Response) => {
-    res.json({
-      status: 'healthy',
-      app: 'UHF Solutions Digital Card',
-      timestamp: new Date().toISOString(),
-    });
+  // Provides safe diagnostics without exposing secrets
+  const healthHandler = async (_req: Request, res: Response) => {
+    try {
+      await db.init();
+      const users = await db.getAllEmployees();
+
+      res.json({
+        status: 'healthy',
+        app: 'UHF Solutions Digital Card',
+        functionRunning: true,
+        database: {
+          initialized: true,
+          provider: 'local-json-firestore',
+          employeeCount: users.length,
+        },
+        jwtConfigured: Boolean(process.env.JWT_SECRET && process.env.JWT_SECRET.trim().length > 0),
+        storage: {
+          cloudinaryConfigured: Boolean(
+            process.env.CLOUDINARY_CLOUD_NAME &&
+            process.env.CLOUDINARY_API_KEY &&
+            process.env.CLOUDINARY_API_SECRET
+          ),
+          firestoreConfigured: fs.existsSync(path.resolve(process.cwd(), 'firebase-applet-config.json')),
+        },
+        nodeEnv: process.env.NODE_ENV || 'development',
+        timestamp: new Date().toISOString(),
+      });
+    } catch (err: any) {
+      res.status(500).json({
+        status: 'degraded',
+        functionRunning: true,
+        error: err.message || 'Health check encountered an issue',
+        timestamp: new Date().toISOString(),
+      });
+    }
   };
   app.get('/api/health', healthHandler);
   app.get('/health', healthHandler);

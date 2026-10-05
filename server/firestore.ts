@@ -4,9 +4,20 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const CONFIG_PATH = path.resolve(__dirname, '../firebase-applet-config.json');
+const getSafeDirname = (): string => {
+  try {
+    if (typeof __dirname !== 'undefined' && __dirname) {
+      return __dirname;
+    }
+    if (typeof import.meta !== 'undefined' && import.meta && import.meta.url) {
+      return path.dirname(fileURLToPath(import.meta.url));
+    }
+  } catch {}
+  return process.cwd();
+};
+
+const _dir = getSafeDirname();
+const CONFIG_PATH = path.resolve(_dir, '../firebase-applet-config.json');
 
 let firestoreInstance: any = null;
 
@@ -17,8 +28,8 @@ function getFirestoreDb() {
     const candidatePaths = [
       CONFIG_PATH,
       path.resolve(process.cwd(), 'firebase-applet-config.json'),
-      path.resolve(__dirname, '../firebase-applet-config.json'),
-      path.resolve(__dirname, '../../firebase-applet-config.json'),
+      path.resolve(_dir, '../firebase-applet-config.json'),
+      path.resolve(_dir, '../../firebase-applet-config.json'),
     ];
 
     let foundConfig: any = null;

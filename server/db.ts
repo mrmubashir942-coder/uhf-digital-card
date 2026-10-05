@@ -13,9 +13,20 @@ import {
   DashboardStats,
 } from '../src/types/index.ts';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DATA_DIR = path.resolve(__dirname, '../data');
+const getSafeDirname = (): string => {
+  try {
+    if (typeof __dirname !== 'undefined' && __dirname) {
+      return __dirname;
+    }
+    if (typeof import.meta !== 'undefined' && import.meta && import.meta.url) {
+      return path.dirname(fileURLToPath(import.meta.url));
+    }
+  } catch {}
+  return process.cwd();
+};
+
+const _dir = getSafeDirname();
+const DATA_DIR = path.resolve(_dir, '../data');
 const DB_PATH = path.resolve(DATA_DIR, 'db.json');
 
 export interface StoredUser extends User {
@@ -69,9 +80,9 @@ class Database {
     const candidatePaths = [
       DB_PATH,
       path.resolve(process.cwd(), 'data/db.json'),
-      path.resolve(__dirname, '../data/db.json'),
-      path.resolve(__dirname, '../../data/db.json'),
-      path.resolve(__dirname, 'data/db.json'),
+      path.resolve(_dir, '../data/db.json'),
+      path.resolve(_dir, '../../data/db.json'),
+      path.resolve(_dir, 'data/db.json'),
     ];
 
     for (const cand of candidatePaths) {
