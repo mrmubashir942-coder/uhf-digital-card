@@ -747,6 +747,9 @@ class Database {
     action?: ActivityActionType;
     search?: string;
     actorId?: string;
+    userId?: string;
+    startDate?: string;
+    endDate?: string;
   }): Promise<{ logs: ActivityLog[]; total: number }> {
     await this.init();
     if (!Array.isArray(this.data.activityLogs)) {
@@ -767,6 +770,36 @@ class Database {
       logs = logs.filter((l) => l.actorId === options.actorId);
     }
 
+    if (options?.userId) {
+      const uId = options.userId.trim().toLowerCase();
+      logs = logs.filter((l) => {
+        const actorMatch = l.actorId && l.actorId.toLowerCase().includes(uId);
+        const targetMatch = l.targetId && l.targetId.toLowerCase().includes(uId);
+        const nameMatch = l.actorName && l.actorName.toLowerCase().includes(uId);
+        const targetNameMatch = l.targetName && l.targetName.toLowerCase().includes(uId);
+        return Boolean(actorMatch || targetMatch || nameMatch || targetNameMatch);
+      });
+    }
+
+    if (options?.startDate) {
+      const start = new Date(options.startDate).getTime();
+      if (!isNaN(start)) {
+        logs = logs.filter((l) => new Date(l.timestamp).getTime() >= start);
+      }
+    }
+
+    if (options?.endDate) {
+      const endD = new Date(options.endDate);
+      // If only YYYY-MM-DD was provided, include the full end day up to 23:59:59.999
+      if (options.endDate.length === 10) {
+        endD.setHours(23, 59, 59, 999);
+      }
+      const end = endD.getTime();
+      if (!isNaN(end)) {
+        logs = logs.filter((l) => new Date(l.timestamp).getTime() <= end);
+      }
+    }
+
     if (options?.search) {
       const q = options.search.toLowerCase().trim();
       logs = logs.filter(
@@ -779,7 +812,7 @@ class Database {
     }
 
     const total = logs.length;
-    const limit = options?.limit ? Math.min(options.limit, 200) : 50;
+    const limit = options?.limit ? Math.min(options.limit, 500) : 50;
     return {
       logs: logs.slice(0, limit),
       total,

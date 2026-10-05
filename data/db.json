@@ -185,6 +185,18 @@
   },
   "activityLogs": [
     {
+      "id": "log_1791191078931_iui293",
+      "timestamp": "2026-10-05T09:04:38.931Z",
+      "actorId": "usr_admin_001",
+      "actorName": "Usman Farooqui",
+      "actorRole": "ADMIN",
+      "action": "LOGIN",
+      "category": "AUTH",
+      "targetId": "usr_admin_001",
+      "targetName": "Usman Farooqui (ADMIN-001)",
+      "details": "Administrator authenticated successfully via portal login"
+    },
+    {
       "id": "log_1791179681318_fvxi1z",
       "timestamp": "2026-10-05T05:54:41.318Z",
       "actorId": "usr_admin_001",

@@ -235,13 +235,21 @@ export const api = {
       limit?: number;
       category?: ActivityCategory;
       action?: ActivityActionType;
+      activityType?: ActivityActionType;
       search?: string;
+      userId?: string;
+      startDate?: string;
+      endDate?: string;
     }): Promise<{ logs: ActivityLog[]; total: number }> => {
       const q = new URLSearchParams();
       if (params?.limit) q.set('limit', params.limit.toString());
       if (params?.category) q.set('category', params.category);
-      if (params?.action) q.set('action', params.action);
+      const actionVal = params?.action || params?.activityType;
+      if (actionVal) q.set('action', actionVal);
       if (params?.search) q.set('search', params.search);
+      if (params?.userId) q.set('userId', params.userId);
+      if (params?.startDate) q.set('startDate', params.startDate);
+      if (params?.endDate) q.set('endDate', params.endDate);
       const qs = q.toString() ? `?${q.toString()}` : '';
       return request<{ logs: ActivityLog[]; total: number }>(`/api/admin/logs${qs}`);
     },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../../lib/api.ts';
-import { ActivityLog, ActivityCategory } from '../../types/index.ts';
+import { ActivityLog, ActivityCategory, ActivityActionType, FullEmployee } from '../../types/index.ts';
 import { Button } from '../common/Button.tsx';
 import {
   Activity,
@@ -23,7 +23,11 @@ import {
   Clock,
   Shield,
   Layers,
-  ChevronDown,
+  Calendar,
+  User,
+  Filter,
+  X,
+  RotateCcw,
   ExternalLink,
 } from 'lucide-react';
 
@@ -31,16 +35,55 @@ interface ActivityLogsSectionProps {
   onNavigate?: (path: string) => void;
 }
 
+const ACTION_OPTIONS: { value: ActivityActionType | 'ALL'; label: string; category?: ActivityCategory }[] = [
+  { value: 'ALL', label: 'All Activity Types' },
+  { value: 'LOGIN', label: 'User Login (AUTH)', category: 'AUTH' },
+  { value: 'LOGOUT', label: 'User Logout (AUTH)', category: 'AUTH' },
+  { value: 'CARD_VIEW', label: 'Digital Card Viewed (INTERACTION)', category: 'INTERACTION' },
+  { value: 'VCARD_DOWNLOAD', label: 'vCard (.vcf) Downloaded (INTERACTION)', category: 'INTERACTION' },
+  { value: 'QR_CODE_DOWNLOAD', label: 'QR Code Scanned/Saved (INTERACTION)', category: 'INTERACTION' },
+  { value: 'PROFILE_UPDATE', label: 'Profile Information Updated (PROFILE)', category: 'PROFILE' },
+  { value: 'PHOTO_UPLOAD', label: 'Photo/Avatar Uploaded (PROFILE)', category: 'PROFILE' },
+  { value: 'EMPLOYEE_CREATE', label: 'Employee Account Created (ADMIN)', category: 'ADMIN' },
+  { value: 'EMPLOYEE_UPDATE', label: 'Employee Record Updated (ADMIN)', category: 'ADMIN' },
+  { value: 'EMPLOYEE_STATUS_CHANGE', label: 'Account Status Toggled (ADMIN)', category: 'ADMIN' },
+  { value: 'COMPANY_SETTINGS_UPDATE', label: 'Company Settings Updated (ADMIN)', category: 'ADMIN' },
+  { value: 'COMPANY_LOGO_UPLOAD', label: 'Company Logo Uploaded (ADMIN)', category: 'ADMIN' },
+  { value: 'PASSWORD_CHANGE', label: 'Password Changed / Reset (AUTH/PROFILE)', category: 'PROFILE' },
+];
+
 export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavigate }) => {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  
+  // Filter States
   const [selectedCategory, setSelectedCategory] = useState<ActivityCategory | 'ALL'>('ALL');
+  const [selectedAction, setSelectedAction] = useState<ActivityActionType | 'ALL'>('ALL');
+  const [selectedUserId, setSelectedUserId] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [displayLimit, setDisplayLimit] = useState(25);
+  
+  // UI states
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(true);
   const [isClearing, setIsClearing] = useState(false);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [employeeDirectory, setEmployeeDirectory] = useState<FullEmployee[]>([]);
+
+  // Fetch employees list for quick user ID selection
+  useEffect(() => {
+    api.admin
+      .getEmployees()
+      .then((emps) => {
+        if (Array.isArray(emps)) {
+          setEmployeeDirectory(emps);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const fetchLogs = useCallback(
     async (isManualRefresh = false) => {
@@ -49,8 +92,12 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
 
       try {
         const data = await api.admin.getLogs({
-          limit: 150,
+          limit: 200,
           category: selectedCategory === 'ALL' ? undefined : selectedCategory,
+          action: selectedAction === 'ALL' ? undefined : selectedAction,
+          userId: selectedUserId.trim() || undefined,
+          startDate: startDate || undefined,
+          endDate: endDate || undefined,
           search: searchQuery.trim() || undefined,
         });
         setLogs(data.logs || []);
@@ -62,12 +109,64 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
         setRefreshing(false);
       }
     },
-    [selectedCategory, searchQuery]
+    [selectedCategory, selectedAction, selectedUserId, startDate, endDate, searchQuery]
   );
 
   useEffect(() => {
     fetchLogs();
   }, [fetchLogs]);
+
+  // Quick Date Presets
+  const applyDatePreset = (preset: 'today' | '7days' | '30days' | 'all') => {
+    if (preset === 'all') {
+      setStartDate('');
+      setEndDate('');
+      return;
+    }
+
+    const today = new Date();
+    const formatYMD = (d: Date) => d.toISOString().split('T')[0];
+    setEndDate(formatYMD(today));
+
+    if (preset === 'today') {
+      setStartDate(formatYMD(today));
+    } else if (preset === '7days') {
+      const past = new Date();
+      past.setDate(today.getDate() - 7);
+      setStartDate(formatYMD(past));
+    } else if (preset === '30days') {
+      const past = new Date();
+      past.setDate(today.getDate() - 30);
+      setStartDate(formatYMD(past));
+    }
+  };
+
+  const handleResetFilters = () => {
+    setSelectedCategory('ALL');
+    setSelectedAction('ALL');
+    setSelectedUserId('');
+    setStartDate('');
+    setEndDate('');
+    setSearchQuery('');
+    setDisplayLimit(25);
+  };
+
+  const hasActiveFilters = Boolean(
+    selectedCategory !== 'ALL' ||
+    selectedAction !== 'ALL' ||
+    selectedUserId.trim() !== '' ||
+    startDate !== '' ||
+    endDate !== '' ||
+    searchQuery.trim() !== ''
+  );
+
+  const activeFiltersCount = [
+    selectedCategory !== 'ALL',
+    selectedAction !== 'ALL',
+    Boolean(selectedUserId.trim()),
+    Boolean(startDate || endDate),
+    Boolean(searchQuery.trim()),
+  ].filter(Boolean).length;
 
   const handleClearLogs = async () => {
     setIsClearing(true);
@@ -266,14 +365,29 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
               </span>
             </div>
             <h2 className="text-lg sm:text-xl font-bold text-[#111827] tracking-tight">
-              Enterprise Activity Logs
+              Enterprise Activity Logs & Filters
             </h2>
             <p className="text-xs text-[#64748B] mt-0.5">
-              Real-time audit trail tracking public card interactions, profile edits, admin operations, and authentication events.
+              Filter audit history by date range, user ID, activity type, and keywords with real-time audit verification.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              leftIcon={<Filter className="w-3.5 h-3.5 text-[#2563EB]" />}
+              className={showAdvancedFilters ? 'bg-blue-50 border-blue-200 text-[#2563EB]' : ''}
+            >
+              <span>Filters</span>
+              {activeFiltersCount > 0 && (
+                <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#2563EB] text-white">
+                  {activeFiltersCount}
+                </span>
+              )}
+            </Button>
+
             <Button
               variant="outline"
               size="sm"
@@ -307,7 +421,7 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
           </div>
         </div>
 
-        {/* Filter Pills */}
+        {/* Category Pills */}
         <div className="flex flex-wrap items-center gap-2 mt-6 pt-4 border-t border-[#E5E7EB]">
           <button
             onClick={() => setSelectedCategory('ALL')}
@@ -318,7 +432,7 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            <span>All Activities</span>
+            <span>All Categories</span>
             <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-slate-200/50">
               {categoryCounts.ALL}
             </span>
@@ -333,7 +447,7 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
             }`}
           >
             <Eye className="w-3.5 h-3.5" />
-            <span>Employee Interactions</span>
+            <span>Interactions</span>
             <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-blue-200/60">
               {categoryCounts.INTERACTION}
             </span>
@@ -385,13 +499,139 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
           </button>
         </div>
 
+        {/* Dedicated Filters Section: Date Range, User ID, and Activity Type */}
+        {showAdvancedFilters && (
+          <div className="mt-5 p-4 rounded-xl bg-slate-50 border border-[#E5E7EB] space-y-4 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {/* 1. Date Range: Start Date */}
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-[#64748B] mb-1.5 flex items-center gap-1">
+                  <Calendar className="w-3 h-3 text-[#2563EB]" />
+                  <span>Start Date</span>
+                </label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-[#E5E7EB] rounded-lg text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+                />
+              </div>
+
+              {/* 2. Date Range: End Date */}
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-[#64748B] mb-1.5 flex items-center gap-1">
+                  <Calendar className="w-3 h-3 text-[#2563EB]" />
+                  <span>End Date</span>
+                </label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-[#E5E7EB] rounded-lg text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+                />
+              </div>
+
+              {/* 3. User ID Filter */}
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-[#64748B] mb-1.5 flex items-center gap-1">
+                  <User className="w-3 h-3 text-[#2563EB]" />
+                  <span>User / Employee ID</span>
+                </label>
+                <div className="flex gap-1">
+                  <input
+                    type="text"
+                    placeholder="e.g. UHF-001 or admin"
+                    value={selectedUserId}
+                    onChange={(e) => setSelectedUserId(e.target.value)}
+                    list="employee-suggestions"
+                    className="w-full px-3 py-1.5 text-xs bg-white border border-[#E5E7EB] rounded-lg text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+                  />
+                  <datalist id="employee-suggestions">
+                    <option value="ADMIN-001">ADMIN-001 (Administrator)</option>
+                    {employeeDirectory.map((emp) => (
+                      <option key={emp.id} value={emp.employeeId}>
+                        {emp.employeeId} ({emp.profile.fullName})
+                      </option>
+                    ))}
+                  </datalist>
+                </div>
+              </div>
+
+              {/* 4. Activity Type Filter */}
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-[#64748B] mb-1.5 flex items-center gap-1">
+                  <Activity className="w-3 h-3 text-[#2563EB]" />
+                  <span>Activity Type</span>
+                </label>
+                <select
+                  value={selectedAction}
+                  onChange={(e) => setSelectedAction(e.target.value as any)}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-[#E5E7EB] rounded-lg text-[#111827] font-medium focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+                >
+                  {ACTION_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Quick Date Presets & Filter Actions */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200/60">
+              <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                <span className="text-[11px] text-[#64748B] font-semibold mr-1">Date presets:</span>
+                <button
+                  type="button"
+                  onClick={() => applyDatePreset('today')}
+                  className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-[#E5E7EB] text-[11px] font-medium text-[#111827] transition-colors cursor-pointer"
+                >
+                  Today
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyDatePreset('7days')}
+                  className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-[#E5E7EB] text-[11px] font-medium text-[#111827] transition-colors cursor-pointer"
+                >
+                  Last 7 Days
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyDatePreset('30days')}
+                  className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-[#E5E7EB] text-[11px] font-medium text-[#111827] transition-colors cursor-pointer"
+                >
+                  Last 30 Days
+                </button>
+                <button
+                  type="button"
+                  onClick={() => applyDatePreset('all')}
+                  className="px-2 py-1 rounded bg-white hover:bg-slate-200 border border-[#E5E7EB] text-[11px] font-medium text-[#64748B] transition-colors cursor-pointer"
+                >
+                  All Dates
+                </button>
+              </div>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset All Filters</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Search bar & display limit */}
         <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="relative w-full sm:w-80">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
             <input
               type="text"
-              placeholder="Filter by actor, employee ID, details..."
+              placeholder="Search details, actor, target record..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#2563EB] focus:border-[#2563EB]"
@@ -399,19 +639,87 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
           </div>
 
           <div className="flex items-center gap-2 self-end sm:self-auto text-xs text-[#64748B]">
-            <span>Showing:</span>
+            <span>Records per view:</span>
             <select
               value={displayLimit}
               onChange={(e) => setDisplayLimit(Number(e.target.value))}
               className="px-2 py-1 bg-white border border-[#E5E7EB] rounded-md text-xs font-semibold text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
             >
-              <option value={10}>10 records</option>
-              <option value={25}>25 records</option>
-              <option value={50}>50 records</option>
-              <option value={100}>100 records</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
             </select>
           </div>
         </div>
+
+        {/* Active Filter Tags */}
+        {hasActiveFilters && (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 pt-2">
+            <span className="text-[11px] text-[#64748B] font-semibold">Active filters:</span>
+
+            {startDate && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                From: {startDate}
+                <button onClick={() => setStartDate('')} className="hover:text-blue-900 cursor-pointer">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+
+            {endDate && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                To: {endDate}
+                <button onClick={() => setEndDate('')} className="hover:text-blue-900 cursor-pointer">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+
+            {selectedUserId && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-purple-50 text-purple-700 border border-purple-200">
+                User: {selectedUserId}
+                <button onClick={() => setSelectedUserId('')} className="hover:text-purple-900 cursor-pointer">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+
+            {selectedAction !== 'ALL' && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-indigo-50 text-indigo-700 border border-indigo-200">
+                Type: {selectedAction}
+                <button onClick={() => setSelectedAction('ALL')} className="hover:text-indigo-900 cursor-pointer">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+
+            {selectedCategory !== 'ALL' && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-300">
+                Category: {selectedCategory}
+                <button onClick={() => setSelectedCategory('ALL')} className="hover:text-slate-900 cursor-pointer">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+
+            {searchQuery && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                Keyword: &ldquo;{searchQuery}&rdquo;
+                <button onClick={() => setSearchQuery('')} className="hover:text-amber-900 cursor-pointer">
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+
+            <button
+              onClick={handleResetFilters}
+              className="text-[11px] text-rose-600 hover:underline font-semibold ml-1 cursor-pointer"
+            >
+              Clear all
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Confirmation Modal for Clearing Logs */}
@@ -457,8 +765,8 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
             <thead className="bg-[#F8FAFC] text-[11px] font-bold uppercase tracking-wider text-[#64748B] border-b border-[#E5E7EB]">
               <tr>
                 <th className="py-3 px-6">Timestamp</th>
-                <th className="py-3 px-6">Action & Event</th>
-                <th className="py-3 px-6">Actor / Origin</th>
+                <th className="py-3 px-6">Action & Activity Type</th>
+                <th className="py-3 px-6">User / Actor</th>
                 <th className="py-3 px-6">Target Record</th>
                 <th className="py-3 px-6">Details & Context</th>
               </tr>
@@ -477,10 +785,15 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
                         <span>{formatRelativeTime(log.timestamp)}</span>
                       </div>
                       <span className="text-[10px] text-[#64748B] block mt-0.5">
+                        {new Date(log.timestamp).toLocaleDateString(undefined, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}{' '}
+                        •{' '}
                         {new Date(log.timestamp).toLocaleTimeString([], {
                           hour: '2-digit',
                           minute: '2-digit',
-                          second: '2-digit',
                         })}
                       </span>
                     </td>
@@ -495,19 +808,28 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
                       </span>
                     </td>
 
-                    {/* Actor */}
+                    {/* Actor / User ID */}
                     <td className="py-3.5 px-6 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <div>
+                      <div>
+                        <div className="flex items-center gap-1.5">
                           <p className="font-semibold text-[#111827] leading-tight">
                             {log.actorName}
                           </p>
-                          <span
-                            className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border mt-0.5 ${roleBadge}`}
-                          >
-                            {log.actorRole}
-                          </span>
+                          {log.actorId && (
+                            <button
+                              onClick={() => setSelectedUserId(log.actorId || '')}
+                              title="Filter logs by this User ID"
+                              className="text-[10px] text-[#2563EB] hover:underline font-mono"
+                            >
+                              ({log.actorId})
+                            </button>
+                          )}
                         </div>
+                        <span
+                          className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border mt-0.5 ${roleBadge}`}
+                        >
+                          {log.actorRole}
+                        </span>
                       </div>
                     </td>
 
@@ -532,7 +854,7 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
                           )}
                         </div>
                       ) : (
-                        <span className="text-[#94A3B8] italic text-[11px]">System / Self</span>
+                        <span className="text-[#94A3B8] italic text-[11px]">System / Corporate</span>
                       )}
                     </td>
 
@@ -548,10 +870,21 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
         ) : (
           <div className="p-12 text-center text-[#64748B] text-xs">
             <Activity className="w-8 h-8 text-[#CBD5E1] mx-auto mb-2" />
-            <p className="font-semibold text-[#111827]">No activity logs found</p>
-            <p className="text-slate-400 mt-1">
-              Try selecting a different category or clearing search keywords.
+            <p className="font-semibold text-[#111827]">No activity logs match the selected filters</p>
+            <p className="text-slate-400 mt-1 max-w-sm mx-auto">
+              No audit records were found matching your date range, user ID, or activity type criteria.
             </p>
+            {hasActiveFilters && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleResetFilters}
+                className="mt-3 text-xs"
+                leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
+              >
+                Clear all filters
+              </Button>
+            )}
           </div>
         )}
       </div>
@@ -559,10 +892,11 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
       {/* Footer Summary */}
       <div className="p-4 bg-[#F8FAFC] border-t border-[#E5E7EB] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#64748B]">
         <span>
-          Displaying {filteredLogs.length} of {totalCount} total logged actions
+          Showing {filteredLogs.length} of {totalCount} filtered actions
+          {hasActiveFilters && ` (filtered from ${categoryCounts.ALL} total entries)`}
         </span>
         <span className="text-[11px] text-[#94A3B8]">
-          UHF Enterprise Compliance Engine • SHA-256 Audit Trail
+          UHF Enterprise Compliance Engine • Real-Time Audit Log
         </span>
       </div>
     </div>

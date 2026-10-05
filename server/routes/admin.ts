@@ -21,21 +21,39 @@ adminRouter.get('/stats', async (_req, res) => {
 // GET /api/admin/logs
 adminRouter.get('/logs', async (req, res) => {
   try {
-    const { limit, category, action, search, actorId } = req.query as {
+    const {
+      limit,
+      category,
+      action,
+      activityType,
+      search,
+      actorId,
+      userId,
+      startDate,
+      endDate,
+    } = req.query as {
       limit?: string;
       category?: any;
       action?: any;
+      activityType?: any;
       search?: string;
       actorId?: string;
+      userId?: string;
+      startDate?: string;
+      endDate?: string;
     };
 
-    const parsedLimit = limit ? parseInt(limit, 10) : 50;
+    const resolvedAction = action || activityType;
+    const parsedLimit = limit ? parseInt(limit, 10) : 100;
     const result = await db.getActivityLogs({
-      limit: isNaN(parsedLimit) ? 50 : parsedLimit,
+      limit: isNaN(parsedLimit) ? 100 : parsedLimit,
       category,
-      action,
+      action: resolvedAction,
       search,
       actorId,
+      userId,
+      startDate,
+      endDate,
     });
     res.json(result);
   } catch (err) {
