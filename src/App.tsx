@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext.tsx';
 import { ToastProvider } from './context/ToastContext.tsx';
-import { Navbar } from './components/common/Navbar.tsx';
+import { AppLayout } from './components/common/AppLayout.tsx';
 import { LoginPage } from './pages/LoginPage.tsx';
 import { PublicDigitalCard } from './components/card/PublicDigitalCard.tsx';
 import { AdminDashboard } from './pages/admin/AdminDashboard.tsx';
@@ -139,10 +139,9 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] text-[#111827] flex flex-col font-sans">
-      <Navbar currentPath={currentPath} onNavigate={navigate} />
-      <main className="flex-1">{renderAuthenticatedPage()}</main>
-    </div>
+    <AppLayout currentPath={currentPath} onNavigate={navigate}>
+      {renderAuthenticatedPage()}
+    </AppLayout>
   );
 }
 

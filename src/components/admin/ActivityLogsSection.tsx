@@ -284,8 +284,8 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
         };
       case 'EMPLOYEE_STATUS_CHANGE':
         return {
-          icon: <Sliders className="w-3.5 h-3.5 text-amber-600" />,
-          bg: 'bg-amber-50 text-amber-700 border-amber-200',
+          icon: <Sliders className="w-3.5 h-3.5 text-sky-600" />,
+          bg: 'bg-sky-50 text-sky-700 border-sky-200',
           label: 'Status Change',
         };
       case 'COMPANY_SETTINGS_UPDATE':
@@ -704,9 +704,9 @@ export const ActivityLogsSection: React.FC<ActivityLogsSectionProps> = ({ onNavi
             )}
 
             {searchQuery && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-[#2563EB] border border-blue-200">
                 Keyword: &ldquo;{searchQuery}&rdquo;
-                <button onClick={() => setSearchQuery('')} className="hover:text-amber-900 cursor-pointer">
+                <button onClick={() => setSearchQuery('')} className="hover:text-blue-900 cursor-pointer">
                   <X className="w-3 h-3" />
                 </button>
               </span>

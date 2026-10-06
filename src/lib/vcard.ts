@@ -59,6 +59,14 @@ export function buildVCardString(cardData: PublicCardData): string {
     lines.push(`X-SOCIALPROFILE;type=linkedin:${escapeVCard(cardData.linkedin.trim())}`);
   }
 
+  if (cardData.twitter) {
+    lines.push(`X-SOCIALPROFILE;type=twitter:${escapeVCard(cardData.twitter.trim())}`);
+  }
+
+  if (cardData.github) {
+    lines.push(`X-SOCIALPROFILE;type=github:${escapeVCard(cardData.github.trim())}`);
+  }
+
   const address = cardData.officeAddress || cardData.company?.officeAddress;
   if (address) {
     lines.push(`ADR;TYPE=WORK:;;${escapeVCard(address.trim())};;;;`);

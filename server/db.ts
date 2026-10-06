@@ -316,6 +316,8 @@ class Database {
             showWhatsapp: true,
             showEmail: true,
             showLinkedin: true,
+            showTwitter: true,
+            showGithub: true,
             showAddress: true,
             createdAt: u.createdAt,
             updatedAt: u.updatedAt,
@@ -361,6 +363,8 @@ class Database {
     officePhone?: string;
     companyEmail?: string;
     linkedin?: string;
+    twitter?: string;
+    github?: string;
     website?: string;
     officeAddress?: string;
     bio?: string;
@@ -408,6 +412,8 @@ class Database {
       officePhone: payload.officePhone?.trim() || undefined,
       companyEmail: payload.companyEmail?.trim() || payload.email.trim(),
       linkedin: payload.linkedin?.trim() || undefined,
+      twitter: payload.twitter?.trim() || undefined,
+      github: payload.github?.trim() || undefined,
       website: payload.website?.trim() || undefined,
       officeAddress: payload.officeAddress?.trim() || undefined,
       bio: payload.bio?.trim() || undefined,
@@ -416,6 +422,8 @@ class Database {
       showWhatsapp: true,
       showEmail: true,
       showLinkedin: true,
+      showTwitter: true,
+      showGithub: true,
       showAddress: true,
       createdAt: now,
       updatedAt: now,
@@ -444,6 +452,8 @@ class Database {
       officePhone?: string;
       companyEmail?: string;
       linkedin?: string;
+      twitter?: string;
+      github?: string;
       website?: string;
       officeAddress?: string;
       bio?: string;
@@ -454,6 +464,8 @@ class Database {
       showWhatsapp?: boolean;
       showEmail?: boolean;
       showLinkedin?: boolean;
+      showTwitter?: boolean;
+      showGithub?: boolean;
       showAddress?: boolean;
       nfcEnabled?: boolean;
     }
@@ -496,6 +508,8 @@ class Database {
     if (payload.officePhone !== undefined) profile.officePhone = payload.officePhone.trim();
     if (payload.companyEmail !== undefined) profile.companyEmail = payload.companyEmail.trim();
     if (payload.linkedin !== undefined) profile.linkedin = payload.linkedin.trim();
+    if (payload.twitter !== undefined) profile.twitter = payload.twitter.trim();
+    if (payload.github !== undefined) profile.github = payload.github.trim();
     if (payload.website !== undefined) profile.website = payload.website.trim();
     if (payload.officeAddress !== undefined) profile.officeAddress = payload.officeAddress.trim();
     if (payload.bio !== undefined) profile.bio = payload.bio.trim();
@@ -504,6 +518,8 @@ class Database {
     if (payload.showWhatsapp !== undefined) profile.showWhatsapp = payload.showWhatsapp;
     if (payload.showEmail !== undefined) profile.showEmail = payload.showEmail;
     if (payload.showLinkedin !== undefined) profile.showLinkedin = payload.showLinkedin;
+    if (payload.showTwitter !== undefined) profile.showTwitter = payload.showTwitter;
+    if (payload.showGithub !== undefined) profile.showGithub = payload.showGithub;
     if (payload.showAddress !== undefined) profile.showAddress = payload.showAddress;
     if (payload.nfcEnabled !== undefined) profile.nfcEnabled = payload.nfcEnabled;
 
@@ -526,6 +542,8 @@ class Database {
       phone?: string;
       whatsapp?: string;
       linkedin?: string;
+      twitter?: string;
+      github?: string;
       website?: string;
       bio?: string;
       profilePhoto?: string;
@@ -542,6 +560,8 @@ class Database {
     if (allowed.phone !== undefined) profile.phone = allowed.phone.trim();
     if (allowed.whatsapp !== undefined) profile.whatsapp = allowed.whatsapp.trim();
     if (allowed.linkedin !== undefined) profile.linkedin = allowed.linkedin.trim();
+    if (allowed.twitter !== undefined) profile.twitter = allowed.twitter.trim();
+    if (allowed.github !== undefined) profile.github = allowed.github.trim();
     if (allowed.website !== undefined) profile.website = allowed.website.trim();
     if (allowed.bio !== undefined) profile.bio = allowed.bio.trim();
     if (allowed.profilePhoto !== undefined) profile.profilePhoto = allowed.profilePhoto;

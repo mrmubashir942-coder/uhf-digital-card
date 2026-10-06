@@ -25,6 +25,8 @@ export interface EmployeeProfile {
   officePhone?: string;
   companyEmail?: string;
   linkedin?: string;
+  twitter?: string;
+  github?: string;
   website?: string;
   officeAddress?: string;
   bio?: string;
@@ -34,6 +36,8 @@ export interface EmployeeProfile {
   showWhatsapp: boolean;
   showEmail: boolean;
   showLinkedin: boolean;
+  showTwitter?: boolean;
+  showGithub?: boolean;
   showAddress: boolean;
   createdAt: string;
   updatedAt: string;
@@ -84,6 +88,8 @@ export interface PublicCardData {
   email?: string;
   companyEmail?: string;
   linkedin?: string;
+  twitter?: string;
+  github?: string;
   website?: string;
   officeAddress?: string;
   bio?: string;

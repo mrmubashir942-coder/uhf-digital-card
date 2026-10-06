@@ -10,6 +10,8 @@ import {
   Phone,
   MessageSquare,
   Linkedin,
+  Twitter,
+  Github,
   Globe,
   Camera,
   Check,
@@ -30,6 +32,8 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
   const [phone, setPhone] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [linkedin, setLinkedin] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [github, setGithub] = useState('');
   const [website, setWebsite] = useState('');
   const [bio, setBio] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
@@ -49,6 +53,8 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
           setPhone(p.phone || '');
           setWhatsapp(p.whatsapp || '');
           setLinkedin(p.linkedin || '');
+          setTwitter(p.twitter || '');
+          setGithub(p.github || '');
           setWebsite(p.website || '');
           setBio(p.bio || '');
           setProfilePhoto(p.profilePhoto || '');
@@ -103,6 +109,8 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
         phone: phone.trim(),
         whatsapp: whatsapp.trim(),
         linkedin: linkedin.trim(),
+        twitter: twitter.trim(),
+        github: github.trim(),
         website: website.trim(),
         bio: bio.trim(),
         profilePhoto,
@@ -340,6 +348,26 @@ export const EmployeeProfilePage: React.FC<EmployeeProfilePageProps> = ({ onNavi
               value={linkedin}
               onChange={(e) => setLinkedin(e.target.value)}
               leftIcon={<Linkedin className="w-4 h-4" />}
+            />
+
+            <Input
+              label="Twitter / X Profile URL or Handle"
+              id="emp-twitter"
+              type="text"
+              placeholder="@username or https://twitter.com/username"
+              value={twitter}
+              onChange={(e) => setTwitter(e.target.value)}
+              leftIcon={<Twitter className="w-4 h-4" />}
+            />
+
+            <Input
+              label="GitHub Profile URL or Username"
+              id="emp-github"
+              type="text"
+              placeholder="username or https://github.com/username"
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+              leftIcon={<Github className="w-4 h-4" />}
             />
 
             <Input

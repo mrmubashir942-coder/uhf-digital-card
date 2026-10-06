@@ -69,6 +69,8 @@ publicRouter.get('/card/:employeeId', async (req, res) => {
       email: prof.showEmail ? employee.email : undefined,
       companyEmail: prof.showEmail ? (prof.companyEmail || employee.email) : undefined,
       linkedin: prof.showLinkedin ? prof.linkedin : undefined,
+      twitter: (prof.showTwitter !== false) ? prof.twitter : undefined,
+      github: (prof.showGithub !== false) ? prof.github : undefined,
       website: prof.website || company.website,
       officeAddress: prof.showAddress ? (prof.officeAddress || company.officeAddress) : undefined,
       bio: prof.bio,

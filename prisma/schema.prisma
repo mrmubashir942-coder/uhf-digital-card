@@ -50,6 +50,8 @@ model EmployeeProfile {
   officePhone   String?
   companyEmail  String?
   linkedin      String?
+  twitter       String?
+  github        String?
   website       String?
   officeAddress String?
   bio           String?
@@ -60,6 +62,8 @@ model EmployeeProfile {
   showWhatsapp  Boolean       @default(true)
   showEmail     Boolean       @default(true)
   showLinkedin  Boolean       @default(true)
+  showTwitter   Boolean       @default(true)
+  showGithub    Boolean       @default(true)
   showAddress   Boolean       @default(true)
 
   createdAt     DateTime      @default(now())

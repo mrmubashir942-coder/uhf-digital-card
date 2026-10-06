@@ -12,3 +12,21 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+@media print {
+  body {
+    background: white !important;
+    background-color: white !important;
+    color: #0F172A !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Prevent browser header/footer clipping and clean up printable region */
+  header,
+  aside,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+}

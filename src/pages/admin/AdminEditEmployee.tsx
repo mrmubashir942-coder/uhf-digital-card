@@ -13,6 +13,8 @@ import {
   MessageSquare,
   Globe,
   Linkedin,
+  Twitter,
+  Github,
   MapPin,
   Camera,
   ArrowLeft,
@@ -48,6 +50,8 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
   const [officePhone, setOfficePhone] = useState('');
   const [companyEmail, setCompanyEmail] = useState('');
   const [linkedin, setLinkedin] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [github, setGithub] = useState('');
   const [website, setWebsite] = useState('');
   const [officeAddress, setOfficeAddress] = useState('');
   const [bio, setBio] = useState('');
@@ -61,6 +65,8 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
   const [showWhatsapp, setShowWhatsapp] = useState(true);
   const [showEmail, setShowEmail] = useState(true);
   const [showLinkedin, setShowLinkedin] = useState(true);
+  const [showTwitter, setShowTwitter] = useState(true);
+  const [showGithub, setShowGithub] = useState(true);
   const [showAddress, setShowAddress] = useState(true);
 
   useEffect(() => {
@@ -81,6 +87,8 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
           setOfficePhone(data.profile.officePhone || '');
           setCompanyEmail(data.profile.companyEmail || '');
           setLinkedin(data.profile.linkedin || '');
+          setTwitter(data.profile.twitter || '');
+          setGithub(data.profile.github || '');
           setWebsite(data.profile.website || '');
           setOfficeAddress(data.profile.officeAddress || '');
           setBio(data.profile.bio || '');
@@ -92,6 +100,8 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
           setShowWhatsapp(data.profile.showWhatsapp ?? true);
           setShowEmail(data.profile.showEmail ?? true);
           setShowLinkedin(data.profile.showLinkedin ?? true);
+          setShowTwitter(data.profile.showTwitter ?? true);
+          setShowGithub(data.profile.showGithub ?? true);
           setShowAddress(data.profile.showAddress ?? true);
         }
       })
@@ -150,6 +160,8 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
         officePhone: officePhone.trim() || undefined,
         companyEmail: companyEmail.trim() || undefined,
         linkedin: linkedin.trim() || undefined,
+        twitter: twitter.trim() || undefined,
+        github: github.trim() || undefined,
         website: website.trim() || undefined,
         officeAddress: officeAddress.trim() || undefined,
         bio: bio.trim() || undefined,
@@ -160,6 +172,8 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
         showWhatsapp,
         showEmail,
         showLinkedin,
+        showTwitter,
+        showGithub,
         showAddress,
       });
 
@@ -387,18 +401,40 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
             />
 
             <Input
-              label="LinkedIn URL"
+              label="LinkedIn Profile or Handle"
               id="edit-linkedin"
-              type="url"
+              type="text"
+              placeholder="https://linkedin.com/in/username or username"
               value={linkedin}
               onChange={(e) => setLinkedin(e.target.value)}
               leftIcon={<Linkedin className="w-4 h-4" />}
             />
 
             <Input
+              label="Twitter / X Profile or Handle"
+              id="edit-twitter"
+              type="text"
+              placeholder="@username or https://twitter.com/username"
+              value={twitter}
+              onChange={(e) => setTwitter(e.target.value)}
+              leftIcon={<Twitter className="w-4 h-4" />}
+            />
+
+            <Input
+              label="GitHub Profile or Handle"
+              id="edit-github"
+              type="text"
+              placeholder="username or https://github.com/username"
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+              leftIcon={<Github className="w-4 h-4" />}
+            />
+
+            <Input
               label="Website URL"
               id="edit-website"
               type="url"
+              placeholder="https://example.com"
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               leftIcon={<Globe className="w-4 h-4" />}
@@ -479,6 +515,26 @@ export const AdminEditEmployeePage: React.FC<AdminEditEmployeeProps> = ({
                   className="rounded text-[#2563EB]"
                 />
                 <span>Show LinkedIn</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={showTwitter}
+                  onChange={(e) => setShowTwitter(e.target.checked)}
+                  className="rounded text-[#2563EB]"
+                />
+                <span>Show Twitter / X</span>
+              </label>
+
+              <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={showGithub}
+                  onChange={(e) => setShowGithub(e.target.checked)}
+                  className="rounded text-[#2563EB]"
+                />
+                <span>Show GitHub</span>
               </label>
 
               <label className="flex items-center gap-2 p-2.5 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] cursor-pointer hover:bg-slate-50 transition-colors">

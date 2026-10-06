@@ -70,6 +70,16 @@ export function generateVCard(
     lines.push(`X-SOCIALPROFILE;type=linkedin:${escapeVCard(profile.linkedin)}`);
   }
 
+  // Twitter / X
+  if (profile.twitter && profile.showTwitter !== false) {
+    lines.push(`X-SOCIALPROFILE;type=twitter:${escapeVCard(profile.twitter)}`);
+  }
+
+  // GitHub
+  if (profile.github && profile.showGithub !== false) {
+    lines.push(`X-SOCIALPROFILE;type=github:${escapeVCard(profile.github)}`);
+  }
+
   // Office Address
   const addr = profile.officeAddress || company.officeAddress;
   if (addr && profile.showAddress) {

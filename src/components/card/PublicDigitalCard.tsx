@@ -21,6 +21,10 @@ import {
   ArrowLeft,
   Download,
   Building,
+  Printer,
+  Twitter,
+  Github,
+  ExternalLink,
 } from 'lucide-react';
 import { Button } from '../common/Button.tsx';
 
@@ -97,6 +101,10 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
   const handleShare = () => {
     if (!cardData) return;
     shareCard(cardData, currentUrl, () => setIsShareOpen(true));
+  };
+
+  const handlePrintCard = () => {
+    window.print();
   };
 
   if (loading) {
@@ -186,6 +194,8 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
     email,
     companyEmail,
     linkedin,
+    twitter,
+    github,
     website,
     officeAddress,
     bio,
@@ -193,13 +203,31 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
     company,
   } = cardData;
 
+  const formatSocialUrl = (url?: string, defaultBase: string = 'https://') => {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+    // If handle already contains domain (e.g. linkedin.com/in/... or github.com/...)
+    if (/^(www\.)?(linkedin\.com|twitter\.com|x\.com|github\.com)/i.test(trimmed)) {
+      return `https://${trimmed}`;
+    }
+    const clean = trimmed.replace(/^@/, '');
+    return `${defaultBase}${clean}`;
+  };
+
+  const linkedinUrl = formatSocialUrl(linkedin, 'https://linkedin.com/in/');
+  const twitterUrl = formatSocialUrl(twitter, 'https://twitter.com/');
+  const githubUrl = formatSocialUrl(github, 'https://github.com/');
+
   const contactEmail = companyEmail || email;
   const whatsappNumber = whatsapp ? whatsapp.replace(/[^0-9]/g, '') : '';
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] py-8 px-4 sm:px-6 flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-[#F7F9FC] py-8 px-4 sm:px-6 flex flex-col items-center justify-center print:min-h-0 print:py-2 print:px-0 print:bg-white">
       {/* Top corporate navigation */}
-      <div className="w-full max-w-md flex items-center justify-between mb-4 px-2">
+      <div className="w-full max-w-md flex items-center justify-between mb-4 px-2 print:hidden">
         {onBackToApp ? (
           <button
             onClick={onBackToApp}
@@ -216,6 +244,14 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
         )}
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrintCard}
+            className="p-2 rounded-xl bg-white hover:bg-blue-50 text-[#111827] border border-[#E5E7EB] hover:border-blue-200 transition-colors shadow-xs cursor-pointer"
+            title="Print Physical Card"
+            aria-label="Print Card"
+          >
+            <Printer className="w-4 h-4 text-[#2563EB]" />
+          </button>
           <button
             onClick={handleSaveContact}
             disabled={isSavingContact}
@@ -242,7 +278,7 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
       </div>
 
       {/* Main Digital Business Card */}
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#E5E7EB] overflow-hidden relative">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-sm border border-[#E5E7EB] overflow-hidden relative print:shadow-none print:border-slate-300 print:rounded-2xl print:max-w-md print:mx-auto">
         {/* Header Cover Banner */}
         <div className="h-32 bg-gradient-to-r from-[#2563EB] via-blue-600 to-indigo-600 relative flex items-start justify-between p-4">
           {/* Subtle grid pattern overlay */}
@@ -328,8 +364,50 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
             </p>
           )}
 
+          {/* Quick Social Badges (LinkedIn, Twitter / X, GitHub) */}
+          {(linkedin || twitter || github) && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2 print:hidden">
+              {linkedin && (
+                <a
+                  href={linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 text-[#0077B5] border border-sky-200 text-xs font-semibold hover:bg-sky-100 hover:border-sky-300 transition-all cursor-pointer shadow-2xs"
+                  title="Open LinkedIn in new tab"
+                >
+                  <Linkedin className="w-3.5 h-3.5" />
+                  <span>LinkedIn</span>
+                </a>
+              )}
+              {twitter && (
+                <a
+                  href={twitterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-50 text-[#1DA1F2] border border-sky-200 text-xs font-semibold hover:bg-sky-100 hover:border-sky-300 transition-all cursor-pointer shadow-2xs"
+                  title="Open Twitter / X in new tab"
+                >
+                  <Twitter className="w-3.5 h-3.5" />
+                  <span>Twitter / X</span>
+                </a>
+              )}
+              {github && (
+                <a
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900 text-white border border-slate-800 text-xs font-semibold hover:bg-slate-800 transition-all cursor-pointer shadow-2xs"
+                  title="Open GitHub in new tab"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>GitHub</span>
+                </a>
+              )}
+            </div>
+          )}
+
           {/* QUICK DIRECT ACTION BUTTONS (CALL, WHATSAPP, EMAIL, LINKEDIN) */}
-          <div className="mt-6 grid grid-cols-4 gap-2.5">
+          <div className="mt-6 grid grid-cols-4 gap-2.5 print:hidden">
             {phone ? (
               <a
                 href={`tel:${phone}`}
@@ -394,7 +472,7 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
 
             {linkedin ? (
               <a
-                href={linkedin.startsWith('http') ? linkedin : `https://${linkedin}`}
+                href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center p-3 rounded-2xl bg-[#F8FAFC] hover:bg-sky-50 border border-[#E5E7EB] hover:border-sky-200 transition-all group"
@@ -416,7 +494,7 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
           </div>
 
           {/* HIGHLY VISIBLE "SAVE TO CONTACTS" PRIMARY BUTTON */}
-          <div className="mt-5">
+          <div className="mt-5 print:hidden">
             <button
               onClick={handleSaveContact}
               disabled={isSavingContact}
@@ -535,13 +613,100 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
                 </div>
               </a>
             )}
+
+            {/* Social Media & Professional Channels (LinkedIn, Twitter / X, GitHub) */}
+            {(linkedin || twitter || github) && (
+              <div className="pt-3 border-t border-[#E5E7EB] space-y-2">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] px-1">
+                  Social & Professional Handles
+                </h4>
+
+                {linkedin && (
+                  <a
+                    href={linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-sky-50/70 hover:border-sky-300 transition-all group cursor-pointer"
+                    title="Open LinkedIn profile in new tab"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-xl bg-sky-100 text-[#0077B5] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <Linkedin className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[11px] text-[#64748B] font-medium">LinkedIn</p>
+                        <p className="text-xs font-semibold text-[#111827] truncate">
+                          {linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/(in\/)?/, '')}
+                        </p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#94A3B8] group-hover:text-[#0077B5] shrink-0" />
+                  </a>
+                )}
+
+                {twitter && (
+                  <a
+                    href={twitterUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-sky-50/70 hover:border-sky-300 transition-all group cursor-pointer"
+                    title="Open Twitter / X profile in new tab"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-xl bg-sky-100 text-[#1DA1F2] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <Twitter className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[11px] text-[#64748B] font-medium">Twitter / X</p>
+                        <p className="text-xs font-semibold text-[#111827] truncate">
+                          {twitter.replace(/^https?:\/\/(www\.)?(twitter|x)\.com\//, '@')}
+                        </p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#94A3B8] group-hover:text-[#1DA1F2] shrink-0" />
+                  </a>
+                )}
+
+                {github && (
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-slate-100 hover:border-slate-300 transition-all group cursor-pointer"
+                    title="Open GitHub profile in new tab"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-xl bg-slate-200 text-[#24292F] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <Github className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[11px] text-[#64748B] font-medium">GitHub</p>
+                        <p className="text-xs font-semibold text-[#111827] truncate">
+                          {github.replace(/^https?:\/\/(www\.)?github\.com\//, '')}
+                        </p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#94A3B8] group-hover:text-[#24292F] shrink-0" />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Card Footer Actions (QR, Save .VCF, Share) */}
-          <div className="mt-6 pt-5 border-t border-[#E5E7EB] grid grid-cols-3 gap-2">
+          {/* Card Footer Actions (Print Card, QR, Save .VCF, Share) */}
+          <div className="mt-6 pt-5 border-t border-[#E5E7EB] grid grid-cols-2 sm:grid-cols-4 gap-2 print:hidden">
+            <button
+              onClick={handlePrintCard}
+              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100/80 text-[#2563EB] font-semibold text-xs transition-colors shadow-xs cursor-pointer group"
+              title="Print Physical Copy"
+            >
+              <Printer className="w-4 h-4 text-[#2563EB] group-hover:scale-110 transition-transform" />
+              <span>Print Card</span>
+            </button>
+
             <button
               onClick={() => setIsQrOpen(true)}
-              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] font-semibold text-xs hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
+              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] font-semibold text-xs hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-xs cursor-pointer"
             >
               <QrCode className="w-4 h-4 text-[#2563EB]" />
               <span>QR Code</span>
@@ -558,7 +723,7 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
 
             <button
               onClick={handleShare}
-              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] font-semibold text-xs hover:bg-slate-50 transition-colors shadow-xs cursor-pointer"
+              className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border border-[#E5E7EB] bg-white text-[#111827] font-semibold text-xs hover:bg-slate-50 hover:border-slate-300 transition-colors shadow-xs cursor-pointer"
             >
               <Share2 className="w-4 h-4 text-[#2563EB]" />
               <span>Share</span>
@@ -567,13 +732,21 @@ export const PublicDigitalCard: React.FC<PublicDigitalCardProps> = ({
         </div>
 
         {/* Corporate Trust Footer */}
-        <div className="bg-slate-50 p-3.5 text-center border-t border-[#E5E7EB]">
+        <div className="bg-slate-50 p-3.5 text-center border-t border-[#E5E7EB] print:hidden">
           <p className="text-[11px] font-medium text-[#64748B]">
             Powered by{' '}
             <span className="font-bold text-[#111827]">
               {company.companyName || 'UHF Solutions'}
             </span>{' '}
             Digital Card System
+          </p>
+        </div>
+
+        {/* Print-only Verification & URL Badge */}
+        <div className="hidden print:block bg-slate-50 p-4 text-center border-t border-slate-200 text-xs">
+          <p className="font-bold text-[#0F172A]">Official UHF Solutions Digital Business Card</p>
+          <p className="text-[11px] text-slate-500 font-mono mt-0.5">
+            Verified Employee ID: {employeeId} • {company.companyName || 'UHF Solutions'}
           </p>
         </div>
       </div>

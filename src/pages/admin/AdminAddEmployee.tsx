@@ -15,6 +15,8 @@ import {
   MessageSquare,
   Globe,
   Linkedin,
+  Twitter,
+  Github,
   MapPin,
   Camera,
   CheckCircle2,
@@ -42,6 +44,8 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
   const [companyEmail, setCompanyEmail] = useState('');
   const [officePhone, setOfficePhone] = useState('+1 (800) 555-0199');
   const [linkedin, setLinkedin] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [github, setGithub] = useState('');
   const [website, setWebsite] = useState('https://uhfsolutions.com');
   const [officeAddress, setOfficeAddress] = useState(
     'Suite 400, Technology Park, Silicon Boulevard, CA 94025'
@@ -116,6 +120,8 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
         companyEmail: companyEmail.trim() || email.trim().toLowerCase(),
         officePhone: officePhone.trim() || undefined,
         linkedin: linkedin.trim() || undefined,
+        twitter: twitter.trim() || undefined,
+        github: github.trim() || undefined,
         website: website.trim() || undefined,
         officeAddress: officeAddress.trim() || undefined,
         bio: bio.trim() || undefined,
@@ -430,19 +436,40 @@ export const AdminAddEmployeePage: React.FC<AdminAddEmployeeProps> = ({ onNaviga
               />
 
               <Input
-                label="LinkedIn Profile URL"
+                label="LinkedIn Profile or Handle"
                 id="add-linkedin"
-                type="url"
-                placeholder="https://linkedin.com/in/username"
+                type="text"
+                placeholder="https://linkedin.com/in/username or username"
                 value={linkedin}
                 onChange={(e) => setLinkedin(e.target.value)}
                 leftIcon={<Linkedin className="w-4 h-4" />}
               />
 
               <Input
+                label="Twitter / X Profile or Handle"
+                id="add-twitter"
+                type="text"
+                placeholder="@username or https://twitter.com/username"
+                value={twitter}
+                onChange={(e) => setTwitter(e.target.value)}
+                leftIcon={<Twitter className="w-4 h-4" />}
+              />
+
+              <Input
+                label="GitHub Profile or Handle"
+                id="add-github"
+                type="text"
+                placeholder="username or https://github.com/username"
+                value={github}
+                onChange={(e) => setGithub(e.target.value)}
+                leftIcon={<Github className="w-4 h-4" />}
+              />
+
+              <Input
                 label="Website URL"
                 id="add-website"
                 type="url"
+                placeholder="https://example.com"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
                 leftIcon={<Globe className="w-4 h-4" />}

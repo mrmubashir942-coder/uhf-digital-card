@@ -21,6 +21,10 @@ import {
   CheckCircle2,
   Sparkles,
   SmartphoneNfc,
+  Printer,
+  Linkedin,
+  Twitter,
+  Github,
 } from 'lucide-react';
 import { Button } from '../../components/common/Button.tsx';
 
@@ -81,6 +85,8 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
       email: user?.email,
       companyEmail: profile.companyEmail,
       linkedin: profile.linkedin,
+      twitter: profile.twitter,
+      github: profile.github,
       website: profile.website,
       officeAddress: profile.officeAddress,
       bio: profile.bio,
@@ -169,6 +175,20 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
               leftIcon={<ExternalLink className="w-4 h-4" />}
             >
               View Public Card
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                onNavigate(`/card/${employeeId}`);
+                // Open browser print dialog after navigation
+                setTimeout(() => {
+                  window.print();
+                }, 350);
+              }}
+              leftIcon={<Printer className="w-4 h-4 text-[#2563EB]" />}
+            >
+              Print Card
             </Button>
 
             <Button
@@ -349,6 +369,51 @@ export const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate
             <div className="mt-4 p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB] text-xs">
               <span className="text-[#64748B] font-medium block mb-1">Public Bio</span>
               <p className="text-[#111827] leading-relaxed">{profile.bio}</p>
+            </div>
+          )}
+
+          {/* Social Media Profiles */}
+          {(profile?.linkedin || profile?.twitter || profile?.github) && (
+            <div className="mt-4 p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E5E7EB] text-xs">
+              <span className="text-[#64748B] font-medium block mb-2">Connected Social & Professional Channels</span>
+              <div className="flex flex-wrap gap-2">
+                {profile.linkedin && (
+                  <a
+                    href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://linkedin.com/in/${profile.linkedin.replace(/^@/, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E5E7EB] text-[#0077B5] hover:bg-sky-50 font-medium transition-colors"
+                  >
+                    <Linkedin className="w-3.5 h-3.5" />
+                    <span>LinkedIn</span>
+                    <ExternalLink className="w-3 h-3 text-[#94A3B8]" />
+                  </a>
+                )}
+                {profile.twitter && (
+                  <a
+                    href={profile.twitter.startsWith('http') ? profile.twitter : `https://twitter.com/${profile.twitter.replace(/^@/, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E5E7EB] text-[#1DA1F2] hover:bg-sky-50 font-medium transition-colors"
+                  >
+                    <Twitter className="w-3.5 h-3.5" />
+                    <span>Twitter / X</span>
+                    <ExternalLink className="w-3 h-3 text-[#94A3B8]" />
+                  </a>
+                )}
+                {profile.github && (
+                  <a
+                    href={profile.github.startsWith('http') ? profile.github : `https://github.com/${profile.github.replace(/^@/, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#E5E7EB] text-[#111827] hover:bg-slate-100 font-medium transition-colors"
+                  >
+                    <Github className="w-3.5 h-3.5" />
+                    <span>GitHub</span>
+                    <ExternalLink className="w-3 h-3 text-[#94A3B8]" />
+                  </a>
+                )}
+              </div>
             </div>
           )}
         </div>

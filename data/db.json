@@ -8,7 +8,7 @@
       "role": "ADMIN",
       "status": "ACTIVE",
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-10-05T05:41:39.665Z"
+      "updatedAt": "2026-10-06T07:44:33.673Z"
     },
     {
       "id": "usr_emp_1",
@@ -67,14 +67,14 @@
       "website": "https://uhfsolutions.com",
       "officeAddress": "Bungalow No. 31/3, Jinnah Cooperative Housing, PECHS, Khalid Bin Waleed Road, Karachi, Pakistan",
       "bio": "Supervising corporate infrastructure, enterprise identity, and security operations at UHF Solutions.",
-      "profilePhoto": "file:///C:/Users/user/Pictures/Saved%20Pictures/WhatsApp%20Image%202026-09-25%20at%2012.00.57%20PM.jpeg",
+      "profilePhoto": "/api/assets/photo_1791272669206.jpeg",
       "showPhone": true,
       "showWhatsapp": true,
       "showEmail": true,
       "showLinkedin": true,
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
-      "updatedAt": "2026-10-05T05:41:39.665Z"
+      "updatedAt": "2026-10-06T07:44:33.673Z"
     },
     {
       "id": "prof_emp_1",
@@ -88,6 +88,8 @@
       "officePhone": "+1 (800) 555-0199 ext 101",
       "companyEmail": "ahmed@uhfsolutions.com",
       "linkedin": "https://linkedin.com/in/muhammad-ahmed-uhf",
+      "twitter": "https://twitter.com/mahmed_uhf",
+      "github": "https://github.com/mahmed-uhf",
       "website": "https://uhfsolutions.com",
       "officeAddress": "Suite 400, Technology Park, Silicon Boulevard, CA 94025",
       "bio": "Full-stack engineer passionate about cloud architecture, robust distributed backend systems, and modern web applications at UHF Solutions.",
@@ -96,6 +98,8 @@
       "showWhatsapp": true,
       "showEmail": true,
       "showLinkedin": true,
+      "showTwitter": true,
+      "showGithub": true,
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
       "updatedAt": "2026-10-05T05:46:27.166Z"
@@ -112,6 +116,8 @@
       "officePhone": "+1 (800) 555-0199 ext 102",
       "companyEmail": "ali@uhfsolutions.com",
       "linkedin": "https://linkedin.com/in/ali-khan-design",
+      "twitter": "https://twitter.com/alikhan_ui",
+      "github": "https://github.com/alikhandesign",
       "website": "https://uhfsolutions.com",
       "officeAddress": "Suite 400, Technology Park, Silicon Boulevard, CA 94025",
       "bio": "Product designer focused on intuitive digital interfaces, typography, accessible design systems, and delightful user journeys.",
@@ -120,6 +126,8 @@
       "showWhatsapp": true,
       "showEmail": true,
       "showLinkedin": true,
+      "showTwitter": true,
+      "showGithub": true,
       "showAddress": true,
       "createdAt": "2026-09-28T05:03:38.324Z",
       "updatedAt": "2026-09-28T05:03:38.324Z"
@@ -172,7 +180,7 @@
   "companySettings": {
     "id": "default-uhf-company",
     "companyName": "UHF Solutions International",
-    "logoUrl": "/api/assets/logo_1791179151661.png",
+    "logoUrl": "/api/assets/logo_1791272700776.png",
     "website": "https://uhfsolutions.com",
     "email": "contact@uhfsolutions.com",
     "phone": "+1 (800) 555-0199",
@@ -181,9 +189,100 @@
     "twitter": "https://twitter.com/uhfsolutions",
     "primaryColor": "#0f172a",
     "accentColor": "#2563eb",
-    "updatedAt": "2026-10-05T05:45:51.662Z"
+    "updatedAt": "2026-10-06T07:45:00.776Z"
   },
   "activityLogs": [
+    {
+      "id": "log_1791276126021_x4jpqy",
+      "timestamp": "2026-10-06T08:42:06.021Z",
+      "actorName": "Visitor",
+      "actorRole": "PUBLIC",
+      "action": "CARD_VIEW",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Digital business card accessed for Muhammad Ahmed (UHF-001)",
+      "userAgent": "curl/7.88.1"
+    },
+    {
+      "id": "log_1791272701286_tgqc52",
+      "timestamp": "2026-10-06T07:45:01.286Z",
+      "actorId": "usr_admin_001",
+      "actorName": "ADMIN-001",
+      "actorRole": "ADMIN",
+      "action": "COMPANY_LOGO_UPLOAD",
+      "category": "ADMIN",
+      "details": "Uploaded and updated corporate company logo"
+    },
+    {
+      "id": "log_1791272673674_z8cdv2",
+      "timestamp": "2026-10-06T07:44:33.674Z",
+      "actorId": "usr_admin_001",
+      "actorName": "ADMIN-001",
+      "actorRole": "ADMIN",
+      "action": "EMPLOYEE_UPDATE",
+      "category": "ADMIN",
+      "targetId": "usr_admin_001",
+      "targetName": "Usman Farooqui (ADMIN-001)",
+      "details": "Updated employee profile and settings for Usman Farooqui"
+    },
+    {
+      "id": "log_1791272670000_3myv97",
+      "timestamp": "2026-10-06T07:44:30.000Z",
+      "actorId": "usr_admin_001",
+      "actorName": "ADMIN-001",
+      "actorRole": "ADMIN",
+      "action": "PHOTO_UPLOAD",
+      "category": "PROFILE",
+      "targetId": "ADMIN-001",
+      "targetName": "Usman Farooqui",
+      "details": "Administrator uploaded new profile photo for ADMIN-001"
+    },
+    {
+      "id": "log_1791202642169_5rpt1a",
+      "timestamp": "2026-10-05T12:17:22.169Z",
+      "actorId": "usr_admin_001",
+      "actorName": "Usman Farooqui",
+      "actorRole": "ADMIN",
+      "action": "LOGIN",
+      "category": "AUTH",
+      "targetId": "usr_admin_001",
+      "targetName": "Usman Farooqui (ADMIN-001)",
+      "details": "Administrator authenticated successfully via portal login"
+    },
+    {
+      "id": "log_1791202642005_zkkevu",
+      "timestamp": "2026-10-05T12:17:22.005Z",
+      "actorName": "Visitor / Contact",
+      "actorRole": "PUBLIC",
+      "action": "VCARD_DOWNLOAD",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Downloaded .vcf contact card for Muhammad Ahmed (UHF-001)"
+    },
+    {
+      "id": "log_1791202641936_uhvqn3",
+      "timestamp": "2026-10-05T12:17:21.936Z",
+      "actorName": "Visitor / Device",
+      "actorRole": "PUBLIC",
+      "action": "QR_CODE_DOWNLOAD",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Dynamic QR code generated/accessed for Muhammad Ahmed (UHF-001)"
+    },
+    {
+      "id": "log_1791202641894_2t2bhw",
+      "timestamp": "2026-10-05T12:17:21.894Z",
+      "actorName": "Visitor",
+      "actorRole": "PUBLIC",
+      "action": "CARD_VIEW",
+      "category": "INTERACTION",
+      "targetId": "usr_emp_1",
+      "targetName": "Muhammad Ahmed (UHF-001)",
+      "details": "Digital business card accessed for Muhammad Ahmed (UHF-001)"
+    },
     {
       "id": "log_1791191078931_iui293",
       "timestamp": "2026-10-05T09:04:38.931Z",

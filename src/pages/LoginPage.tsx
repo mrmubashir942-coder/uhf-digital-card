@@ -3,7 +3,8 @@ import { useAuth } from '../context/AuthContext.tsx';
 import { Input } from '../components/common/Input.tsx';
 import { Button } from '../components/common/Button.tsx';
 import { useToast } from '../context/ToastContext.tsx';
-import { Lock, User, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
+import { UHFLogo } from '../components/common/UHFLogo.tsx';
+import { Lock, User, ShieldCheck, ArrowRight, Sparkles, CheckCircle2, ExternalLink } from 'lucide-react';
 
 interface LoginPageProps {
   onLoginSuccess: (role: 'ADMIN' | 'EMPLOYEE') => void;
@@ -41,7 +42,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({
       await login(identifier.trim(), password);
       showToast('Login successful! Welcome back.', 'success');
 
-      // The AuthContext user will be set, but let's check role or let parent handle
       const user = JSON.parse(localStorage.getItem('uhf_auth_user') || '{}');
       onLoginSuccess(user.role || 'EMPLOYEE');
     } catch (err: any) {
@@ -61,25 +61,27 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F9FC] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        {/* UHF Solutions Logo */}
-        <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#2563EB] via-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-2xl shadow-sm shadow-blue-500/20 mb-4">
-          U
-        </div>
+    <div className="relative min-h-screen bg-[#F0F4F8] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden select-none">
+      {/* Subtle modern corporate ambient blue glow shapes (No yellow effects) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-blue-400/10 via-blue-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-600/5 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-indigo-600/5 rounded-full blur-2xl pointer-events-none" />
 
-        <h2 className="text-2xl font-black text-[#111827] tracking-tight">
-          UHF Solutions Digital Card
-        </h2>
-        <p className="mt-1.5 text-xs text-[#64748B]">
-          Sign in to manage your digital business card, QR code & profile
+      {/* Header with Logo */}
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
+        <div className="flex justify-center mb-4">
+          <UHFLogo size="lg" showBadge={true} />
+        </div>
+        <p className="text-xs text-[#64748B] font-medium max-w-xs mx-auto">
+          Sign in to access your digital business card, dynamic QR code & employee management
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 sm:px-10 shadow-sm rounded-3xl border border-[#E5E7EB]">
+      {/* Main Card */}
+      <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <div className="bg-white py-8 px-6 sm:px-9 shadow-sm rounded-3xl border border-[#E5E7EB]">
           {error && (
-            <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-[#DC2626] text-xs font-medium leading-relaxed">
+            <div className="mb-5 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-[#DC2626] text-xs font-semibold leading-relaxed">
               {error}
             </div>
           )}
@@ -89,10 +91,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               label="Employee ID or Email"
               id="login-identifier"
               type="text"
-              placeholder="e.g. UHF-001 or admin@uhfsolutions.com"
+              placeholder="e.g. ADMIN-001 or UHF-001"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              leftIcon={<User className="w-4 h-4" />}
+              leftIcon={<User className="w-4 h-4 text-[#2563EB]" />}
               required
             />
 
@@ -103,7 +105,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               placeholder="••••••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              leftIcon={<Lock className="w-4 h-4" />}
+              leftIcon={<Lock className="w-4 h-4 text-[#2563EB]" />}
               required
             />
 
@@ -111,7 +113,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
               <Button
                 type="submit"
                 variant="primary"
-                className="w-full py-3"
+                className="w-full py-3 text-sm font-bold shadow-md shadow-blue-500/20"
                 isLoading={isLoading}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
@@ -120,81 +122,114 @@ export const LoginPage: React.FC<LoginPageProps> = ({
             </div>
           </form>
 
-          {/* Quick Demo Logins for Testing */}
+          {/* Quick Demo Accounts Selection */}
           <div className="mt-8 pt-6 border-t border-[#E5E7EB]">
             <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#D97706]" />
-              <span>Demo Accounts (Click to Fill)</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
+              <span>Demo Accounts (Instant Fill)</span>
             </div>
 
             <div className="space-y-2">
+              {/* Administrator */}
               <button
                 type="button"
                 onClick={() => handleQuickFill('ADMIN-001', 'AdminPassword123!')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/60 hover:border-blue-300 text-left transition-colors group cursor-pointer"
+                className="w-full flex items-center justify-between p-3 rounded-2xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/70 hover:border-blue-300 text-left transition-all group cursor-pointer"
               >
-                <div>
-                  <div className="text-xs font-bold text-[#111827] flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#2563EB]" />
-                    <span>Administrator (Full Access)</span>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-[#2563EB] flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <div className="text-[11px] text-[#64748B] font-mono">ADMIN-001 / AdminPassword123!</div>
+                  <div>
+                    <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                      Administrator (Usman Farooqui)
+                    </div>
+                    <div className="text-[11px] text-[#64748B] font-mono mt-0.5">
+                      ADMIN-001 • Full Access
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[10px] font-semibold text-[#2563EB] group-hover:underline">
-                  Fill
+                <span className="text-[10px] font-bold text-[#2563EB] group-hover:underline">
+                  Use
                 </span>
               </button>
 
+              {/* Employee: Muhammad Ahmed */}
               <button
                 type="button"
                 onClick={() => handleQuickFill('UHF-001', 'Password123!')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/60 hover:border-blue-300 text-left transition-colors group cursor-pointer"
+                className="w-full flex items-center justify-between p-3 rounded-2xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/70 hover:border-blue-300 text-left transition-all group cursor-pointer"
               >
-                <div>
-                  <div className="text-xs font-bold text-[#111827]">
-                    Muhammad Ahmed (Developer)
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-100 text-[#059669] flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4" />
                   </div>
-                  <div className="text-[11px] text-[#64748B] font-mono">UHF-001 / Password123!</div>
+                  <div>
+                    <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                      Muhammad Ahmed (Senior Developer)
+                    </div>
+                    <div className="text-[11px] text-[#64748B] font-mono mt-0.5">
+                      UHF-001 • Employee
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[10px] font-semibold text-[#2563EB] group-hover:underline">
-                  Fill
+                <span className="text-[10px] font-bold text-[#2563EB] group-hover:underline">
+                  Use
                 </span>
               </button>
 
+              {/* Employee: Ali Khan */}
               <button
                 type="button"
                 onClick={() => handleQuickFill('UHF-002', 'Password123!')}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/60 hover:border-blue-300 text-left transition-colors group cursor-pointer"
+                className="w-full flex items-center justify-between p-3 rounded-2xl border border-[#E5E7EB] bg-[#F8FAFC] hover:bg-blue-50/70 hover:border-blue-300 text-left transition-all group cursor-pointer"
               >
-                <div>
-                  <div className="text-xs font-bold text-[#111827]">
-                    Ali Khan (UI/UX Designer)
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4" />
                   </div>
-                  <div className="text-[11px] text-[#64748B] font-mono">UHF-002 / Password123!</div>
+                  <div>
+                    <div className="text-xs font-bold text-[#0F172A] leading-tight">
+                      Ali Khan (UI/UX Designer)
+                    </div>
+                    <div className="text-[11px] text-[#64748B] font-mono mt-0.5">
+                      UHF-002 • Employee
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[10px] font-semibold text-[#2563EB] group-hover:underline">
-                  Fill
+                <span className="text-[10px] font-bold text-[#2563EB] group-hover:underline">
+                  Use
                 </span>
               </button>
             </div>
 
             {onViewSampleCard && (
-              <div className="mt-4 text-center">
+              <div className="mt-5 text-center">
                 <button
                   type="button"
                   onClick={onViewSampleCard}
-                  className="text-xs text-[#64748B] hover:text-[#2563EB] underline font-medium cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs text-[#2563EB] hover:text-[#1D4ED8] font-bold transition-colors cursor-pointer"
                 >
-                  View Sample Public Employee Card (UHF-001) →
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>View Sample Public Employee Card (UHF-001)</span>
                 </button>
               </div>
             )}
           </div>
         </div>
 
-        <p className="text-center text-xs text-[#64748B] mt-6">
-          © {new Date().getFullYear()} UHF Solutions. All rights reserved.
-        </p>
+        <div className="text-center mt-6 text-xs text-[#64748B] flex flex-col items-center justify-center gap-1">
+          <div className="flex flex-wrap items-center justify-center gap-2 font-medium text-[#334155]">
+            <span>© 2026 UHF Solutions Digital Card System</span>
+            <span className="text-[#94A3B8]">•</span>
+            <span className="font-mono text-[#64748B] text-[11px]">v1.0.0</span>
+            <span className="text-[#94A3B8]">•</span>
+            <span className="text-emerald-600 font-medium">System Online</span>
+          </div>
+          <p className="text-[11px] text-[#64748B]">
+            Developed by <span className="font-medium text-[#2563EB]">Muhammad Mubashir</span>
+          </p>
+        </div>
       </div>
     </div>
   );

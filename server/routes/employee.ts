@@ -36,7 +36,7 @@ employeeRouter.get('/profile', async (req: AuthenticatedRequest, res) => {
 employeeRouter.put('/profile', async (req: AuthenticatedRequest, res) => {
   try {
     const user = req.user!;
-    const { phone, whatsapp, linkedin, website, bio, profilePhoto, nfcEnabled } = req.body;
+    const { phone, whatsapp, linkedin, twitter, github, website, bio, profilePhoto, nfcEnabled } = req.body;
 
     // Reject raw oversized base64 payloads to preserve database performance
     if (typeof profilePhoto === 'string' && profilePhoto.startsWith('data:') && profilePhoto.length > 3 * 1024 * 1024) {
@@ -48,6 +48,8 @@ employeeRouter.put('/profile', async (req: AuthenticatedRequest, res) => {
       phone,
       whatsapp,
       linkedin,
+      twitter,
+      github,
       website,
       bio,
       profilePhoto,
